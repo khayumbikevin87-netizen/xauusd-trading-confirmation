@@ -7,26 +7,243 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#07111f;color:#e8eef7;font-family:Arial,sans-serif}
-.container{max-width:1100px;margin:auto;padding:16px}
-h1{margin:0 0 5px;font-size:24px}
-.subtitle{color:#8ea2bd;margin-bottom:18px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.card{background:#0d1b2e;border:1px solid #1d334d;border-radius:12px;padding:15px}
-.label{color:#8296b1;font-size:12px;text-transform:uppercase;margin-bottom:7px}
-.value{font-size:20px;font-weight:bold}
-.live{color:#35d07f}.danger{color:#ff6262}.warn{color:#ffc857}.muted{color:#94a6bc}
-button,select{background:#142942;color:#fff;border:1px solid #31506f;border-radius:8px;padding:10px 12px}
-button{cursor:pointer}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
-.chart{margin-top:15px;background:#0d1b2e;border:1px solid #1d334d;border-radius:12px;overflow:hidden}
-.chart iframe{width:100%;height:520px;border:0}
-.signal{margin-top:15px;padding:20px;text-align:center;border-radius:12px;background:#0d1b2e;border:1px solid #1d334d}
-.signal-main{font-size:28px;font-weight:bold;margin:8px 0}
-.diagnostic{margin-top:15px;background:#090f19;border:1px solid #39465a;border-radius:12px;padding:15px}
-.diagnostic pre{white-space:pre-wrap;word-break:break-word;font-family:monospace;font-size:12px;line-height:1.5;color:#d5dfeb;max-height:400px;overflow:auto}
-.small{font-size:12px;color:#8193aa;margin-top:8px}
-hr{border:0;border-top:1px solid #20344b;margin:14px 0}
+
+body{
+  margin:0;
+  background:#07111f;
+  color:#e8eef7;
+  font-family:Arial,sans-serif;
+}
+
+.container{
+  width:100%;
+  max-width:1250px;
+  margin:auto;
+  padding:16px;
+}
+
+h1{
+  margin:0 0 5px;
+  font-size:24px;
+}
+
+.subtitle{
+  color:#8ea2bd;
+  margin-bottom:18px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+
+.card{
+  background:#0d1b2e;
+  border:1px solid #1d334d;
+  border-radius:12px;
+  padding:15px;
+}
+
+.label{
+  color:#8296b1;
+  font-size:12px;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+
+.value{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.live{color:#35d07f}
+.danger{color:#ff6262}
+.warn{color:#ffc857}
+.muted{color:#94a6bc}
+
+button,select{
+  background:#142942;
+  color:#fff;
+  border:1px solid #31506f;
+  border-radius:8px;
+  padding:10px 12px;
+  font-size:14px;
+}
+
+button{
+  cursor:pointer;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:15px 0;
+}
+
+/* =========================
+   TRADINGVIEW CHART
+========================= */
+
+.chart{
+  width:100%;
+  margin-top:18px;
+  background:#0d1b2e;
+  border:1px solid #1d334d;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.chart-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 15px;
+  border-bottom:1px solid #1d334d;
+  background:#0b1728;
+}
+
+.chart-title{
+  font-size:14px;
+  font-weight:bold;
+}
+
+.chart-status{
+  font-size:12px;
+  color:#8296b1;
+}
+
+.chart-body{
+  width:100%;
+  height:700px;
+  min-height:600px;
+}
+
+#tradingview_chart{
+  width:100%;
+  height:100%;
+}
+
+#tradingview_chart iframe{
+  width:100% !important;
+  height:100% !important;
+  border:0;
+}
+
+/* =========================
+   SIGNAL
+========================= */
+
+.signal{
+  margin-top:15px;
+  padding:20px;
+  text-align:center;
+  border-radius:12px;
+  background:#0d1b2e;
+  border:1px solid #1d334d;
+}
+
+.signal-main{
+  font-size:28px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+.diagnostic{
+  margin-top:15px;
+  background:#090f19;
+  border:1px solid #39465a;
+  border-radius:12px;
+  padding:15px;
+}
+
+.diagnostic pre{
+  white-space:pre-wrap;
+  word-break:break-word;
+  font-family:monospace;
+  font-size:12px;
+  line-height:1.5;
+  color:#d5dfeb;
+  max-height:400px;
+  overflow:auto;
+}
+
+.small{
+  font-size:12px;
+  color:#8193aa;
+  margin-top:8px;
+}
+
+hr{
+  border:0;
+  border-top:1px solid #20344b;
+  margin:14px 0;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+  .container{
+    padding:10px;
+  }
+
+  h1{
+    font-size:21px;
+  }
+
+  .subtitle{
+    font-size:13px;
+    line-height:1.4;
+  }
+
+  .grid{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .card{
+    padding:12px;
+  }
+
+  .value{
+    font-size:17px;
+  }
+
+  .latest-candle{
+    font-size:11px !important;
+    line-height:1.4;
+  }
+
+  .chart{
+    margin-top:12px;
+  }
+
+  .chart-header{
+    padding:10px 12px;
+  }
+
+  .chart-body{
+    height:620px;
+    min-height:620px;
+  }
+}
+
+@media(max-width:430px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .chart-body{
+    height:560px;
+    min-height:560px;
+  }
+}
 </style>
 </head>
 
@@ -52,6 +269,11 @@ Real XAU/USD market data • Multi-timeframe confirmation • Safety-first analy
 <button onclick="refreshAll()">Refresh Data</button>
 
 </div>
+
+
+<!-- =========================
+     DATA GRID
+========================= -->
 
 <div class="grid">
 
@@ -82,7 +304,7 @@ Real XAU/USD market data • Multi-timeframe confirmation • Safety-first analy
 
 <div class="card">
 <div class="label">Latest candle</div>
-<div id="latestCandle" class="value muted" style="font-size:13px">---</div>
+<div id="latestCandle" class="value muted latest-candle" style="font-size:13px">---</div>
 </div>
 
 <div class="card">
@@ -102,9 +324,35 @@ Real XAU/USD market data • Multi-timeframe confirmation • Safety-first analy
 
 </div>
 
+
+<!-- =========================
+     LARGE TRADINGVIEW CHART
+========================= -->
+
 <div class="chart">
+
+<div class="chart-header">
+
+<div class="chart-title">
+XAUUSD LIVE CHART
+</div>
+
+<div id="chartStatus" class="chart-status">
+TradingView • 15M
+</div>
+
+</div>
+
+<div class="chart-body">
 <div id="tradingview_chart"></div>
 </div>
+
+</div>
+
+
+<!-- =========================
+     SIGNAL ENGINE
+========================= -->
 
 <div class="signal">
 
@@ -122,6 +370,11 @@ Waiting for reliable market data.
 </div>
 
 </div>
+
+
+<!-- =========================
+     DIAGNOSTICS
+========================= -->
 
 <div class="diagnostic">
 
@@ -145,6 +398,7 @@ Live diagnostics are shown here so API problems can be identified directly from 
 
 </div>
 
+
 <script>
 
 /* =========================
@@ -160,10 +414,10 @@ const TWELVE_DATA_KEY =
 ========================= */
 
 const marketData={
-spot:null,
-candles:[],
-candleFresh:false,
-lastCandleTime:null
+  spot:null,
+  candles:[],
+  candleFresh:false,
+  lastCandleTime:null
 };
 
 
@@ -173,31 +427,29 @@ lastCandleTime:null
 
 function setStatus(id,text,type){
 
-const el=document.getElementById(id);
+  const el=document.getElementById(id);
 
-el.textContent=text;
+  el.textContent=text;
 
-el.className="value "+
-(
-type==="live"?"live":
-type==="danger"?"danger":
-type==="warn"?"warn":
-"muted"
-);
-
+  el.className="value "+
+  (
+    type==="live" ? "live" :
+    type==="danger" ? "danger" :
+    type==="warn" ? "warn" :
+    "muted"
+  );
 }
 
 
 function showWaitingState(title,reason){
 
-document.getElementById("regime").textContent=title;
+  document.getElementById("regime").textContent=title;
 
-document.getElementById("strategy").textContent=title;
+  document.getElementById("strategy").textContent=title;
 
-document.getElementById("signalStrength").textContent="---";
+  document.getElementById("signalStrength").textContent="---";
 
-document.getElementById("signalReason").textContent=reason;
-
+  document.getElementById("signalReason").textContent=reason;
 }
 
 
@@ -207,101 +459,77 @@ document.getElementById("signalReason").textContent=reason;
 
 async function updatePrice(){
 
-const url=
-"https://api.twelvedata.com/price"+
-"?symbol=XAU/USD"+
-"&apikey="+
-encodeURIComponent(TWELVE_DATA_KEY)+
-"&_="+Date.now();
+  const url=
+    "https://api.twelvedata.com/price"+
+    "?symbol=XAU/USD"+
+    "&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
+    "&_="+Date.now();
 
-try{
+  try{
 
-const response=
-await fetch(
-url,
-{cache:"no-store"}
-);
+    const response=
+      await fetch(url,{cache:"no-store"});
 
-const data=
-await response.json();
+    const data=
+      await response.json();
 
+    document.getElementById("apiRaw").textContent=
+      JSON.stringify(data,null,2);
 
-document.getElementById("apiRaw").textContent=
-JSON.stringify(data,null,2);
+    if(
+      !response.ok ||
+      data.status==="error" ||
+      data.price===undefined
+    ){
+      throw new Error(
+        data.message ||
+        "Twelve Data price request failed"
+      );
+    }
 
+    const price=Number(data.price);
 
-if(
-!response.ok ||
-data.status==="error" ||
-data.price===undefined
-){
+    if(!Number.isFinite(price)){
+      throw new Error(
+        "Invalid XAU/USD price returned"
+      );
+    }
 
-throw new Error(
-data.message ||
-"Twelve Data price request failed"
-);
+    marketData.spot=price;
 
-}
+    document.getElementById("spotPrice").textContent=
+      "$"+price.toFixed(2);
 
+    document.getElementById("lastUpdate").textContent=
+      new Date().toLocaleTimeString();
 
-const price=
-Number(data.price);
+    setStatus(
+      "dataStatus",
+      "LIVE",
+      "live"
+    );
 
+    document.getElementById("apiDiagnostic").textContent=
+      "PRICE LIVE — Twelve Data XAU/USD: $"+
+      price.toFixed(2);
 
-if(!Number.isFinite(price)){
+  }catch(error){
 
-throw new Error(
-"Invalid XAU/USD price returned"
-);
+    console.error(error);
 
-}
+    setStatus(
+      "dataStatus",
+      "ERROR",
+      "danger"
+    );
 
+    document.getElementById("spotPrice").textContent="---";
 
-marketData.spot=price;
+    document.getElementById("lastUpdate").textContent="---";
 
-
-document.getElementById("spotPrice").textContent=
-"$"+price.toFixed(2);
-
-
-document.getElementById("lastUpdate").textContent=
-new Date().toLocaleTimeString();
-
-
-setStatus(
-"dataStatus",
-"LIVE",
-"live"
-);
-
-
-document.getElementById("apiDiagnostic").textContent=
-"PRICE LIVE — Twelve Data XAU/USD: $"+
-price.toFixed(2);
-
-
-}catch(error){
-
-console.error(error);
-
-
-setStatus(
-"dataStatus",
-"ERROR",
-"danger"
-);
-
-
-document.getElementById("spotPrice").textContent="---";
-
-document.getElementById("lastUpdate").textContent="---";
-
-
-document.getElementById("apiDiagnostic").textContent=
-"PRICE ERROR: "+error.message;
-
-}
-
+    document.getElementById("apiDiagnostic").textContent=
+      "PRICE ERROR: "+error.message;
+  }
 }
 
 
@@ -311,259 +539,237 @@ document.getElementById("apiDiagnostic").textContent=
 
 async function loadOHLC(){
 
-const timeframe=
-document.getElementById("timeframe").value;
+  const timeframe=
+    document.getElementById("timeframe").value;
 
+  const intervalMap={
+    "1M":"1min",
+    "5M":"5min",
+    "15M":"15min",
+    "1H":"1h"
+  };
 
-const intervalMap={
-"1M":"1min",
-"5M":"5min",
-"15M":"15min",
-"1H":"1h"
-};
+  const interval=
+    intervalMap[timeframe]||"15min";
 
+  const url=
+    "https://api.twelvedata.com/time_series"+
+    "?symbol=XAU/USD"+
+    "&interval="+encodeURIComponent(interval)+
+    "&outputsize=100"+
+    "&timezone=Africa/Nairobi"+
+    "&order=desc"+
+    "&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
+    "&_="+Date.now();
 
-const interval=
-intervalMap[timeframe]||"15min";
+  try{
 
+    const response=
+      await fetch(url,{cache:"no-store"});
 
-const url=
-"https://api.twelvedata.com/time_series"+
-"?symbol=XAU/USD"+
-"&interval="+encodeURIComponent(interval)+
-"&outputsize=100"+
-"&timezone=Africa/Nairobi"+
-"&order=desc"+
-"&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
-"&_="+Date.now();
+    const data=
+      await response.json();
 
+    if(
+      !response.ok ||
+      data.status==="error" ||
+      !Array.isArray(data.values)
+    ){
 
-try{
+      throw new Error(
+        data.message ||
+        "No valid candle data returned"
+      );
+    }
 
-const response=
-await fetch(
-url,
-{cache:"no-store"}
-);
+    const candles=
+      data.values
+      .map(item=>({
 
+        datetime:item.datetime,
 
-const data=
-await response.json();
+        open:Number(item.open),
 
+        high:Number(item.high),
 
-if(
-!response.ok ||
-data.status==="error" ||
-!Array.isArray(data.values)
-){
+        low:Number(item.low),
 
-throw new Error(
-data.message||
-"No valid candle data returned"
-);
+        close:Number(item.close)
 
-}
+      }))
+      .filter(item=>
 
+        item.datetime &&
 
-const candles=
-data.values
-.map(item=>({
+        Number.isFinite(item.open) &&
+        Number.isFinite(item.high) &&
+        Number.isFinite(item.low) &&
+        Number.isFinite(item.close) &&
 
-datetime:item.datetime,
+        item.high>=item.low &&
 
-open:Number(item.open),
+        item.open>=item.low &&
+        item.open<=item.high &&
 
-high:Number(item.high),
+        item.close>=item.low &&
+        item.close<=item.high
 
-low:Number(item.low),
+      );
 
-close:Number(item.close)
 
-}))
-.filter(item=>
+    if(!candles.length){
 
-item.datetime&&
+      throw new Error(
+        "No valid candles returned"
+      );
+    }
 
-Number.isFinite(item.open)&&
-Number.isFinite(item.high)&&
-Number.isFinite(item.low)&&
-Number.isFinite(item.close)&&
 
-item.high>=item.low&&
+    candles.sort((a,b)=>{
 
-item.open>=item.low&&
-item.open<=item.high&&
+      const dateA=
+        new Date(a.datetime.replace(" ","T"));
 
-item.close>=item.low&&
-item.close<=item.high
+      const dateB=
+        new Date(b.datetime.replace(" ","T"));
 
-);
+      return dateA-dateB;
 
+    });
 
-if(!candles.length){
 
-throw new Error(
-"No valid candles returned"
-);
+    const latest=
+      candles[candles.length-1];
 
-}
+    const latestTime=
+      new Date(
+        latest.datetime.replace(" ","T")
+      );
 
 
-candles.sort((a,b)=>{
+    const ageMinutes=
+      (
+        Date.now()-
+        latestTime.getTime()
+      )/60000;
 
-const dateA=
-new Date(a.datetime.replace(" ","T"));
 
-const dateB=
-new Date(b.datetime.replace(" ","T"));
+    const allowedAge={
 
-return dateA-dateB;
+      "1M":8,
 
-});
+      "5M":15,
 
+      "15M":35,
 
-const latest=
-candles[candles.length-1];
+      "1H":130
 
+    }[timeframe]||35;
 
-const latestTime=
-new Date(
-latest.datetime.replace(" ","T")
-);
 
+    setStatus(
+      "ohlcStatus",
+      "LIVE",
+      "live"
+    );
 
-const ageMinutes=
-(
-Date.now()-
-latestTime.getTime()
-)/60000;
 
+    document.getElementById("candleCount").textContent=
+      candles.length;
 
-const allowedAge={
 
-"1M":8,
-"5M":15,
-"15M":35,
-"1H":130
+    document.getElementById("latestCandle").textContent=
+      latest.datetime+
+      " | O "+latest.open.toFixed(2)+
+      " H "+latest.high.toFixed(2)+
+      " L "+latest.low.toFixed(2)+
+      " C "+latest.close.toFixed(2);
 
-}[timeframe]||35;
 
+    document.getElementById("candleAge").textContent=
+      Number.isFinite(ageMinutes)
+      ? ageMinutes.toFixed(1)+" minutes"
+      : "---";
 
-setStatus(
-"ohlcStatus",
-"LIVE",
-"live"
-);
 
+    marketData.candles=candles;
 
-document.getElementById("candleCount").textContent=
-candles.length;
+    marketData.lastCandleTime=
+      latestTime;
 
 
-document.getElementById("latestCandle").textContent=
-latest.datetime+
-" | O "+latest.open.toFixed(2)+
-" H "+latest.high.toFixed(2)+
-" L "+latest.low.toFixed(2)+
-" C "+latest.close.toFixed(2);
+    if(
+      Number.isFinite(ageMinutes) &&
+      ageMinutes>=0 &&
+      ageMinutes<=allowedAge
+    ){
 
+      marketData.candleFresh=true;
 
-document.getElementById("candleAge").textContent=
-Number.isFinite(ageMinutes)
-?ageMinutes.toFixed(1)+" minutes"
-:"---";
+      setStatus(
+        "candleFreshness",
+        "FRESH",
+        "live"
+      );
 
+      document.getElementById("apiDiagnostic").textContent=
+        "SUCCESS — "+
+        candles.length+
+        " valid "+
+        interval+
+        " candles. Latest candle is fresh.";
 
-marketData.candles=candles;
+      analyzeMarket();
 
-marketData.lastCandleTime=latestTime;
+    }else{
 
+      marketData.candleFresh=false;
 
-if(
-Number.isFinite(ageMinutes)&&
-ageMinutes>=0&&
-ageMinutes<=allowedAge
-){
+      setStatus(
+        "candleFreshness",
+        "STALE",
+        "danger"
+      );
 
-marketData.candleFresh=true;
+      showWaitingState(
+        "WAIT — STALE DATA",
 
+        "Latest candle is "+
+        (
+          Number.isFinite(ageMinutes)
+          ? ageMinutes.toFixed(1)
+          : "an invalid"
+        )+
+        " minutes old."
+      );
+    }
 
-setStatus(
-"candleFreshness",
-"FRESH",
-"live"
-);
+  }catch(error){
 
+    console.error(error);
 
-document.getElementById("apiDiagnostic").textContent=
-"SUCCESS — "+
-candles.length+
-" valid "+
-interval+
-" candles. Latest candle is fresh.";
+    setStatus(
+      "ohlcStatus",
+      "ERROR",
+      "danger"
+    );
 
+    setStatus(
+      "candleFreshness",
+      "ERROR",
+      "danger"
+    );
 
-analyzeMarket();
+    marketData.candleFresh=false;
 
+    document.getElementById("apiDiagnostic").textContent=
+      "OHLC ERROR: "+error.message;
 
-}else{
-
-marketData.candleFresh=false;
-
-
-setStatus(
-"candleFreshness",
-"STALE",
-"danger"
-);
-
-
-showWaitingState(
-"WAIT — STALE DATA",
-"Latest candle is "+
-(
-Number.isFinite(ageMinutes)
-?ageMinutes.toFixed(1)
-:"an invalid"
-)+
-" minutes old."
-);
-
-}
-
-}catch(error){
-
-console.error(error);
-
-
-setStatus(
-"ohlcStatus",
-"ERROR",
-"danger"
-);
-
-
-setStatus(
-"candleFreshness",
-"ERROR",
-"danger"
-);
-
-
-marketData.candleFresh=false;
-
-
-document.getElementById("apiDiagnostic").textContent=
-"OHLC ERROR: "+error.message;
-
-
-showWaitingState(
-"WAIT — FEED ERROR",
-error.message
-);
-
-}
-
+    showWaitingState(
+      "WAIT — FEED ERROR",
+      error.message
+    );
+  }
 }
 
 
@@ -573,69 +779,63 @@ error.message
 
 function analyzeMarket(){
 
-if(
-!marketData.candleFresh||
-marketData.candles.length<20
-){
+  if(
+    !marketData.candleFresh ||
+    marketData.candles.length<20
+  ){
 
-showWaitingState(
-"WAIT — DATA NOT READY",
-"Insufficient fresh candle data."
-);
+    showWaitingState(
+      "WAIT — DATA NOT READY",
+      "Insufficient fresh candle data."
+    );
 
-return;
-
-}
-
-
-const recent=
-marketData.candles.slice(-20);
+    return;
+  }
 
 
-const closes=
-recent.map(c=>c.close);
+  const recent=
+    marketData.candles.slice(-20);
+
+  const closes=
+    recent.map(c=>c.close);
+
+  const first=
+    closes[0];
+
+  const last=
+    closes[closes.length-1];
+
+  const change=
+    ((last-first)/first)*100;
 
 
-const first=
-closes[0];
-
-const last=
-closes[closes.length-1];
+  let regime=
+    "RANGE / CONSOLIDATION";
 
 
-const change=
-((last-first)/first)*100;
+  if(change>0.25){
+
+    regime=
+      "BULLISH TREND";
+
+  }else if(change<-0.25){
+
+    regime=
+      "BEARISH TREND";
+  }
 
 
-let regime="RANGE / CONSOLIDATION";
+  document.getElementById("regime").textContent=
+    regime;
 
+  document.getElementById("strategy").textContent=
+    "WAITING FOR MULTI-CONFIRMATION";
 
-if(change>0.25){
+  document.getElementById("signalStrength").textContent=
+    "DATA READY";
 
-regime="BULLISH TREND";
-
-}else if(change<-0.25){
-
-regime="BEARISH TREND";
-
-}
-
-
-document.getElementById("regime").textContent=
-regime;
-
-
-document.getElementById("strategy").textContent=
-"WAITING FOR MULTI-CONFIRMATION";
-
-
-document.getElementById("signalStrength").textContent=
-"DATA READY";
-
-
-document.getElementById("signalReason").textContent=
-"Fresh XAU/USD candles are available. Waiting for structure, trend, pullback/breakout and candle confirmation before producing a signal.";
-
+  document.getElementById("signalReason").textContent=
+    "Fresh XAU/USD candles are available. Waiting for structure, trend, pullback/breakout and candle confirmation before producing a signal.";
 }
 
 
@@ -645,10 +845,9 @@ document.getElementById("signalReason").textContent=
 
 async function refreshAll(){
 
-await updatePrice();
+  await updatePrice();
 
-await loadOHLC();
-
+  await loadOHLC();
 }
 
 
@@ -656,59 +855,94 @@ await loadOHLC();
    TRADINGVIEW
 ========================= */
 
+function getTradingViewInterval(){
+
+  const timeframe=
+    document.getElementById("timeframe").value;
+
+  const map={
+    "1M":"1",
+    "5M":"5",
+    "15M":"15",
+    "1H":"60"
+  };
+
+  return map[timeframe]||"15";
+}
+
+
 function loadTradingView(){
 
-const container=
-document.getElementById(
-"tradingview_chart"
-);
+  const container=
+    document.getElementById(
+      "tradingview_chart"
+    );
+
+  const timeframe=
+    document.getElementById(
+      "timeframe"
+    ).value;
+
+  const interval=
+    getTradingViewInterval();
 
 
-container.innerHTML="";
+  document.getElementById(
+    "chartStatus"
+  ).textContent=
+    "TradingView • "+timeframe;
 
 
-const script=
-document.createElement("script");
+  container.innerHTML="";
 
 
-script.src=
-"https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+  const script=
+    document.createElement("script");
 
 
-script.async=true;
+  script.src=
+    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
 
 
-script.innerHTML=
-JSON.stringify({
-
-autosize:true,
-
-symbol:"OANDA:XAUUSD",
-
-interval:"15",
-
-timezone:"Africa/Nairobi",
-
-theme:"dark",
-
-style:"1",
-
-locale:"en",
-
-enable_publishing:false,
-
-allow_symbol_change:true,
-
-calendar:false,
-
-support_host:
-"https://www.tradingview.com"
-
-});
+  script.async=true;
 
 
-container.appendChild(script);
+  script.innerHTML=
+    JSON.stringify({
 
+      autosize:true,
+
+      symbol:"OANDA:XAUUSD",
+
+      interval:interval,
+
+      timezone:"Africa/Nairobi",
+
+      theme:"dark",
+
+      style:"1",
+
+      locale:"en",
+
+      enable_publishing:false,
+
+      allow_symbol_change:true,
+
+      calendar:false,
+
+      hide_top_toolbar:false,
+
+      hide_legend:false,
+
+      save_image:false,
+
+      support_host:
+        "https://www.tradingview.com"
+
+    });
+
+
+  container.appendChild(script);
 }
 
 
@@ -721,24 +955,36 @@ loadTradingView();
 refreshAll();
 
 
-setInterval(
-updatePrice,
-15000
-);
-
+/* Price refresh */
 
 setInterval(
-loadOHLC,
-60000
+  updatePrice,
+  15000
 );
 
 
-document.getElementById(
-"timeframe"
-).addEventListener(
-"change",
-loadOHLC
+/* Candle refresh */
+
+setInterval(
+  loadOHLC,
+  60000
 );
+
+
+/* Timeframe change */
+
+document
+  .getElementById("timeframe")
+  .addEventListener(
+    "change",
+    function(){
+
+      loadTradingView();
+
+      loadOHLC();
+
+    }
+  );
 
 </script>
 
