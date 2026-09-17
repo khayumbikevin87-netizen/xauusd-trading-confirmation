@@ -2,235 +2,130 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>XAUUSD Trading Confirmation Engine</title>
 
 <style>
 *{box-sizing:border-box}
-
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#0b0f14;
+  background:#0b1016;
   color:#e8edf3;
+  font-family:Arial,Helvetica,sans-serif
 }
-
 header{
   padding:18px;
-  background:#111820;
-  border-bottom:1px solid #26313d;
+  background:#111923;
+  border-bottom:1px solid #293544
 }
-
-h1{
-  margin:0;
-  font-size:22px;
-}
-
-.subtitle{
-  color:#8f9baa;
-  margin-top:6px;
-  font-size:13px;
-}
-
-.container{
-  max-width:1250px;
-  margin:auto;
-  padding:14px;
-}
-
+h1{margin:0;font-size:22px}
+.subtitle{margin-top:6px;color:#8e9baa;font-size:13px}
+.container{max-width:1250px;margin:auto;padding:14px}
 .panel{
-  background:#111820;
-  border:1px solid #26313d;
+  background:#111923;
+  border:1px solid #293544;
   border-radius:12px;
   padding:14px;
-  margin-bottom:14px;
+  margin-bottom:14px
 }
-
-.controls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-
+.controls{display:flex;gap:8px;flex-wrap:wrap}
 button{
-  border:1px solid #34414f;
-  background:#18212b;
-  color:#e8edf3;
   padding:10px 15px;
   border-radius:8px;
-  cursor:pointer;
+  border:1px solid #3a4a5b;
+  background:#1a2632;
+  color:#e8edf3;
   font-weight:bold;
+  cursor:pointer
 }
-
-button:hover{
-  background:#22303d;
-}
-
-button.active{
-  background:#30485c;
-  border-color:#607b91;
-}
-
+button.active{background:#34516a;border-color:#7194b1}
 .status-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:10px;
+  gap:10px
 }
-
 .card{
-  background:#151d26;
-  border:1px solid #293541;
+  background:#151f2a;
+  border:1px solid #2b3947;
   border-radius:10px;
-  padding:12px;
+  padding:12px
 }
-
 .label{
+  color:#8d9aaa;
   font-size:11px;
-  color:#8e9aa7;
   text-transform:uppercase;
-  margin-bottom:5px;
+  margin-bottom:6px
 }
-
-.value{
-  font-size:16px;
-  font-weight:bold;
-}
-
-.small{
-  font-size:12px;
-  color:#9da8b4;
-  margin-top:5px;
-}
-
-.live{
-  color:#6ee7a0;
-}
-
-.wait{
-  color:#ffd166;
-}
-
-.bull{
-  color:#6ee7a0;
-}
-
-.bear{
-  color:#ff7b7b;
-}
-
-.neutral{
-  color:#c4ccd5;
-}
-
+.value{font-size:16px;font-weight:bold}
+.small{font-size:12px;color:#9ba8b6;margin-top:5px}
+.live,.bull{color:#6ee7a0}
+.bear{color:#ff8080}
+.wait{color:#ffd166}
+.neutral{color:#c4ccd5}
 .signal-box{
   text-align:center;
   padding:20px;
-  border-radius:12px;
-  background:#151d26;
-  border:1px solid #303c49;
+  background:#151f2a;
+  border:1px solid #334252;
+  border-radius:12px
 }
-
-.decision{
-  font-size:30px;
-  font-weight:900;
-  margin:5px 0 10px;
-}
-
-.reason{
-  font-size:14px;
-  color:#b7c0ca;
-  line-height:1.5;
-}
-
+.decision{font-size:31px;font-weight:900;margin:6px 0 10px}
+.reason{color:#b9c4cf;font-size:14px;line-height:1.5}
 .progress{
   height:9px;
-  background:#26313c;
-  border-radius:10px;
-  overflow:hidden;
   margin-top:10px;
+  background:#293644;
+  border-radius:10px;
+  overflow:hidden
 }
-
 .progress-bar{
   height:100%;
-  width:0%;
+  width:0;
   background:#6ee7a0;
-  transition:.4s;
+  transition:.4s
 }
-
 .chart-wrap{
   width:100%;
   height:700px;
   min-height:600px;
-  border-radius:12px;
   overflow:hidden;
+  border-radius:10px
 }
-
-#tradingview_chart{
-  width:100%;
-  height:100%;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
+#tradingview_chart{width:100%;height:100%}
+table{width:100%;border-collapse:collapse}
 td{
   padding:9px 5px;
-  border-bottom:1px solid #27323d;
-  font-size:13px;
+  border-bottom:1px solid #293544;
+  font-size:13px
 }
-
-td:first-child{
-  color:#8996a4;
-}
-
-.explain{
-  line-height:1.55;
-  color:#c3ccd5;
-  font-size:14px;
-}
-
+td:first-child{color:#8f9cac}
 .warning{
-  background:#211b0d;
-  border:1px solid #5d4b1b;
+  margin-top:14px;
   padding:12px;
   border-radius:9px;
+  background:#28200e;
+  border:1px solid #66531c;
   color:#e9d27a;
+  line-height:1.5
 }
-
 .good{
-  background:#102218;
-  border:1px solid #275b3b;
+  margin-top:14px;
   padding:12px;
   border-radius:9px;
-  color:#8fe3ac;
+  background:#10251a;
+  border:1px solid #2b6742;
+  color:#91e5af;
+  line-height:1.5
 }
-
+.explain{font-size:14px;line-height:1.6;color:#c5ced7}
 @media(max-width:800px){
-  .status-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .chart-wrap{
-    height:620px;
-    min-height:560px;
-  }
+  .status-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-wrap{height:620px;min-height:560px}
 }
-
 @media(max-width:480px){
-  .chart-wrap{
-    height:560px;
-    min-height:520px;
-  }
-
-  .decision{
-    font-size:25px;
-  }
-
-  h1{
-    font-size:19px;
-  }
+  h1{font-size:19px}
+  .decision{font-size:26px}
+  .chart-wrap{height:560px;min-height:520px}
 }
 </style>
 </head>
@@ -246,7 +141,1178 @@ td:first-child{
 
 <div class="container">
 
-  <!-- CONTROLS -->
   <div class="panel">
     <div class="controls">
-      <button class="tf active" data-tf="1
+      <button class="tf active" data-tf="1min">1M</button>
+      <button class="tf" data-tf="5min">5M</button>
+      <button class="tf" data-tf="15min">15M</button>
+      <button class="tf" data-tf="1h">1H</button>
+      <button id="testBtn">TEST DATA NOW</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="status-grid">
+      <div class="card">
+        <div class="label">Data connection</div>
+        <div id="connection" class="value wait">CONNECTING...</div>
+        <div id="source" class="small">Twelve Data</div>
+      </div>
+
+      <div class="card">
+        <div class="label">XAUUSD price</div>
+        <div id="price" class="value">---</div>
+        <div id="updated" class="small">Waiting...</div>
+      </div>
+
+      <div class="card">
+        <div class="label">OHLC</div>
+        <div id="ohlcStatus" class="value wait">WAITING</div>
+        <div id="candleCount" class="small">0 candles</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Data freshness</div>
+        <div id="freshness" class="value">---</div>
+        <div id="dataInfo" class="small">---</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="signal-box">
+      <div class="label">Trading decision</div>
+      <div id="decision" class="decision wait">WAIT</div>
+      <div id="strategy" class="value">COLLECTING DATA</div>
+      <div id="reason" class="reason">
+        Waiting for valid market data and confirmation.
+      </div>
+
+      <div class="label" style="margin-top:18px">Signal strength</div>
+      <div id="strengthText" class="value">0%</div>
+
+      <div class="progress">
+        <div id="strengthBar" class="progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Trade Plan</h3>
+
+    <div class="status-grid">
+      <div class="card">
+        <div class="label">Entry</div>
+        <div id="entry" class="value">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Stop Loss</div>
+        <div id="sl" class="value">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Take Profit</div>
+        <div id="tp" class="value">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Risk / Reward</div>
+        <div id="rr" class="value">---</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Market Analysis</h3>
+
+    <div class="status-grid">
+      <div class="card">
+        <div class="label">Structure</div>
+        <div id="structure" class="value">---</div>
+        <div id="structureDetail" class="small">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Structure event</div>
+        <div id="event" class="value">---</div>
+        <div id="eventDetail" class="small">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Trend</div>
+        <div id="trend" class="value">---</div>
+        <div id="emaInfo" class="small">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Momentum</div>
+        <div id="momentum" class="value">---</div>
+        <div id="momentumInfo" class="small">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Key level</div>
+        <div id="level" class="value">---</div>
+        <div id="levelInfo" class="small">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Candle</div>
+        <div id="candle" class="value">---</div>
+        <div id="candleInfo" class="small">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Volatility</div>
+        <div id="volatility" class="value">---</div>
+        <div id="atrInfo" class="small">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Setup stage</div>
+        <div id="setup" class="value">---</div>
+        <div id="setupInfo" class="small">---</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Confirmation Engine</h3>
+
+    <table>
+      <tr><td>1. Market structure</td><td id="c1">WAITING</td></tr>
+      <tr><td>2. BOS / CHoCH</td><td id="c2">WAITING</td></tr>
+      <tr><td>3. Trend alignment</td><td id="c3">WAITING</td></tr>
+      <tr><td>4. Momentum</td><td id="c4">WAITING</td></tr>
+      <tr><td>5. Key level</td><td id="c5">WAITING</td></tr>
+      <tr><td>6. Candle confirmation</td><td id="c6">WAITING</td></tr>
+      <tr><td>7. Retest confirmation</td><td id="c7">WAITING</td></tr>
+      <tr><td>8. Volatility</td><td id="c8">WAITING</td></tr>
+    </table>
+
+    <div id="engineMessage" class="warning">
+      Waiting for analysis.
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Why the engine is waiting</h3>
+    <div id="explanation" class="explain">
+      The engine will not force a trade.
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>TradingView XAUUSD</h3>
+    <div class="chart-wrap">
+      <div id="tradingview_chart"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>System Diagnostics</h3>
+    <div id="diagnostics" class="small">Initializing...</div>
+  </div>
+
+</div>
+
+<script>
+const API_KEY="394e133dfaf844d580ca4d8d1ca5d1da";
+const SYMBOL="XAU/USD";
+
+let timeframe="15min";
+let candles=[];
+
+const FRESH_LIMITS={
+  "1min":8,
+  "5min":15,
+  "15min":35,
+  "1h":130
+};
+
+const TV_INTERVAL={
+  "1min":"1",
+  "5min":"5",
+  "15min":"15",
+  "1h":"60"
+};
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function fmt(n){
+  return Number.isFinite(n) ? Number(n).toFixed(2) : "---";
+}
+
+function pct(n){
+  return Number(n).toFixed(2)+"%";
+}
+
+function setText(id,text,cls=""){
+  $(id).textContent=text;
+  $(id).className="value "+cls;
+}
+
+function average(arr){
+  return arr.length
+    ? arr.reduce((a,b)=>a+b,0)/arr.length
+    : 0;
+}
+
+function ema(values,period){
+  if(values.length<period)return null;
+
+  const k=2/(period+1);
+
+  let result=average(values.slice(0,period));
+
+  for(let i=period;i<values.length;i++){
+    result=values[i]*k+result*(1-k);
+  }
+
+  return result;
+}
+
+function atr(data,period=14){
+  if(data.length<period+1)return null;
+
+  const ranges=[];
+
+  for(let i=1;i<data.length;i++){
+    const c=data[i];
+    const p=data[i-1];
+
+    ranges.push(Math.max(
+      c.high-c.low,
+      Math.abs(c.high-p.close),
+      Math.abs(c.low-p.close)
+    ));
+  }
+
+  return average(ranges.slice(-period));
+}
+
+function loadTradingView(){
+  $("tradingview_chart").innerHTML="";
+
+  const script=document.createElement("script");
+
+  script.src=
+    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+
+  script.async=true;
+
+  script.innerHTML=JSON.stringify({
+    autosize:true,
+    symbol:"OANDA:XAUUSD",
+    interval:TV_INTERVAL[timeframe],
+    timezone:"Africa/Nairobi",
+    theme:"dark",
+    style:"1",
+    locale:"en",
+    enable_publishing:false,
+    allow_symbol_change:false,
+    hide_top_toolbar:false,
+    hide_legend:false,
+    save_image:false,
+    calendar:false,
+    support_host:"https://www.tradingview.com"
+  });
+
+  $("tradingview_chart").appendChild(script);
+}
+
+async function fetchData(){
+
+  const url=
+    "https://api.twelvedata.com/time_series"+
+    "?symbol="+encodeURIComponent(SYMBOL)+
+    "&interval="+timeframe+
+    "&outputsize=100"+
+    "&timezone=Africa/Nairobi"+
+    "&order=desc"+
+    "&apikey="+encodeURIComponent(API_KEY)+
+    "&_="+Date.now();
+
+  const controller=new AbortController();
+
+  const timeout=setTimeout(()=>{
+    controller.abort();
+  },15000);
+
+  try{
+    const response=await fetch(url,{
+      cache:"no-store",
+      signal:controller.signal
+    });
+
+    clearTimeout(timeout);
+
+    if(!response.ok){
+      throw new Error("HTTP "+response.status);
+    }
+
+    const json=await response.json();
+
+    if(json.status==="error"){
+      throw new Error(json.message||"Twelve Data error");
+    }
+
+    if(!Array.isArray(json.values)){
+      throw new Error("No candle data returned");
+    }
+
+    const parsed=json.values
+      .map(x=>({
+        datetime:x.datetime,
+        open:Number(x.open),
+        high:Number(x.high),
+        low:Number(x.low),
+        close:Number(x.close)
+      }))
+      .filter(x=>
+        [x.open,x.high,x.low,x.close].every(Number.isFinite)
+      )
+      .reverse();
+
+    if(parsed.length<50){
+      throw new Error("Only "+parsed.length+" valid candles received");
+    }
+
+    candles=parsed;
+
+    setText("connection","LIVE","live");
+    setText("ohlcStatus","LIVE","live");
+
+    $("source").textContent="Twelve Data • XAU/USD";
+    $("candleCount").textContent=candles.length+" valid candles";
+
+    analyze();
+
+  }catch(error){
+
+    clearTimeout(timeout);
+
+    setText("connection","FAILED","bear");
+    setText("ohlcStatus","ERROR","bear");
+
+    $("diagnostics").textContent=
+      "DATA ERROR | Twelve Data | "+error.message;
+  }
+}
+
+function updateFreshness(){
+
+  if(!candles.length)return;
+
+  const latest=candles[candles.length-1];
+
+  const time=new Date(
+    latest.datetime.replace(" ","T")
+  ).getTime();
+
+  const age=(Date.now()-time)/60000;
+  const limit=FRESH_LIMITS[timeframe];
+
+  if(age<=limit){
+    $("freshness").textContent="FRESH";
+    $("freshness").className="value live";
+  }else{
+    $("freshness").textContent="STALE";
+    $("freshness").className="value bear";
+  }
+
+  $("dataInfo").textContent=
+    "Age "+age.toFixed(1)+" min • Limit "+limit+" min";
+
+  $("updated").textContent=
+    "Last candle "+latest.datetime;
+}
+
+function findSwings(data){
+
+  const swings=[];
+
+  for(let i=2;i<data.length-2;i++){
+
+    const c=data[i];
+
+    const high=
+      c.high>data[i-1].high &&
+      c.high>data[i-2].high &&
+      c.high>=data[i+1].high &&
+      c.high>=data[i+2].high;
+
+    const low=
+      c.low<data[i-1].low &&
+      c.low<data[i-2].low &&
+      c.low<=data[i+1].low &&
+      c.low<=data[i+2].low;
+
+    if(high)swings.push({
+      index:i,
+      type:"high",
+      price:c.high
+    });
+
+    if(low)swings.push({
+      index:i,
+      type:"low",
+      price:c.low
+    });
+  }
+
+  return swings;
+}
+
+function analyzeStructure(data){
+
+  const swings=findSwings(data);
+
+  const highs=swings.filter(x=>x.type==="high").slice(-5);
+  const lows=swings.filter(x=>x.type==="low").slice(-5);
+
+  let structure="NEUTRAL";
+  let detail="Insufficient swing confirmation.";
+
+  if(highs.length>=2&&lows.length>=2){
+
+    const h1=highs[highs.length-2].price;
+    const h2=highs[highs.length-1].price;
+    const l1=lows[lows.length-2].price;
+    const l2=lows[lows.length-1].price;
+
+    if(h2>h1&&l2>l1){
+      structure="HH + HL";
+      detail="Higher high + higher low";
+    }else if(h2<h1&&l2<l1){
+      structure="LH + LL";
+      detail="Lower high + lower low";
+    }else if(h2>h1){
+      structure="HH";
+      detail="Higher high forming";
+    }else if(h2<h1){
+      structure="LH";
+      detail="Lower high forming";
+    }
+  }
+
+  return {swings,highs,lows,structure,detail};
+}
+
+function detectEvent(data,structure){
+
+  if(!structure.highs.length||!structure.lows.length){
+    return {event:"NONE",direction:"WAIT",level:null};
+  }
+
+  const close=data[data.length-1].close;
+
+  const high=
+    structure.highs[structure.highs.length-1].price;
+
+  const low=
+    structure.lows[structure.lows.length-1].price;
+
+  if(close>high){
+    return {
+      event:structure.structure==="LH + LL"?"CHoCH ↑":"BOS ↑",
+      direction:"BUY",
+      level:high
+    };
+  }
+
+  if(close<low){
+    return {
+      event:structure.structure==="HH + HL"?"CHoCH ↓":"BOS ↓",
+      direction:"SELL",
+      level:low
+    };
+  }
+
+  return {event:"NONE",direction:"WAIT",level:null};
+}
+
+function getTrend(data){
+
+  const closes=data.map(x=>x.close);
+  const e20=ema(closes,20);
+  const e50=ema(closes,50);
+  const price=closes[closes.length-1];
+
+  if(!e20||!e50){
+    return {trend:"NEUTRAL",ema20:e20,ema50:e50};
+  }
+
+  if(price>e20&&e20>e50){
+    return {trend:"BULLISH",ema20:e20,ema50:e50};
+  }
+
+  if(price<e20&&e20<e50){
+    return {trend:"BEARISH",ema20:e20,ema50:e50};
+  }
+
+  return {trend:"NEUTRAL",ema20:e20,ema50:e50};
+}
+
+function getMomentum(data){
+
+  if(data.length<11){
+    return {direction:"NEUTRAL",change:0};
+  }
+
+  const now=data[data.length-1].close;
+  const old=data[data.length-11].close;
+  const change=((now-old)/old)*100;
+
+  if(change>0.12){
+    return {direction:"BULLISH",change};
+  }
+
+  if(change<-0.12){
+    return {direction:"BEARISH",change};
+  }
+
+  return {direction:"NEUTRAL",change};
+}
+
+function getCandle(c){
+
+  const range=c.high-c.low;
+
+  if(range<=0){
+    return {type:"NEUTRAL",bullish:false,bearish:false};
+  }
+
+  const body=Math.abs(c.close-c.open);
+  const upper=c.high-Math.max(c.open,c.close);
+  const lower=Math.min(c.open,c.close)-c.low;
+  const ratio=body/range;
+
+  if(c.close>c.open&&ratio>=0.65){
+    return {type:"STRONG BULLISH",bullish:true,bearish:false};
+  }
+
+  if(c.close<c.open&&ratio>=0.65){
+    return {type:"STRONG BEARISH",bullish:false,bearish:true};
+  }
+
+  if(lower>body*1.5&&lower>upper){
+    return {type:"BULLISH REJECTION",bullish:true,bearish:false};
+  }
+
+  if(upper>body*1.5&&upper>lower){
+    return {type:"BEARISH REJECTION",bullish:false,bearish:true};
+  }
+
+  return {type:"NEUTRAL",bullish:false,bearish:false};
+}
+
+function getKeyLevel(data,structure){
+
+  const price=data[data.length-1].close;
+
+  const support=structure.lows.length
+    ?structure.lows[structure.lows.length-1].price
+    :null;
+
+  const resistance=structure.highs.length
+    ?structure.highs[structure.highs.length-1].price
+    :null;
+
+  const tolerance=price*0.0015;
+
+  if(support&&Math.abs(price-support)<=tolerance){
+    return {type:"SUPPORT",price:support};
+  }
+
+  if(resistance&&Math.abs(price-resistance)<=tolerance){
+    return {type:"RESISTANCE",price:resistance};
+  }
+
+  return {type:"NEUTRAL",price:null};
+}
+
+function getVolatility(data){
+
+  const value=atr(data,14);
+
+  if(!value){
+    return {state:"UNKNOWN",atr:null};
+  }
+
+  const ranges=data.slice(-20).map(x=>x.high-x.low);
+  const avg=average(ranges);
+
+  if(value>avg*2){
+    return {state:"EXTREME",atr:value};
+  }
+
+  if(value<avg*0.55){
+    return {state:"LOW",atr:value};
+  }
+
+  return {state:"NORMAL",atr:value};
+}
+
+function getRetest(data,event){
+
+  if(event.event==="NONE"||event.level===null){
+    return {state:"NOT REQUIRED",confirmed:false};
+  }
+
+  const level=event.level;
+  const recent=data.slice(-8);
+  const tolerance=level*0.001;
+
+  let broke=false;
+  let retested=false;
+  let rejected=false;
+
+  if(event.direction==="BUY"){
+
+    for(const c of recent){
+
+      if(c.close>level)broke=true;
+
+      if(
+        broke&&
+        c.low<=level+tolerance&&
+        c.low>=level-tolerance
+      ){
+        retested=true;
+      }
+
+      if(
+        retested&&
+        c.close>c.open&&
+        c.close>level
+      ){
+        rejected=true;
+      }
+    }
+
+  }else if(event.direction==="SELL"){
+
+    for(const c of recent){
+
+      if(c.close<level)broke=true;
+
+      if(
+        broke&&
+        c.high>=level-tolerance&&
+        c.high<=level+tolerance
+      ){
+        retested=true;
+      }
+
+      if(
+        retested&&
+        c.close<c.open&&
+        c.close<level
+      ){
+        rejected=true;
+      }
+    }
+  }
+
+  if(rejected){
+    return {state:"CONFIRMED RETEST",confirmed:true};
+  }
+
+  if(retested){
+    return {state:"RETEST DEVELOPING",confirmed:false};
+  }
+
+  if(broke){
+    return {
+      state:"BOS DETECTED — WAITING FOR RETEST",
+      confirmed:false
+    };
+  }
+
+  return {state:"WAITING FOR RETEST",confirmed:false};
+}
+
+function confirmationEngine(
+  structure,event,trend,momentum,level,candle,volatility,retest
+){
+
+  let buy=0;
+  let sell=0;
+
+  const c={
+    structure:false,
+    event:false,
+    trend:false,
+    momentum:false,
+    level:false,
+    candle:false,
+    retest:false,
+    volatility:false
+  };
+
+  if(structure.structure==="HH + HL"){
+    buy+=2;
+    c.structure=true;
+  }else if(structure.structure==="LH + LL"){
+    sell+=2;
+    c.structure=true;
+  }
+
+  if(event.direction==="BUY"){
+    buy+=2;
+    c.event=true;
+  }else if(event.direction==="SELL"){
+    sell+=2;
+    c.event=true;
+  }
+
+  if(trend.trend==="BULLISH"){
+    buy+=2;
+    if(event.direction==="BUY"||structure.structure==="HH + HL"){
+      c.trend=true;
+    }
+  }else if(trend.trend==="BEARISH"){
+    sell+=2;
+    if(event.direction==="SELL"||structure.structure==="LH + LL"){
+      c.trend=true;
+    }
+  }
+
+  if(momentum.direction==="BULLISH"){
+    buy+=1;
+    if(event.direction==="BUY")c.momentum=true;
+  }else if(momentum.direction==="BEARISH"){
+    sell+=1;
+    if(event.direction==="SELL")c.momentum=true;
+  }
+
+  if(level.type==="SUPPORT"){
+    buy+=1;
+    if(event.direction==="BUY")c.level=true;
+  }else if(level.type==="RESISTANCE"){
+    sell+=1;
+    if(event.direction==="SELL")c.level=true;
+  }
+
+  if(candle.bullish){
+    buy+=1;
+    if(event.direction==="BUY")c.candle=true;
+  }else if(candle.bearish){
+    sell+=1;
+    if(event.direction==="SELL")c.candle=true;
+  }
+
+  if(retest.confirmed){
+    if(event.direction==="BUY"){
+      buy+=2;
+      c.retest=true;
+    }else if(event.direction==="SELL"){
+      sell+=2;
+      c.retest=true;
+    }
+  }
+
+  if(volatility.state==="NORMAL"){
+    c.volatility=true;
+  }
+
+  let direction="WAIT";
+  let score=0;
+
+  if(buy>sell){
+    direction="BUY";
+    score=buy;
+  }else if(sell>buy){
+    direction="SELL";
+    score=sell;
+  }
+
+  const percentage=Math.min(100,Math.round(score/12*100));
+
+  const count=Object.values(c).filter(Boolean).length;
+
+  const strong=
+    direction!=="WAIT"&&
+    count>=6&&
+    c.event&&
+    c.trend&&
+    c.momentum&&
+    c.candle&&
+    c.retest&&
+    volatility.state!=="EXTREME"&&
+    percentage>=70;
+
+  const developing=
+    direction!=="WAIT"&&
+    count>=4&&
+    percentage>=50;
+
+  let status="WAIT";
+  let strategy="WAITING FOR CONFIRMATION";
+
+  if(strong){
+    status=direction;
+    strategy=direction==="BUY"
+      ?"CONFIRMED BULLISH SETUP"
+      :"CONFIRMED BEARISH SETUP";
+  }else if(developing){
+    strategy=direction==="BUY"
+      ?"BULLISH SETUP DEVELOPING"
+      :"BEARISH SETUP DEVELOPING";
+  }
+
+  return {
+    direction,
+    score,
+    percentage,
+    count,
+    confirmations:c,
+    strong,
+    developing,
+    status,
+    strategy
+  };
+}
+
+function buildTradePlan(result,data,structure,volatility){
+
+  if(!result.strong){
+    return {entry:null,sl:null,tp:null,rr:null};
+  }
+
+  const entry=data[data.length-1].close;
+  const a=volatility.atr||1;
+
+  const low=structure.lows.length
+    ?structure.lows[structure.lows.length-1].price
+    :entry-a;
+
+  const high=structure.highs.length
+    ?structure.highs[structure.highs.length-1].price
+    :entry+a;
+
+  let sl,tp;
+
+  if(result.direction==="BUY"){
+    sl=Math.min(low-a*.35,entry-a*1.2);
+    tp=entry+(entry-sl)*2;
+  }else{
+    sl=Math.max(high+a*.35,entry+a*1.2);
+    tp=entry-(sl-entry)*2;
+  }
+
+  const risk=Math.abs(entry-sl);
+  const reward=Math.abs(tp-entry);
+
+  return {
+    entry,
+    sl,
+    tp,
+    rr:risk?reward/risk:null
+  };
+}
+
+function updateConfirmation(id,ok,text){
+  $(id).textContent=text;
+  $(id).className=ok?"bull":"neutral";
+}
+
+function analyze(){
+
+  if(candles.length<50)return;
+
+  const data=candles;
+  const latest=data[data.length-1];
+
+  const structure=analyzeStructure(data);
+  const event=detectEvent(data,structure);
+  const trend=getTrend(data);
+  const momentum=getMomentum(data);
+  const level=getKeyLevel(data,structure);
+  const candle=getCandle(latest);
+  const volatility=getVolatility(data);
+  const retest=getRetest(data,event);
+
+  const result=confirmationEngine(
+    structure,event,trend,momentum,level,candle,volatility,retest
+  );
+
+  const plan=buildTradePlan(
+    result,data,structure,volatility
+  );
+
+  $("price").textContent="$"+fmt(latest.close);
+
+  setText(
+    "structure",
+    structure.structure,
+    structure.structure==="HH + HL"
+      ?"bull"
+      :structure.structure==="LH + LL"
+      ?"bear"
+      :"neutral"
+  );
+
+  $("structureDetail").textContent=structure.detail;
+
+  setText(
+    "event",
+    event.event,
+    event.direction==="BUY"
+      ?"bull"
+      :event.direction==="SELL"
+      ?"bear"
+      :"neutral"
+  );
+
+  $("eventDetail").textContent=
+    event.level?"Break level "+fmt(event.level):"No confirmed break";
+
+  setText(
+    "trend",
+    trend.trend,
+    trend.trend==="BULLISH"
+      ?"bull"
+      :trend.trend==="BEARISH"
+      ?"bear"
+      :"neutral"
+  );
+
+  $("emaInfo").textContent=
+    "EMA20 "+fmt(trend.ema20)+" • EMA50 "+fmt(trend.ema50);
+
+  setText(
+    "momentum",
+    momentum.direction,
+    momentum.direction==="BULLISH"
+      ?"bull"
+      :momentum.direction==="BEARISH"
+      ?"bear"
+      :"neutral"
+  );
+
+  $("momentumInfo").textContent=
+    "10-candle change "+pct(momentum.change);
+
+  setText(
+    "level",
+    level.type,
+    level.type==="SUPPORT"
+      ?"bull"
+      :level.type==="RESISTANCE"
+      ?"bear"
+      :"neutral"
+  );
+
+  $("levelInfo").textContent=
+    level.price?fmt(level.price):"No nearby key level";
+
+  setText(
+    "candle",
+    candle.type,
+    candle.bullish
+      ?"bull"
+      :candle.bearish
+      ?"bear"
+      :"neutral"
+  );
+
+  $("candleInfo").textContent=
+    "Latest candle "+latest.datetime;
+
+  setText(
+    "volatility",
+    volatility.state,
+    volatility.state==="EXTREME"
+      ?"bear"
+      :volatility.state==="NORMAL"
+      ?"bull"
+      :"neutral"
+  );
+
+  $("atrInfo").textContent="ATR "+fmt(volatility.atr);
+
+  let setup="NO VALID SETUP";
+
+  if(event.direction==="BUY"){
+    setup=retest.confirmed
+      ?"BULLISH RETEST CONFIRMED"
+      :"BULLISH BREAKOUT — RETEST REQUIRED";
+  }else if(event.direction==="SELL"){
+    setup=retest.confirmed
+      ?"BEARISH RETEST CONFIRMED"
+      :"BEARISH BREAKOUT — RETEST REQUIRED";
+  }
+
+  setText("setup",setup,result.strong?"bull":"neutral");
+  $("setupInfo").textContent=retest.state;
+
+  updateConfirmation(
+    "c1",
+    result.confirmations.structure,
+    result.confirmations.structure?"CONFIRMED":"NOT ALIGNED"
+  );
+
+  updateConfirmation(
+    "c2",
+    result.confirmations.event,
+    result.confirmations.event?event.event:"NO BREAK"
+  );
+
+  updateConfirmation(
+    "c3",
+    result.confirmations.trend,
+    result.confirmations.trend?"ALIGNED":"NOT ALIGNED"
+  );
+
+  updateConfirmation(
+    "c4",
+    result.confirmations.momentum,
+    result.confirmations.momentum?"ALIGNED":"NOT ALIGNED"
+  );
+
+  updateConfirmation(
+    "c5",
+    result.confirmations.level,
+    result.confirmations.level?"ALIGNED":"NO CONFIRMATION"
+  );
+
+  updateConfirmation(
+    "c6",
+    result.confirmations.candle,
+    result.confirmations.candle?"CONFIRMED":"WAITING"
+  );
+
+  updateConfirmation(
+    "c7",
+    result.confirmations.retest,
+    result.confirmations.retest?"CONFIRMED":retest.state
+  );
+
+  updateConfirmation(
+    "c8",
+    result.confirmations.volatility,
+    result.confirmations.volatility?"ACCEPTABLE":volatility.state
+  );
+
+  setText(
+    "decision",
+    result.status,
+    result.status==="BUY"
+      ?"bull"
+      :result.status==="SELL"
+      ?"bear"
+      :"wait"
+  );
+
+  $("strategy").textContent=result.strategy;
+  $("strengthText").textContent=result.percentage+"%";
+  $("strengthBar").style.width=result.percentage+"%";
+
+  let reason;
+
+  if(result.strong){
+
+    reason=result.direction==="BUY"
+      ?"BUY confirmation complete. Structure, break, trend, momentum, candle and retest are aligned."
+      :"SELL confirmation complete. Structure, break, trend, momentum, candle and retest are aligned.";
+
+    $("engineMessage").className="good";
+
+  }else if(event.event==="BOS ↓"){
+
+    reason=
+      "Bearish BOS detected, but the engine will not sell the break. It is waiting for a retest and bearish rejection.";
+
+    $("engineMessage").className="warning";
+
+  }else if(event.event==="BOS ↑"){
+
+    reason=
+      "Bullish BOS detected, but the engine will not buy the break. It is waiting for a retest and bullish rejection.";
+
+    $("engineMessage").className="warning";
+
+  }else if(event.event==="CHoCH ↓"||event.event==="CHoCH ↑"){
+
+    reason=
+      "A possible trend change was detected. Follow-through, momentum, candle and retest confirmation are still required.";
+
+    $("engineMessage").className="warning";
+
+  }else{
+
+    reason=
+      "Confirmations are not sufficiently aligned. The engine will not force a trade.";
+
+    $("engineMessage").className="warning";
+  }
+
+  $("reason").textContent=reason;
+  $("engineMessage").textContent=reason;
+
+  $("explanation").innerHTML=
+    "<b>Structure:</b> "+structure.structure+
+    " — "+structure.detail+".<br><br>"+
+    "<b>Event:</b> "+event.event+
+    ". A BOS or CHoCH is an event, not an automatic entry.<br><br>"+
+    "<b>Trend:</b> "+trend.trend+
+    ". Trend alignment is required for a strong signal.<br><br>"+
+    "<b>Momentum:</b> "+momentum.direction+
+    " ("+pct(momentum.change)+").<br><br>"+
+    "<b>Candle:</b> "+candle.type+".<br><br>"+
+    "<b>Retest:</b> "+retest.state+
+    ".<br><br>"+
+    "<b>Volatility:</b> "+volatility.state+
+    ".<br><br>"+
+    "<b>Final:</b> "+
+    (result.strong
+      ?"The confirmation requirements are aligned."
+      :"WAIT. The system is intentionally selective and will not manufacture an entry.");
+
+  $("entry").textContent=plan.entry?fmt(plan.entry):"---";
+  $("sl").textContent=plan.sl?fmt(plan.sl):"---";
+  $("tp").textContent=plan.tp?fmt(plan.tp):"---";
+  $("rr").textContent=plan.rr?plan.rr.toFixed(2)+"R":"---";
+
+  updateFreshness();
+
+  $("diagnostics").textContent=
+    "LIVE | Source: Twelve Data | Symbol: XAU/USD | "+
+    "Interval: "+timeframe+
+    " | Candles: "+candles.length+
+    " | Latest: "+latest.datetime+
+    " | Price: "+fmt(latest.close)+
+    " | Structure: "+structure.structure+
+    " | Event: "+event.event+
+    " | Retest: "+retest.state+
+    " | Confirmations: "+result.count+"/8";
+}
+
+document.querySelectorAll(".tf").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll(".tf")
+      .forEach(b=>b.classList.remove("active"));
+
+    button.classList.add("active");
+    timeframe=button.dataset.tf;
+
+    loadTradingView();
+    fetchData();
+  });
+});
+
+$("testBtn").addEventListener("click",fetchData);
+
+loadTradingView();
+fetchData();
+
+setInterval(fetchData,60000);
+</script>
+
+</body>
+</html>
