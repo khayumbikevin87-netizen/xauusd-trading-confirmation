@@ -4,33 +4,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XAUUSD Trading Confirmation</title>
+<title>XAUUSD Adaptive Trading Assistant</title>
+
 <style>
-body{margin:0;background:#0b0f14;color:#eee;font-family:Arial}
+*{box-sizing:border-box}
+body{margin:0;background:#0b0f14;color:#eee;font-family:Arial,sans-serif}
 header{padding:18px;background:#111820;border-bottom:1px solid #29323c}
 h1{margin:0;font-size:21px}
 .sub{color:#8d99a6;font-size:13px;margin-top:5px}
 .card{margin:15px;padding:16px;background:#111820;border:1px solid #29323c;border-radius:12px}
-.row{display:flex;justify-content:space-between;margin:10px 0}
+.row{display:flex;justify-content:space-between;gap:12px;margin:11px 0}
 .label{color:#8995a2}
 .price{font-size:30px;font-weight:bold}
 .live{color:#35d07f}
 .bad{color:#ff6464}
+.wait{color:#f0b429}
+.blue{color:#55aaff}
+.green{color:#35d07f}
+.yellow{color:#f0b429}
+.red{color:#ff6464}
 #tv{height:500px;width:100%}
+h2{font-size:16px;margin-top:0}
+button{width:100%;padding:12px;margin-top:8px;border:0;border-radius:8px;background:#263544;color:white;font-weight:bold}
+button:active{opacity:.7}
+.small{font-size:12px;color:#8995a2;line-height:1.5}
+.strategy{font-size:18px;font-weight:bold}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>XAUUSD Trading Confirmation</h1>
-<div class="sub">Live Gold • Adaptive Analysis Engine</div>
+<h1>XAUUSD Adaptive Trading Assistant</h1>
+<div class="sub">Live market • Regime detection • Strategy learning</div>
 </header>
 
 <div class="card">
+
 <div class="row">
 <span class="label">Data connection</span>
-<span id="status">CONNECTING</span>
+<span id="status" class="wait">CONNECTING</span>
 </div>
 
 <div class="row">
@@ -39,9 +52,69 @@ h1{margin:0;font-size:21px}
 </div>
 
 <div class="row">
+<span class="label">Data age</span>
+<span id="age">---</span>
+</div>
+
+<div class="row">
 <span class="label">Last update</span>
 <span id="updated">---</span>
 </div>
+
+</div>
+
+<div class="card">
+<h2>Market Regime</h2>
+
+<div class="row">
+<span class="label">Current condition</span>
+<span id="regime" class="yellow">ANALYZING</span>
+</div>
+
+<div class="row">
+<span class="label">Market bias</span>
+<span id="bias">WAIT</span>
+</div>
+
+<div class="row">
+<span class="label">Selected strategy</span>
+<span id="strategy" class="strategy">Collecting data</span>
+</div>
+
+<p id="reason" class="small">
+Waiting for enough real market observations before generating analysis.
+</p>
+
+</div>
+
+<div class="card">
+<h2>Strategy Learning</h2>
+
+<div class="row">
+<span class="label">Recorded trades</span>
+<span id="tradeCount">0</span>
+</div>
+
+<div class="row">
+<span class="label">Learning checkpoint</span>
+<span id="checkpoint">0 / 50</span>
+</div>
+
+<div id="strategies" class="small">
+Trend Continuation: 0 trades<br>
+Pullback: 0 trades<br>
+Breakout / Retest: 0 trades<br>
+Liquidity Reversal: 0 trades<br>
+Range Rejection: 0 trades
+</div>
+
+<button onclick="recordTestTrade()">Record Test Result</button>
+
+<p class="small">
+The learning system does not change strategy rules after one win or loss.
+Performance becomes more meaningful as the sample grows.
+</p>
+
 </div>
 
 <div class="card" style="padding:0;overflow:hidden">
@@ -49,65 +122,266 @@ h1{margin:0;font-size:21px}
 </div>
 
 <script>
-async function updatePrice(){
-  try{
-    const r=await fetch(
-      "https://api.gold-api.com/price/XAU",
-      {cache:"no-store"}
-    );
 
-    if(!r.ok) throw new Error();
+const API="https://xaus.com/api/v1/intraday?symbol=xau&hours=12";
 
-    const d=await r.json();
+let marketData=[];
+let selectedStrategy="Collecting data";
 
-    document.getElementById("price").textContent=
-      "$"+Number(d.price).toFixed(2);
+const strategyStats=JSON.parse(
+ localStorage.getItem("xau_strategy_stats") ||
+ '{"Trend Continuation":{"wins":0,"losses":0},"Pullback":{"wins":0,"losses":0},"Breakout / Retest":{"wins":0,"losses":0},"Liquidity Reversal":{"wins":0,"losses":0},"Range Rejection":{"wins":0,"losses":0}}'
+);
 
-    document.getElementById("updated").textContent=
-      new Date().toLocaleTimeString();
+function totalTrades(){
 
-    const s=document.getElementById("status");
-    s.textContent="LIVE";
-    s.className="live";
+ let total=0;
 
-  }catch(e){
-    const s=document.getElementById("status");
-    s.textContent="DISCONNECTED";
-    s.className="bad";
-  }
+ Object.values(strategyStats).forEach(s=>{
+   total+=s.wins+s.losses;
+ });
+
+ return total;
 }
 
-updatePrice();
-setInterval(updatePrice,5000);
+function updateLearningUI(){
+
+ const total=totalTrades();
+
+ document.getElementById("tradeCount").textContent=total;
+ document.getElementById("checkpoint").textContent=
+   Math.min(total,50)+" / 50";
+
+ let html="";
+
+ Object.keys(strategyStats).forEach(name=>{
+
+   const s=strategyStats[name];
+   const n=s.wins+s.losses;
+
+   const wr=n ? ((s.wins/n)*100).toFixed(1)+"%" : "—";
+
+   html+=name+": "+n+" trades • "+wr+" win rate<br>";
+
+ });
+
+ document.getElementById("strategies").innerHTML=html;
+}
+
+function saveLearning(){
+
+ localStorage.setItem(
+   "xau_strategy_stats",
+   JSON.stringify(strategyStats)
+ );
+
+ updateLearningUI();
+}
+
+function recordTestTrade(){
+
+ const names=Object.keys(strategyStats);
+
+ const name=selectedStrategy==="Collecting data"
+   ? names[0]
+   : selectedStrategy;
+
+ const result=confirm(
+   "Record a WIN for "+name+"?\n\nCancel = LOSS"
+ );
+
+ if(result){
+
+   strategyStats[name].wins++;
+
+ }else{
+
+   strategyStats[name].losses++;
+
+ }
+
+ saveLearning();
+}
+
+function analyze(){
+
+ if(marketData.length<5){
+
+   document.getElementById("regime").textContent="COLLECTING";
+   document.getElementById("strategy").textContent="Collecting data";
+
+   return;
+ }
+
+ const prices=marketData.map(x=>Number(x.price || x.close || x.value))
+   .filter(Number.isFinite);
+
+ if(prices.length<5)return;
+
+ const first=prices[0];
+ const last=prices[prices.length-1];
+
+ const move=((last-first)/first)*100;
+
+ let regime;
+ let strategy;
+ let bias;
+ let reason;
+
+ if(Math.abs(move)<0.08){
+
+   regime="RANGE";
+   strategy="Range Rejection";
+   bias="NEUTRAL";
+
+   reason="Price movement is relatively compressed. Waiting for a clear range boundary reaction.";
+
+ }else if(move>0.20){
+
+   regime="BULLISH TREND";
+   strategy="Trend Continuation";
+   bias="BULLISH";
+
+   reason="Recent observations show sustained upward movement. Waiting for pullback/confirmation rather than chasing.";
+
+ }else if(move<-0.20){
+
+   regime="BEARISH TREND";
+   strategy="Trend Continuation";
+   bias="BEARISH";
+
+   reason="Recent observations show sustained downward movement. Waiting for pullback/confirmation rather than chasing.";
+
+ }else if(move>0){
+
+   regime="DEVELOPING BULLISH";
+   strategy="Pullback";
+   bias="BULLISH";
+
+   reason="Upward pressure is developing but is not strong enough for a full trend classification.";
+
+ }else{
+
+   regime="DEVELOPING BEARISH";
+   strategy="Pullback";
+   bias="BEARISH";
+
+   reason="Downward pressure is developing but is not strong enough for a full trend classification.";
+
+ }
+
+ selectedStrategy=strategy;
+
+ document.getElementById("regime").textContent=regime;
+ document.getElementById("bias").textContent=bias;
+ document.getElementById("strategy").textContent=strategy;
+ document.getElementById("reason").textContent=reason;
+}
+
+async function loadMarket(){
+
+ try{
+
+   const r=await fetch(API+"&_="+Date.now(),{
+     cache:"no-store"
+   });
+
+   if(!r.ok)throw new Error("API error");
+
+   const d=await r.json();
+
+   if(!d.data || !Array.isArray(d.data)){
+     throw new Error("Unexpected data");
+   }
+
+   marketData=d.data;
+
+   const state=d.data_state || {};
+
+   const age=Number(state.age_seconds || 0);
+
+   document.getElementById("price").textContent=
+     "$"+Number(
+       d.spot_usd_oz ||
+       d.xau?.price ||
+       marketData[marketData.length-1]?.price
+     ).toFixed(2);
+
+   document.getElementById("age").textContent=
+     age+" sec";
+
+   document.getElementById("updated").textContent=
+     state.as_of
+       ? new Date(state.as_of).toLocaleTimeString()
+       : new Date().toLocaleTimeString();
+
+   const status=document.getElementById("status");
+
+   if(state.status==="fresh" && age<300){
+
+     status.textContent="LIVE";
+     status.className="live";
+
+   }else{
+
+     status.textContent="STALE";
+     status.className="bad";
+
+   }
+
+   analyze();
+
+ }catch(e){
+
+   document.getElementById("status").textContent="DISCONNECTED";
+   document.getElementById("status").className="bad";
+
+   document.getElementById("regime").textContent="NO DATA";
+   document.getElementById("strategy").textContent="WAIT";
+
+ }
+
+}
+
+updateLearningUI();
+loadMarket();
+
+setInterval(loadMarket,30000);
+
 </script>
 
 <script>
+
 window.addEventListener("load",function(){
 
-  const script=document.createElement("script");
+ const script=document.createElement("script");
 
-  script.src=
-    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+ script.src=
+ "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
 
-  script.async=true;
+ script.async=true;
 
-  script.innerHTML=JSON.stringify({
-    autosize:true,
-    symbol:"OANDA:XAUUSD",
-    interval:"15",
-    timezone:"Africa/Nairobi",
-    theme:"dark",
-    style:"1",
-    locale:"en",
-    allow_symbol_change:false,
-    hide_side_toolbar:false,
-    withdateranges:true,
-    save_image:false,
-    calendar:false
-  });
+ script.innerHTML=JSON.stringify({
 
-  document.getElementById("tv").appendChild(script);
+   autosize:true,
+   symbol:"OANDA:XAUUSD",
+   interval:"15",
+   timezone:"Africa/Nairobi",
+   theme:"dark",
+   style:"1",
+   locale:"en",
+   allow_symbol_change:false,
+   hide_side_toolbar:false,
+   withdateranges:true,
+   save_image:false,
+   calendar:false
+
+ });
+
+ document.getElementById("tv").appendChild(script);
+
 });
+
 </script>
 
 </body>
