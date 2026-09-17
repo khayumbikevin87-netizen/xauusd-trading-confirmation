@@ -57,17 +57,9 @@ h1{
   font-weight:bold
 }
 
-.live{
-  color:#35d07f
-}
-
-.bad{
-  color:#ff6464
-}
-
-.warn{
-  color:#ffd166
-}
+.live{color:#35d07f}
+.bad{color:#ff6464}
+.warn{color:#ffd166}
 
 #tv{
   width:100%;
@@ -100,14 +92,21 @@ select{
   background:#0b0f14
 }
 
-.wait{
-  color:#ffd166
-}
+.wait{color:#ffd166}
 
 .small{
   color:#8995a2;
   font-size:12px;
-  margin-top:8px
+  margin-top:8px;
+  line-height:1.5
+}
+
+.fresh{
+  color:#35d07f
+}
+
+.stale{
+  color:#ff6464
 }
 </style>
 </head>
@@ -177,6 +176,16 @@ select{
 </div>
 
 <div class="row">
+<span class="label">Candle freshness</span>
+<span id="freshness">CHECKING...</span>
+</div>
+
+<div class="row">
+<span class="label">Candle age</span>
+<span id="candleAge">---</span>
+</div>
+
+<div class="row">
 <span class="label">OHLC source</span>
 <span>Twelve Data</span>
 </div>
@@ -222,15 +231,15 @@ WAIT
 
 <div id="tv">
 
-  <div style="
-    height:500px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#8995a2;
-  ">
-    Loading TradingView chart...
-  </div>
+<div style="
+height:500px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#8995a2;
+">
+Loading TradingView chart...
+</div>
 
 </div>
 
@@ -240,7 +249,7 @@ WAIT
 <script>
 
 /* =========================================
-   TWELVE DATA
+   CONFIG
 ========================================= */
 
 const TWELVE_DATA_KEY =
@@ -254,11 +263,47 @@ let currentTimeframe = "15min";
 
 
 /* =========================================
-   ELEMENT HELPER
+   HELPERS
 ========================================= */
 
 function el(id){
   return document.getElementById(id);
+}
+
+
+function timeframeMinutes(){
+
+  if(currentTimeframe === "1min")
+    return 1;
+
+  if(currentTimeframe === "5min")
+    return 5;
+
+  if(currentTimeframe === "15min")
+    return 15;
+
+  if(currentTimeframe === "1h")
+    return 60;
+
+  return 15;
+}
+
+
+/*
+  Maximum acceptable candle age.
+
+  We allow roughly two candle periods plus
+  a small tolerance.
+
+  If data is older than this, analysis is
+  automatically disabled.
+*/
+
+function maximumCandleAge(){
+
+  return (
+    timeframeMinutes() * 2 + 3
+  ) * 60 * 1000;
 }
 
 
@@ -293,7 +338,7 @@ async function updatePrice(){
     clearTimeout(timeout);
 
     if(!response.ok)
-      throw new Error("Gold API HTTP error");
+      throw new Error("Gold API error");
 
     const data =
       await response.json();
@@ -302,7 +347,7 @@ async function updatePrice(){
       Number(data.price);
 
     if(!Number.isFinite(price))
-      throw new Error("Invalid gold price");
+      throw new Error("Invalid price");
 
     el("price").textContent =
       "$" + price.toFixed(2);
@@ -320,7 +365,7 @@ async function updatePrice(){
 
   catch(error){
 
-    console.log("Gold price:",error);
+    console.log(error);
 
     status.textContent =
       "DISCONNECTED";
@@ -328,6 +373,104 @@ async function updatePrice(){
     status.className =
       "bad";
   }
+}
+
+
+/* =========================================
+   CANDLE FRESHNESS
+========================================= */
+
+function checkFreshness(candle){
+
+  if(!candle || !candle.datetime)
+    return false;
+
+  /*
+    Twelve Data normally returns:
+    YYYY-MM-DD HH:MM:SS
+  */
+
+  const candleTime =
+    new Date(
+      candle.datetime.replace(" ","T")
+    );
+
+  if(isNaN(candleTime.getTime()))
+    return false;
+
+  const now =
+    Date.now();
+
+  const age =
+    now - candleTime.getTime();
+
+
+  /*
+    Never allow future candles.
+  */
+
+  if(age < -60000)
+    return false;
+
+
+  const maxAge =
+    maximumCandleAge();
+
+
+  const ageMinutes =
+    Math.max(
+      0,
+      age / 60000
+    );
+
+
+  el("candleAge").textContent =
+    ageMinutes.toFixed(1) + " minutes";
+
+
+  if(age <= maxAge){
+
+    el("freshness").textContent =
+      "FRESH";
+
+    el("freshness").className =
+      "fresh";
+
+    return true;
+
+  }
+
+
+  el("freshness").textContent =
+    "STALE";
+
+  el("freshness").className =
+    "stale";
+
+  return false;
+}
+
+
+/* =========================================
+   DISABLE ANALYSIS
+========================================= */
+
+function disableAnalysis(reason){
+
+  el("regime").textContent =
+    "WAIT — DATA NOT READY";
+
+  el("strategy").textContent =
+    reason;
+
+  el("strength").textContent =
+    "---";
+
+  el("signal").textContent =
+    "WAIT";
+
+  el("signal").className =
+    "signal wait";
 }
 
 
@@ -362,6 +505,7 @@ async function loadOHLC(){
       "&timezone=Africa%2FNairobi" +
       "&apikey=" + encodeURIComponent(TWELVE_DATA_KEY);
 
+
     const controller =
       new AbortController();
 
@@ -370,6 +514,7 @@ async function loadOHLC(){
         () => controller.abort(),
         10000
       );
+
 
     const response =
       await fetch(
@@ -380,10 +525,13 @@ async function loadOHLC(){
         }
       );
 
+
     clearTimeout(timeout);
+
 
     const data =
       await response.json();
+
 
     if(!response.ok){
 
@@ -393,6 +541,7 @@ async function loadOHLC(){
       );
     }
 
+
     if(data.status === "error"){
 
       throw new Error(
@@ -400,6 +549,7 @@ async function loadOHLC(){
         "Twelve Data error"
       );
     }
+
 
     if(!Array.isArray(data.values) ||
        data.values.length === 0){
@@ -436,7 +586,7 @@ async function loadOHLC(){
     if(candles.length === 0){
 
       throw new Error(
-        "No valid OHLC candles"
+        "No valid candles"
       );
     }
 
@@ -464,6 +614,30 @@ async function loadOHLC(){
       " C " + latest.close.toFixed(2);
 
 
+    /*
+      CRITICAL:
+      Freshness check happens BEFORE
+      market analysis.
+    */
+
+    const fresh =
+      checkFreshness(latest);
+
+
+    if(!fresh){
+
+      disableAnalysis(
+        "STALE CANDLE DATA"
+      );
+
+      return;
+    }
+
+
+    /*
+      Only fresh data reaches analysis.
+    */
+
     analyzeMarket();
 
   }
@@ -471,9 +645,10 @@ async function loadOHLC(){
   catch(error){
 
     console.log(
-      "Twelve Data:",
+      "Twelve Data error:",
       error
     );
+
 
     status.textContent =
       "ERROR";
@@ -481,28 +656,32 @@ async function loadOHLC(){
     status.className =
       "bad";
 
+
     el("candleCount").textContent =
       "0";
 
     el("latestCandle").textContent =
       "---";
 
+    el("freshness").textContent =
+      "UNAVAILABLE";
+
+    el("freshness").className =
+      "stale";
+
+    el("candleAge").textContent =
+      "---";
+
+
     errorBox.textContent =
       error.name === "AbortError"
       ? "Request timed out"
       : error.message;
 
-    el("regime").textContent =
-      "OHLC UNAVAILABLE";
 
-    el("strategy").textContent =
-      "WAITING FOR VALID DATA";
-
-    el("strength").textContent =
-      "---";
-
-    el("signal").textContent =
-      "WAIT";
+    disableAnalysis(
+      "WAITING FOR VALID DATA"
+    );
   }
 }
 
@@ -515,17 +694,28 @@ function analyzeMarket(){
 
   if(candles.length < 20){
 
-    el("regime").textContent =
-      "COLLECTING DATA";
+    disableAnalysis(
+      "INSUFFICIENT CANDLES"
+    );
 
-    el("strategy").textContent =
-      "INSUFFICIENT CANDLES";
+    return;
+  }
 
-    el("strength").textContent =
-      "---";
 
-    el("signal").textContent =
-      "WAIT";
+  const latest =
+    candles[candles.length - 1];
+
+
+  /*
+    Double-check freshness immediately
+    before analysis.
+  */
+
+  if(!checkFreshness(latest)){
+
+    disableAnalysis(
+      "STALE CANDLE DATA"
+    );
 
     return;
   }
@@ -547,6 +737,7 @@ function analyzeMarket(){
       ...recent.map(c => c.high)
     );
 
+
   const lowest =
     Math.min(
       ...recent.map(c => c.low)
@@ -559,17 +750,9 @@ function analyzeMarket(){
 
   if(totalRange <= 0){
 
-    el("regime").textContent =
-      "INVALID STRUCTURE";
-
-    el("strategy").textContent =
-      "WAIT";
-
-    el("strength").textContent =
-      "---";
-
-    el("signal").textContent =
-      "WAIT";
+    disableAnalysis(
+      "INVALID MARKET STRUCTURE"
+    );
 
     return;
   }
@@ -624,7 +807,6 @@ function analyzeMarket(){
 
     strategy =
       "BREAKOUT / RETEST WATCH";
-
   }
 
 
@@ -639,20 +821,20 @@ function analyzeMarket(){
 
 
   /*
-    NO automatic trade yet.
-
-    The engine must later combine:
-    structure + liquidity + candle +
-    multi-timeframe + news + risk.
+    No BUY/SELL yet.
+    Freshness is now confirmed.
   */
 
   el("signal").textContent =
     "WAIT";
+
+  el("signal").className =
+    "signal wait";
 }
 
 
 /* =========================================
-   TIMEFRAME
+   TIMEFRAME CHANGE
 ========================================= */
 
 el("timeframe")
@@ -663,14 +845,17 @@ el("timeframe")
     currentTimeframe =
       this.value;
 
-    loadOHLC();
+    disableAnalysis(
+      "LOADING NEW TIMEFRAME"
+    );
 
+    loadOHLC();
   }
 );
 
 
 /* =========================================
-   START DATA
+   START
 ========================================= */
 
 updatePrice();
@@ -700,6 +885,7 @@ function loadTradingView(){
     el("tv");
 
   container.innerHTML = "";
+
 
   const script =
     document.createElement("script");
@@ -750,8 +936,6 @@ function loadTradingView(){
   container.appendChild(script);
 }
 
-
-/* Load chart after page is ready */
 
 if(document.readyState === "loading"){
 
