@@ -9,52 +9,52 @@
 *{box-sizing:border-box}
 
 body{
-  margin:0;
-  background:#07111f;
-  color:#e8eef7;
-  font-family:Arial,sans-serif;
+margin:0;
+background:#07111f;
+color:#e8eef7;
+font-family:Arial,sans-serif
 }
 
 .container{
-  width:100%;
-  max-width:1250px;
-  margin:auto;
-  padding:16px;
+width:100%;
+max-width:1250px;
+margin:auto;
+padding:16px
 }
 
 h1{
-  margin:0 0 5px;
-  font-size:24px;
+margin:0 0 5px;
+font-size:24px
 }
 
 .subtitle{
-  color:#8ea2bd;
-  margin-bottom:18px;
+color:#8ea2bd;
+margin-bottom:18px
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:12px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px
 }
 
 .card{
-  background:#0d1b2e;
-  border:1px solid #1d334d;
-  border-radius:12px;
-  padding:15px;
+background:#0d1b2e;
+border:1px solid #1d334d;
+border-radius:12px;
+padding:15px
 }
 
 .label{
-  color:#8296b1;
-  font-size:12px;
-  text-transform:uppercase;
-  margin-bottom:7px;
+color:#8296b1;
+font-size:12px;
+text-transform:uppercase;
+margin-bottom:7px
 }
 
 .value{
-  font-size:20px;
-  font-weight:bold;
+font-size:20px;
+font-weight:bold
 }
 
 .live{color:#35d07f}
@@ -63,186 +63,209 @@ h1{
 .muted{color:#94a6bc}
 
 button,select{
-  background:#142942;
-  color:#fff;
-  border:1px solid #31506f;
-  border-radius:8px;
-  padding:10px 12px;
-  font-size:14px;
+background:#142942;
+color:#fff;
+border:1px solid #31506f;
+border-radius:8px;
+padding:10px 12px;
+font-size:14px
 }
 
-button{
-  cursor:pointer;
-}
+button{cursor:pointer}
 
 .controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:15px 0;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin:15px 0
 }
 
-/* =========================
-   TRADINGVIEW CHART
-========================= */
+/* CHART */
 
 .chart{
-  width:100%;
-  margin-top:18px;
-  background:#0d1b2e;
-  border:1px solid #1d334d;
-  border-radius:12px;
-  overflow:hidden;
+width:100%;
+margin-top:18px;
+background:#0d1b2e;
+border:1px solid #1d334d;
+border-radius:12px;
+overflow:hidden
 }
 
 .chart-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 15px;
-  border-bottom:1px solid #1d334d;
-  background:#0b1728;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:12px 15px;
+border-bottom:1px solid #1d334d;
+background:#0b1728
 }
 
 .chart-title{
-  font-size:14px;
-  font-weight:bold;
+font-size:14px;
+font-weight:bold
 }
 
 .chart-status{
-  font-size:12px;
-  color:#8296b1;
+font-size:12px;
+color:#8296b1
 }
 
 .chart-body{
-  width:100%;
-  height:700px;
-  min-height:600px;
+width:100%;
+height:700px;
+min-height:600px
 }
 
 #tradingview_chart{
-  width:100%;
-  height:100%;
+width:100%;
+height:100%
 }
 
 #tradingview_chart iframe{
-  width:100% !important;
-  height:100% !important;
-  border:0;
+width:100%!important;
+height:100%!important;
+border:0
 }
 
-/* =========================
-   SIGNAL
-========================= */
+/* SIGNAL */
 
 .signal{
-  margin-top:15px;
-  padding:20px;
-  text-align:center;
-  border-radius:12px;
-  background:#0d1b2e;
-  border:1px solid #1d334d;
+margin-top:15px;
+padding:22px;
+text-align:center;
+border-radius:12px;
+background:#0d1b2e;
+border:1px solid #1d334d
 }
 
 .signal-main{
-  font-size:28px;
-  font-weight:bold;
-  margin:8px 0;
+font-size:32px;
+font-weight:bold;
+margin:8px 0
 }
 
+.signal-details{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:10px;
+margin-top:18px;
+text-align:left
+}
+
+.detail{
+background:#091525;
+border:1px solid #1b3048;
+border-radius:9px;
+padding:12px
+}
+
+.detail-value{
+font-size:16px;
+font-weight:bold
+}
+
+/* CONFIRMATIONS */
+
+.confirmations{
+margin-top:15px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px
+}
+
+.confirmation{
+background:#0d1b2e;
+border:1px solid #1d334d;
+border-radius:10px;
+padding:13px
+}
+
+.confirmation-name{
+font-size:12px;
+color:#8296b1;
+text-transform:uppercase
+}
+
+.confirmation-value{
+font-size:15px;
+font-weight:bold;
+margin-top:5px
+}
+
+/* DIAGNOSTIC */
+
 .diagnostic{
-  margin-top:15px;
-  background:#090f19;
-  border:1px solid #39465a;
-  border-radius:12px;
-  padding:15px;
+margin-top:15px;
+background:#090f19;
+border:1px solid #39465a;
+border-radius:12px;
+padding:15px
 }
 
 .diagnostic pre{
-  white-space:pre-wrap;
-  word-break:break-word;
-  font-family:monospace;
-  font-size:12px;
-  line-height:1.5;
-  color:#d5dfeb;
-  max-height:400px;
-  overflow:auto;
+white-space:pre-wrap;
+word-break:break-word;
+font-family:monospace;
+font-size:12px;
+line-height:1.5;
+color:#d5dfeb;
+max-height:400px;
+overflow:auto
 }
 
 .small{
-  font-size:12px;
-  color:#8193aa;
-  margin-top:8px;
+font-size:12px;
+color:#8193aa;
+margin-top:8px
 }
 
 hr{
-  border:0;
-  border-top:1px solid #20344b;
-  margin:14px 0;
+border:0;
+border-top:1px solid #20344b;
+margin:14px 0
 }
-
-/* =========================
-   MOBILE
-========================= */
 
 @media(max-width:700px){
 
-  .container{
-    padding:10px;
-  }
+.container{padding:10px}
 
-  h1{
-    font-size:21px;
-  }
+h1{font-size:21px}
 
-  .subtitle{
-    font-size:13px;
-    line-height:1.4;
-  }
+.subtitle{
+font-size:13px;
+line-height:1.4
+}
 
-  .grid{
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-  }
+.grid{
+grid-template-columns:1fr 1fr;
+gap:8px
+}
 
-  .card{
-    padding:12px;
-  }
+.card{padding:12px}
 
-  .value{
-    font-size:17px;
-  }
+.value{font-size:17px}
 
-  .latest-candle{
-    font-size:11px !important;
-    line-height:1.4;
-  }
+.chart-body{
+height:620px;
+min-height:620px
+}
 
-  .chart{
-    margin-top:12px;
-  }
-
-  .chart-header{
-    padding:10px 12px;
-  }
-
-  .chart-body{
-    height:620px;
-    min-height:620px;
-  }
+.signal{
+padding:17px
+}
 }
 
 @media(max-width:430px){
 
-  .grid{
-    grid-template-columns:1fr;
-  }
+.grid{
+grid-template-columns:1fr
+}
 
-  .chart-body{
-    height:560px;
-    min-height:560px;
-  }
+.chart-body{
+height:560px;
+min-height:560px
+}
 }
 </style>
 </head>
@@ -254,7 +277,7 @@ hr{
 <h1>XAUUSD Trading Confirmation</h1>
 
 <div class="subtitle">
-Real XAU/USD market data • Multi-timeframe confirmation • Safety-first analysis
+Real XAU/USD market data • Multi-confirmation engine • Selective signal system
 </div>
 
 <div class="controls">
@@ -271,9 +294,7 @@ Real XAU/USD market data • Multi-timeframe confirmation • Safety-first analy
 </div>
 
 
-<!-- =========================
-     DATA GRID
-========================= -->
+<!-- DATA -->
 
 <div class="grid">
 
@@ -304,7 +325,7 @@ Real XAU/USD market data • Multi-timeframe confirmation • Safety-first analy
 
 <div class="card">
 <div class="label">Latest candle</div>
-<div id="latestCandle" class="value muted latest-candle" style="font-size:13px">---</div>
+<div id="latestCandle" class="value muted" style="font-size:13px">---</div>
 </div>
 
 <div class="card">
@@ -325,9 +346,7 @@ Real XAU/USD market data • Multi-timeframe confirmation • Safety-first analy
 </div>
 
 
-<!-- =========================
-     LARGE TRADINGVIEW CHART
-========================= -->
+<!-- CHART -->
 
 <div class="chart">
 
@@ -350,31 +369,101 @@ TradingView • 15M
 </div>
 
 
-<!-- =========================
-     SIGNAL ENGINE
-========================= -->
+<!-- SIGNAL -->
 
 <div class="signal">
 
-<div class="label">Market regime</div>
-<div id="regime" class="value">WAIT</div>
+<div class="label">Trading decision</div>
 
-<div class="label" style="margin-top:15px">Strategy</div>
-<div id="strategy" class="value">WAITING FOR DATA</div>
+<div id="regime" class="value">
+WAIT
+</div>
 
-<div class="label" style="margin-top:15px">Signal strength</div>
-<div id="signalStrength" class="signal-main">---</div>
+<div id="strategy" class="signal-main">
+WAITING FOR DATA
+</div>
+
+<div class="label">Signal strength</div>
+
+<div id="signalStrength" class="signal-main">
+---
+</div>
 
 <div id="signalReason" class="muted">
 Waiting for reliable market data.
 </div>
 
+
+<div class="signal-details">
+
+<div class="detail">
+<div class="label">Entry</div>
+<div id="entryPrice" class="detail-value">---</div>
+</div>
+
+<div class="detail">
+<div class="label">Stop loss</div>
+<div id="stopLoss" class="detail-value">---</div>
+</div>
+
+<div class="detail">
+<div class="label">Take profit</div>
+<div id="takeProfit" class="detail-value">---</div>
+</div>
+
+<div class="detail">
+<div class="label">Risk / reward</div>
+<div id="riskReward" class="detail-value">---</div>
+</div>
+
+</div>
+
 </div>
 
 
-<!-- =========================
-     DIAGNOSTICS
-========================= -->
+<!-- CONFIRMATIONS -->
+
+<div class="confirmations">
+
+<div class="confirmation">
+<div class="confirmation-name">Trend</div>
+<div id="trendConfirmation" class="confirmation-value muted">---</div>
+</div>
+
+<div class="confirmation">
+<div class="confirmation-name">Structure</div>
+<div id="structureConfirmation" class="confirmation-value muted">---</div>
+</div>
+
+<div class="confirmation">
+<div class="confirmation-name">Momentum</div>
+<div id="momentumConfirmation" class="confirmation-value muted">---</div>
+</div>
+
+<div class="confirmation">
+<div class="confirmation-name">Level</div>
+<div id="levelConfirmation" class="confirmation-value muted">---</div>
+</div>
+
+<div class="confirmation">
+<div class="confirmation-name">Candle</div>
+<div id="candleConfirmation" class="confirmation-value muted">---</div>
+</div>
+
+<div class="confirmation">
+<div class="confirmation-name">Volatility</div>
+<div id="volatilityConfirmation" class="confirmation-value muted">---</div>
+</div>
+
+<div class="confirmation">
+<div class="confirmation-name">Setup</div>
+<div id="setupConfirmation" class="confirmation-value muted">---</div>
+</div>
+
+</div>
+
+
+<!-- DIAGNOSTIC -->
 
 <div class="diagnostic">
 
@@ -401,590 +490,1519 @@ Live diagnostics are shown here so API problems can be identified directly from 
 
 <script>
 
-/* =========================
+/* =========================================================
    TWELVE DATA
-========================= */
+========================================================= */
 
 const TWELVE_DATA_KEY =
 "394e133dfaf844d580ca4d8d1ca5d1da";
 
 
-/* =========================
+/* =========================================================
    STATE
-========================= */
+========================================================= */
 
 const marketData={
-  spot:null,
-  candles:[],
-  candleFresh:false,
-  lastCandleTime:null
+spot:null,
+candles:[],
+candleFresh:false,
+lastCandleTime:null
 };
 
 
-/* =========================
+/* =========================================================
    UI
-========================= */
+========================================================= */
 
 function setStatus(id,text,type){
 
-  const el=document.getElementById(id);
+const el=document.getElementById(id);
 
-  el.textContent=text;
+el.textContent=text;
 
-  el.className="value "+
-  (
-    type==="live" ? "live" :
-    type==="danger" ? "danger" :
-    type==="warn" ? "warn" :
-    "muted"
-  );
+el.className="value "+
+(
+type==="live"?"live":
+type==="danger"?"danger":
+type==="warn"?"warn":
+"muted"
+);
+
+}
+
+
+function setConfirmation(id,text,type="muted"){
+
+const el=document.getElementById(id);
+
+el.textContent=text;
+
+el.className="confirmation-value "+
+(
+type==="live"?"live":
+type==="danger"?"danger":
+type==="warn"?"warn":
+"muted"
+);
+
+}
+
+
+function resetSignal(){
+
+document.getElementById("entryPrice").textContent="---";
+document.getElementById("stopLoss").textContent="---";
+document.getElementById("takeProfit").textContent="---";
+document.getElementById("riskReward").textContent="---";
+
+setConfirmation("trendConfirmation","---");
+setConfirmation("structureConfirmation","---");
+setConfirmation("momentumConfirmation","---");
+setConfirmation("levelConfirmation","---");
+setConfirmation("candleConfirmation","---");
+setConfirmation("volatilityConfirmation","---");
+setConfirmation("setupConfirmation","---");
 }
 
 
 function showWaitingState(title,reason){
 
-  document.getElementById("regime").textContent=title;
+document.getElementById("regime").textContent=title;
 
-  document.getElementById("strategy").textContent=title;
+document.getElementById("strategy").textContent=title;
 
-  document.getElementById("signalStrength").textContent="---";
+document.getElementById("signalStrength").textContent="---";
 
-  document.getElementById("signalReason").textContent=reason;
+document.getElementById("signalReason").textContent=reason;
+
+resetSignal();
+
 }
 
 
-/* =========================
-   TWELVE DATA PRICE
-========================= */
+/* =========================================================
+   PRICE
+========================================================= */
 
 async function updatePrice(){
 
-  const url=
-    "https://api.twelvedata.com/price"+
-    "?symbol=XAU/USD"+
-    "&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
-    "&_="+Date.now();
+const url=
+"https://api.twelvedata.com/price"+
+"?symbol=XAU/USD"+
+"&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
+"&_="+Date.now();
 
-  try{
+try{
 
-    const response=
-      await fetch(url,{cache:"no-store"});
+const response=
+await fetch(url,{cache:"no-store"});
 
-    const data=
-      await response.json();
+const data=
+await response.json();
 
-    document.getElementById("apiRaw").textContent=
-      JSON.stringify(data,null,2);
+document.getElementById("apiRaw").textContent=
+JSON.stringify(data,null,2);
 
-    if(
-      !response.ok ||
-      data.status==="error" ||
-      data.price===undefined
-    ){
-      throw new Error(
-        data.message ||
-        "Twelve Data price request failed"
-      );
-    }
+if(
+!response.ok ||
+data.status==="error" ||
+data.price===undefined
+){
 
-    const price=Number(data.price);
+throw new Error(
+data.message ||
+"Twelve Data price request failed"
+);
 
-    if(!Number.isFinite(price)){
-      throw new Error(
-        "Invalid XAU/USD price returned"
-      );
-    }
+}
 
-    marketData.spot=price;
+const price=Number(data.price);
 
-    document.getElementById("spotPrice").textContent=
-      "$"+price.toFixed(2);
+if(!Number.isFinite(price)){
 
-    document.getElementById("lastUpdate").textContent=
-      new Date().toLocaleTimeString();
+throw new Error(
+"Invalid XAU/USD price returned"
+);
 
-    setStatus(
-      "dataStatus",
-      "LIVE",
-      "live"
-    );
+}
 
-    document.getElementById("apiDiagnostic").textContent=
-      "PRICE LIVE — Twelve Data XAU/USD: $"+
-      price.toFixed(2);
+marketData.spot=price;
 
-  }catch(error){
+document.getElementById("spotPrice").textContent=
+"$"+price.toFixed(2);
 
-    console.error(error);
+document.getElementById("lastUpdate").textContent=
+new Date().toLocaleTimeString();
 
-    setStatus(
-      "dataStatus",
-      "ERROR",
-      "danger"
-    );
+setStatus(
+"dataStatus",
+"LIVE",
+"live"
+);
 
-    document.getElementById("spotPrice").textContent="---";
+document.getElementById("apiDiagnostic").textContent=
+"PRICE LIVE — Twelve Data XAU/USD: $"+
+price.toFixed(2);
 
-    document.getElementById("lastUpdate").textContent="---";
+}catch(error){
 
-    document.getElementById("apiDiagnostic").textContent=
-      "PRICE ERROR: "+error.message;
-  }
+console.error(error);
+
+setStatus(
+"dataStatus",
+"ERROR",
+"danger"
+);
+
+document.getElementById("spotPrice").textContent="---";
+
+document.getElementById("lastUpdate").textContent="---";
+
+document.getElementById("apiDiagnostic").textContent=
+"PRICE ERROR: "+error.message;
+}
+
 }
 
 
-/* =========================
+/* =========================================================
    OHLC
-========================= */
+========================================================= */
 
 async function loadOHLC(){
 
-  const timeframe=
-    document.getElementById("timeframe").value;
+const timeframe=
+document.getElementById("timeframe").value;
+
+const intervalMap={
+"1M":"1min",
+"5M":"5min",
+"15M":"15min",
+"1H":"1h"
+};
+
+const interval=
+intervalMap[timeframe]||"15min";
+
+const url=
+"https://api.twelvedata.com/time_series"+
+"?symbol=XAU/USD"+
+"&interval="+encodeURIComponent(interval)+
+"&outputsize=100"+
+"&timezone=Africa/Nairobi"+
+"&order=desc"+
+"&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
+"&_="+Date.now();
+
+try{
+
+const response=
+await fetch(url,{cache:"no-store"});
+
+const data=
+await response.json();
+
+if(
+!response.ok ||
+data.status==="error" ||
+!Array.isArray(data.values)
+){
+
+throw new Error(
+data.message ||
+"No valid candle data returned"
+);
 
-  const intervalMap={
-    "1M":"1min",
-    "5M":"5min",
-    "15M":"15min",
-    "1H":"1h"
-  };
-
-  const interval=
-    intervalMap[timeframe]||"15min";
-
-  const url=
-    "https://api.twelvedata.com/time_series"+
-    "?symbol=XAU/USD"+
-    "&interval="+encodeURIComponent(interval)+
-    "&outputsize=100"+
-    "&timezone=Africa/Nairobi"+
-    "&order=desc"+
-    "&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
-    "&_="+Date.now();
-
-  try{
-
-    const response=
-      await fetch(url,{cache:"no-store"});
-
-    const data=
-      await response.json();
-
-    if(
-      !response.ok ||
-      data.status==="error" ||
-      !Array.isArray(data.values)
-    ){
-
-      throw new Error(
-        data.message ||
-        "No valid candle data returned"
-      );
-    }
-
-    const candles=
-      data.values
-      .map(item=>({
-
-        datetime:item.datetime,
-
-        open:Number(item.open),
-
-        high:Number(item.high),
-
-        low:Number(item.low),
-
-        close:Number(item.close)
-
-      }))
-      .filter(item=>
-
-        item.datetime &&
-
-        Number.isFinite(item.open) &&
-        Number.isFinite(item.high) &&
-        Number.isFinite(item.low) &&
-        Number.isFinite(item.close) &&
-
-        item.high>=item.low &&
-
-        item.open>=item.low &&
-        item.open<=item.high &&
-
-        item.close>=item.low &&
-        item.close<=item.high
-
-      );
-
-
-    if(!candles.length){
-
-      throw new Error(
-        "No valid candles returned"
-      );
-    }
-
-
-    candles.sort((a,b)=>{
-
-      const dateA=
-        new Date(a.datetime.replace(" ","T"));
-
-      const dateB=
-        new Date(b.datetime.replace(" ","T"));
-
-      return dateA-dateB;
-
-    });
-
-
-    const latest=
-      candles[candles.length-1];
-
-    const latestTime=
-      new Date(
-        latest.datetime.replace(" ","T")
-      );
-
-
-    const ageMinutes=
-      (
-        Date.now()-
-        latestTime.getTime()
-      )/60000;
-
-
-    const allowedAge={
-
-      "1M":8,
-
-      "5M":15,
-
-      "15M":35,
-
-      "1H":130
-
-    }[timeframe]||35;
-
-
-    setStatus(
-      "ohlcStatus",
-      "LIVE",
-      "live"
-    );
-
-
-    document.getElementById("candleCount").textContent=
-      candles.length;
-
-
-    document.getElementById("latestCandle").textContent=
-      latest.datetime+
-      " | O "+latest.open.toFixed(2)+
-      " H "+latest.high.toFixed(2)+
-      " L "+latest.low.toFixed(2)+
-      " C "+latest.close.toFixed(2);
-
-
-    document.getElementById("candleAge").textContent=
-      Number.isFinite(ageMinutes)
-      ? ageMinutes.toFixed(1)+" minutes"
-      : "---";
-
-
-    marketData.candles=candles;
-
-    marketData.lastCandleTime=
-      latestTime;
-
-
-    if(
-      Number.isFinite(ageMinutes) &&
-      ageMinutes>=0 &&
-      ageMinutes<=allowedAge
-    ){
-
-      marketData.candleFresh=true;
-
-      setStatus(
-        "candleFreshness",
-        "FRESH",
-        "live"
-      );
-
-      document.getElementById("apiDiagnostic").textContent=
-        "SUCCESS — "+
-        candles.length+
-        " valid "+
-        interval+
-        " candles. Latest candle is fresh.";
-
-      analyzeMarket();
-
-    }else{
-
-      marketData.candleFresh=false;
-
-      setStatus(
-        "candleFreshness",
-        "STALE",
-        "danger"
-      );
-
-      showWaitingState(
-        "WAIT — STALE DATA",
-
-        "Latest candle is "+
-        (
-          Number.isFinite(ageMinutes)
-          ? ageMinutes.toFixed(1)
-          : "an invalid"
-        )+
-        " minutes old."
-      );
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-    setStatus(
-      "ohlcStatus",
-      "ERROR",
-      "danger"
-    );
-
-    setStatus(
-      "candleFreshness",
-      "ERROR",
-      "danger"
-    );
-
-    marketData.candleFresh=false;
-
-    document.getElementById("apiDiagnostic").textContent=
-      "OHLC ERROR: "+error.message;
-
-    showWaitingState(
-      "WAIT — FEED ERROR",
-      error.message
-    );
-  }
 }
 
 
-/* =========================
-   BASIC ANALYSIS
-========================= */
+const candles=
+data.values
+.map(item=>({
+
+datetime:item.datetime,
+
+open:Number(item.open),
+
+high:Number(item.high),
+
+low:Number(item.low),
+
+close:Number(item.close)
+
+}))
+.filter(item=>
+
+item.datetime &&
+
+Number.isFinite(item.open) &&
+Number.isFinite(item.high) &&
+Number.isFinite(item.low) &&
+Number.isFinite(item.close) &&
+
+item.high>=item.low &&
+
+item.open>=item.low &&
+item.open<=item.high &&
+
+item.close>=item.low &&
+item.close<=item.high
+
+);
+
+
+if(!candles.length){
+
+throw new Error(
+"No valid candles returned"
+);
+
+}
+
+
+candles.sort((a,b)=>{
+
+const dateA=
+new Date(a.datetime.replace(" ","T"));
+
+const dateB=
+new Date(b.datetime.replace(" ","T"));
+
+return dateA-dateB;
+
+});
+
+
+const latest=
+candles[candles.length-1];
+
+const latestTime=
+new Date(
+latest.datetime.replace(" ","T")
+);
+
+
+const ageMinutes=
+(
+Date.now()-
+latestTime.getTime()
+)/60000;
+
+
+const allowedAge={
+"1M":8,
+"5M":15,
+"15M":35,
+"1H":130
+}[timeframe]||35;
+
+
+setStatus(
+"ohlcStatus",
+"LIVE",
+"live"
+);
+
+
+document.getElementById("candleCount").textContent=
+candles.length;
+
+
+document.getElementById("latestCandle").textContent=
+latest.datetime+
+" | O "+latest.open.toFixed(2)+
+" H "+latest.high.toFixed(2)+
+" L "+latest.low.toFixed(2)+
+" C "+latest.close.toFixed(2);
+
+
+document.getElementById("candleAge").textContent=
+Number.isFinite(ageMinutes)
+?ageMinutes.toFixed(1)+" minutes"
+:"---";
+
+
+marketData.candles=candles;
+
+marketData.lastCandleTime=
+latestTime;
+
+
+if(
+Number.isFinite(ageMinutes)&&
+ageMinutes>=0&&
+ageMinutes<=allowedAge
+){
+
+marketData.candleFresh=true;
+
+setStatus(
+"candleFreshness",
+"FRESH",
+"live"
+);
+
+document.getElementById("apiDiagnostic").textContent=
+"SUCCESS — "+
+candles.length+
+" valid "+
+interval+
+" candles. Latest candle is fresh.";
+
+analyzeMarket();
+
+}else{
+
+marketData.candleFresh=false;
+
+setStatus(
+"candleFreshness",
+"STALE",
+"danger"
+);
+
+showWaitingState(
+"WAIT — STALE DATA",
+"Latest candle is "+
+(
+Number.isFinite(ageMinutes)
+?ageMinutes.toFixed(1)
+:"an invalid"
+)+
+" minutes old."
+);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+setStatus(
+"ohlcStatus",
+"ERROR",
+"danger"
+);
+
+setStatus(
+"candleFreshness",
+"ERROR",
+"danger"
+);
+
+marketData.candleFresh=false;
+
+document.getElementById("apiDiagnostic").textContent=
+"OHLC ERROR: "+error.message;
+
+showWaitingState(
+"WAIT — FEED ERROR",
+error.message
+);
+
+}
+
+}
+
+
+/* =========================================================
+   TECHNICAL FUNCTIONS
+========================================================= */
+
+function ema(values,period){
+
+if(values.length<period) return null;
+
+const multiplier=
+2/(period+1);
+
+let value=0;
+
+for(let i=0;i<period;i++){
+value+=values[i];
+}
+
+value/=period;
+
+for(let i=period;i<values.length;i++){
+
+value=
+(values[i]-value)*multiplier+value;
+
+}
+
+return value;
+}
+
+
+function atr(candles,period=14){
+
+if(candles.length<period+1) return null;
+
+const trs=[];
+
+for(let i=1;i<candles.length;i++){
+
+const current=candles[i];
+const previous=candles[i-1];
+
+const tr=Math.max(
+current.high-current.low,
+Math.abs(current.high-previous.close),
+Math.abs(current.low-previous.close)
+);
+
+trs.push(tr);
+}
+
+const recent=trs.slice(-period);
+
+return recent.reduce((a,b)=>a+b,0)/recent.length;
+}
+
+
+function averageRange(candles,period=20){
+
+const recent=
+candles.slice(-period);
+
+if(!recent.length)return null;
+
+return recent.reduce(
+(sum,c)=>sum+(c.high-c.low),
+0
+)/recent.length;
+}
+
+
+function highest(candles,count){
+
+const recent=
+candles.slice(-count);
+
+return Math.max(
+...recent.map(c=>c.high)
+);
+}
+
+
+function lowest(candles,count){
+
+const recent=
+candles.slice(-count);
+
+return Math.min(
+...recent.map(c=>c.low)
+);
+}
+
+
+function candleType(c){
+
+const range=
+c.high-c.low;
+
+if(range<=0){
+
+return {
+name:"NEUTRAL",
+bull:false,
+bear:false,
+strength:0
+};
+
+}
+
+const body=
+Math.abs(c.close-c.open);
+
+const upper=
+c.high-Math.max(c.open,c.close);
+
+const lower=
+Math.min(c.open,c.close)-c.low;
+
+const bodyRatio=
+body/range;
+
+const closePosition=
+(c.close-c.low)/range;
+
+
+if(
+c.close>c.open &&
+bodyRatio>=0.60 &&
+closePosition>=0.70
+){
+
+return {
+name:"BULLISH STRONG",
+bull:true,
+bear:false,
+strength:bodyRatio
+};
+
+}
+
+
+if(
+c.close<c.open &&
+bodyRatio>=0.60 &&
+closePosition<=0.30
+){
+
+return {
+name:"BEARISH STRONG",
+bull:false,
+bear:true,
+strength:bodyRatio
+};
+
+}
+
+
+if(
+lower>=body*1.8 &&
+closePosition>=0.60
+){
+
+return {
+name:"BULLISH REJECTION",
+bull:true,
+bear:false,
+strength:0.6
+};
+
+}
+
+
+if(
+upper>=body*1.8 &&
+closePosition<=0.40
+){
+
+return {
+name:"BEARISH REJECTION",
+bull:false,
+bear:true,
+strength:0.6
+};
+
+}
+
+
+return {
+name:"NEUTRAL",
+bull:false,
+bear:false,
+strength:bodyRatio
+};
+
+}
+
+
+/* =========================================================
+   STRUCTURE
+========================================================= */
+
+function structureAnalysis(candles){
+
+if(candles.length<30){
+
+return {
+direction:"NEUTRAL",
+score:0,
+text:"INSUFFICIENT"
+};
+
+}
+
+const recent=
+candles.slice(-30);
+
+const firstHalf=
+recent.slice(0,15);
+
+const secondHalf=
+recent.slice(15);
+
+const firstHigh=
+Math.max(...firstHalf.map(c=>c.high));
+
+const secondHigh=
+Math.max(...secondHalf.map(c=>c.high));
+
+const firstLow=
+Math.min(...firstHalf.map(c=>c.low));
+
+const secondLow=
+Math.min(...secondHalf.map(c=>c.low));
+
+
+if(
+secondHigh>firstHigh &&
+secondLow>firstLow
+){
+
+return {
+direction:"BULLISH",
+score:18,
+text:"HH + HL"
+};
+
+}
+
+
+if(
+secondHigh<firstHigh &&
+secondLow<firstLow
+){
+
+return {
+direction:"BEARISH",
+score:18,
+text:"LH + LL"
+};
+
+}
+
+
+if(secondLow>firstLow){
+
+return {
+direction:"BULLISH",
+score:9,
+text:"HIGHER LOW"
+};
+
+}
+
+
+if(secondHigh<firstHigh){
+
+return {
+direction:"BEARISH",
+score:9,
+text:"LOWER HIGH"
+};
+
+}
+
+
+return {
+direction:"NEUTRAL",
+score:0,
+text:"MIXED"
+};
+
+}
+
+
+/* =========================================================
+   SETUP DETECTION
+========================================================= */
+
+function detectSetup(candles,direction,atrValue){
+
+const last=
+candles[candles.length-1];
+
+const previous=
+candles[candles.length-2];
+
+const recentHigh=
+highest(candles,20);
+
+const recentLow=
+lowest(candles,20);
+
+const tolerance=
+atrValue ? atrValue*0.35 : 2;
+
+let setup="NONE";
+let score=0;
+
+
+/* Breakout */
+
+if(
+direction==="BULLISH" &&
+last.close>recentHigh &&
+previous.close<=recentHigh+tolerance
+){
+
+setup="BULLISH BREAKOUT";
+score=16;
+
+}
+
+
+if(
+direction==="BEARISH" &&
+last.close<recentLow &&
+previous.close>=recentLow-tolerance
+){
+
+setup="BEARISH BREAKOUT";
+score=16;
+
+}
+
+
+/* Pullback */
+
+if(
+direction==="BULLISH" &&
+last.low<=recentHigh &&
+last.close>last.open &&
+last.close>previous.close
+){
+
+setup="BULLISH PULLBACK";
+score=12;
+
+}
+
+
+if(
+direction==="BEARISH" &&
+last.high>=recentLow &&
+last.close<last.open &&
+last.close<previous.close
+){
+
+setup="BEARISH PULLBACK";
+score=12;
+
+}
+
+
+return {
+name:setup,
+score:score
+};
+
+}
+
+
+/* =========================================================
+   MAIN ANALYSIS ENGINE
+========================================================= */
 
 function analyzeMarket(){
 
-  if(
-    !marketData.candleFresh ||
-    marketData.candles.length<20
-  ){
+if(
+!marketData.candleFresh ||
+marketData.candles.length<50
+){
 
-    showWaitingState(
-      "WAIT — DATA NOT READY",
-      "Insufficient fresh candle data."
-    );
+showWaitingState(
+"WAIT — DATA NOT READY",
+"At least 50 fresh candles are required for reliable multi-confirmation analysis."
+);
 
-    return;
-  }
-
-
-  const recent=
-    marketData.candles.slice(-20);
-
-  const closes=
-    recent.map(c=>c.close);
-
-  const first=
-    closes[0];
-
-  const last=
-    closes[closes.length-1];
-
-  const change=
-    ((last-first)/first)*100;
-
-
-  let regime=
-    "RANGE / CONSOLIDATION";
-
-
-  if(change>0.25){
-
-    regime=
-      "BULLISH TREND";
-
-  }else if(change<-0.25){
-
-    regime=
-      "BEARISH TREND";
-  }
-
-
-  document.getElementById("regime").textContent=
-    regime;
-
-  document.getElementById("strategy").textContent=
-    "WAITING FOR MULTI-CONFIRMATION";
-
-  document.getElementById("signalStrength").textContent=
-    "DATA READY";
-
-  document.getElementById("signalReason").textContent=
-    "Fresh XAU/USD candles are available. Waiting for structure, trend, pullback/breakout and candle confirmation before producing a signal.";
+return;
 }
 
 
-/* =========================
+const candles=
+marketData.candles;
+
+const closes=
+candles.map(c=>c.close);
+
+const current=
+candles[candles.length-1];
+
+const previous=
+candles[candles.length-2];
+
+const price=
+marketData.spot || current.close;
+
+
+/* EMA */
+
+const ema20=
+ema(closes,20);
+
+const ema50=
+ema(closes,50);
+
+
+/* ATR */
+
+const atrValue=
+atr(candles,14);
+
+const avgRange=
+averageRange(candles,20);
+
+
+/* STRUCTURE */
+
+const structure=
+structureAnalysis(candles);
+
+
+/* TREND */
+
+let trendDirection="NEUTRAL";
+let trendScore=0;
+
+if(
+ema20 &&
+ema50 &&
+price>ema20 &&
+ema20>ema50
+){
+
+trendDirection="BULLISH";
+trendScore=18;
+
+}else if(
+ema20 &&
+ema50 &&
+price<ema20 &&
+ema20<ema50
+){
+
+trendDirection="BEARISH";
+trendScore=18;
+
+}else if(
+ema20 &&
+price>ema20
+){
+
+trendDirection="BULLISH";
+trendScore=8;
+
+}else if(
+ema20 &&
+price<ema20
+){
+
+trendDirection="BEARISH";
+trendScore=8;
+
+}
+
+
+/* MOMENTUM */
+
+const momentumLookback=
+candles.slice(-10);
+
+const momentumStart=
+momentumLookback[0].close;
+
+const momentumEnd=
+momentumLookback[momentumLookback.length-1].close;
+
+const momentumChange=
+((momentumEnd-momentumStart)/momentumStart)*100;
+
+let momentumDirection="NEUTRAL";
+let momentumScore=0;
+
+if(momentumChange>0.10){
+
+momentumDirection="BULLISH";
+momentumScore=12;
+
+}else if(momentumChange<-0.10){
+
+momentumDirection="BEARISH";
+momentumScore=12;
+
+}
+
+
+/* CANDLE */
+
+const candle=
+candleType(current);
+
+let candleScore=0;
+
+if(
+trendDirection==="BULLISH" &&
+candle.bull
+){
+
+candleScore=14;
+
+}else if(
+trendDirection==="BEARISH" &&
+candle.bear
+){
+
+candleScore=14;
+
+}else if(
+candle.bull || candle.bear
+){
+
+candleScore=5;
+
+}
+
+
+/* LEVEL */
+
+const resistance=
+highest(candles.slice(0,-1),20);
+
+const support=
+lowest(candles.slice(0,-1),20);
+
+let levelDirection="NEUTRAL";
+let levelScore=0;
+
+if(
+price>resistance
+){
+
+levelDirection="BULLISH BREAK";
+levelScore=12;
+
+}else if(
+price<support
+){
+
+levelDirection="BEARISH BREAK";
+levelScore=12;
+
+}else if(
+Math.abs(price-support) <=
+(atrValue||1)*0.5
+){
+
+levelDirection="SUPPORT";
+levelScore=8;
+
+}else if(
+Math.abs(price-resistance) <=
+(atrValue||1)*0.5
+){
+
+levelDirection="RESISTANCE";
+levelScore=8;
+
+}
+
+
+/* VOLATILITY */
+
+let volatility="NORMAL";
+let volatilityScore=6;
+
+if(atrValue && avgRange){
+
+const ratio=
+atrValue/avgRange;
+
+if(ratio<0.55){
+
+volatility="LOW";
+volatilityScore=0;
+
+}else if(ratio>2.2){
+
+volatility="EXTREME";
+volatilityScore=0;
+
+}
+
+}
+
+
+/* SETUP */
+
+const setup=
+detectSetup(
+candles,
+trendDirection,
+atrValue
+);
+
+
+/* TOTAL SCORES */
+
+let bullish=0;
+let bearish=0;
+
+if(trendDirection==="BULLISH")
+bullish+=trendScore;
+
+if(trendDirection==="BEARISH")
+bearish+=trendScore;
+
+if(structure.direction==="BULLISH")
+bullish+=structure.score;
+
+if(structure.direction==="BEARISH")
+bearish+=structure.score;
+
+if(momentumDirection==="BULLISH")
+bullish+=momentumScore;
+
+if(momentumDirection==="BEARISH")
+bearish+=momentumScore;
+
+if(candle.bull)
+bullish+=candleScore;
+
+if(candle.bear)
+bearish+=candleScore;
+
+if(
+levelDirection.includes("BULLISH") ||
+levelDirection==="SUPPORT"
+)
+bullish+=levelScore;
+
+if(
+levelDirection.includes("BEARISH") ||
+levelDirection==="RESISTANCE"
+)
+bearish+=levelScore;
+
+if(setup.name.includes("BULLISH"))
+bullish+=setup.score;
+
+if(setup.name.includes("BEARISH"))
+bearish+=setup.score;
+
+
+/* Alignment */
+
+const maxScore=
+Math.max(bullish,bearish);
+
+const direction=
+bullish>bearish
+?"BUY":
+bearish>bullish
+?"SELL":
+"WAIT";
+
+const confirmations=
+[
+trendDirection,
+structure.direction,
+momentumDirection,
+candle.bull?"BULLISH":candle.bear?"BEARISH":"NEUTRAL",
+levelDirection.includes("BULLISH")?"BULLISH":
+levelDirection.includes("BEARISH")?"BEARISH":"NEUTRAL"
+];
+
+const matching=
+direction==="BUY"
+?confirmations.filter(x=>x==="BULLISH").length
+:direction==="SELL"
+?confirmations.filter(x=>x==="BEARISH").length
+:0;
+
+
+/* SIGNAL STRENGTH */
+
+let strength=
+Math.min(
+99,
+Math.round(
+(maxScore/100)*100
+)
+);
+
+
+/* Require independent confirmations */
+
+const confirmed=
+direction!=="WAIT" &&
+matching>=4 &&
+maxScore>=70 &&
+volatility!=="LOW" &&
+volatility!=="EXTREME";
+
+
+const developing=
+direction!=="WAIT" &&
+matching>=3 &&
+maxScore>=55;
+
+
+let strategy="WAITING";
+
+if(confirmed){
+
+strategy=
+direction==="BUY"
+?"CONFIRMED BUY"
+:"CONFIRMED SELL";
+
+}else if(developing){
+
+strategy=
+direction==="BUY"
+?"DEVELOPING BUY"
+:"DEVELOPING SELL";
+
+}else{
+
+strategy=
+"WAITING FOR CONFIRMATION";
+
+}
+
+
+/* REGIME */
+
+let regime=
+"RANGE / MIXED";
+
+if(
+trendDirection==="BULLISH" &&
+structure.direction==="BULLISH"
+){
+
+regime="BULLISH TREND";
+
+}else if(
+trendDirection==="BEARISH" &&
+structure.direction==="BEARISH"
+){
+
+regime="BEARISH TREND";
+
+}else if(
+trendDirection!=="NEUTRAL"
+){
+
+regime=
+trendDirection==="BULLISH"
+?"BULLISH — WEAK STRUCTURE"
+:"BEARISH — WEAK STRUCTURE";
+
+}
+
+
+/* UI */
+
+document.getElementById("regime").textContent=
+regime;
+
+document.getElementById("strategy").textContent=
+strategy;
+
+document.getElementById("signalStrength").textContent=
+strength+"%";
+
+
+setConfirmation(
+"trendConfirmation",
+trendDirection+
+" | EMA20 "+(ema20?ema20.toFixed(2):"---"),
+trendDirection==="BULLISH"
+?"live":
+trendDirection==="BEARISH"
+?"danger":
+"muted"
+);
+
+
+setConfirmation(
+"structureConfirmation",
+structure.text,
+structure.direction==="BULLISH"
+?"live":
+structure.direction==="BEARISH"
+?"danger":
+"muted"
+);
+
+
+setConfirmation(
+"momentumConfirmation",
+momentumDirection+
+" "+momentumChange.toFixed(2)+"%",
+momentumDirection==="BULLISH"
+?"live":
+momentumDirection==="BEARISH"
+?"danger":
+"muted"
+);
+
+
+setConfirmation(
+"levelConfirmation",
+levelDirection,
+levelDirection.includes("BULLISH")||
+levelDirection==="SUPPORT"
+?"live":
+levelDirection.includes("BEARISH")||
+levelDirection==="RESISTANCE"
+?"danger":
+"muted"
+);
+
+
+setConfirmation(
+"candleConfirmation",
+candle.name,
+candle.bull
+?"live":
+candle.bear
+?"danger":
+"muted"
+);
+
+
+setConfirmation(
+"volatilityConfirmation",
+volatility+
+" | ATR "+(
+atrValue
+?atrValue.toFixed(2)
+:"---"
+),
+volatility==="NORMAL"
+?"live":
+"warn"
+);
+
+
+setConfirmation(
+"setupConfirmation",
+setup.name,
+setup.name.includes("BULLISH")
+?"live":
+setup.name.includes("BEARISH")
+?"danger":
+"muted"
+);
+
+
+/* ENTRY / SL / TP */
+
+if(confirmed){
+
+const entry=price;
+
+let stop;
+let target;
+
+if(direction==="BUY"){
+
+stop=
+Math.min(
+support,
+entry-(atrValue||2)*1.2
+);
+
+const risk=
+entry-stop;
+
+target=
+entry+risk*2;
+
+}else{
+
+stop=
+Math.max(
+resistance,
+entry+(atrValue||2)*1.2
+);
+
+const risk=
+stop-entry;
+
+target=
+entry-risk*2;
+
+}
+
+const riskAmount=
+Math.abs(entry-stop);
+
+const rewardAmount=
+Math.abs(target-entry);
+
+document.getElementById("entryPrice").textContent=
+entry.toFixed(2);
+
+document.getElementById("stopLoss").textContent=
+stop.toFixed(2);
+
+document.getElementById("takeProfit").textContent=
+target.toFixed(2);
+
+document.getElementById("riskReward").textContent=
+"1 : "+
+(rewardAmount/riskAmount).toFixed(2);
+
+
+document.getElementById("signalReason").textContent=
+direction+
+" confirmed by "+
+matching+
+" aligned confirmations. Trend, structure, momentum, level and candle evidence are aligned.";
+
+}else if(developing){
+
+document.getElementById("signalReason").textContent=
+direction+
+" setup is developing with "+
+matching+
+" aligned confirmations. Waiting for stronger structure/candle/level confirmation before treating it as a confirmed signal.";
+
+}else{
+
+document.getElementById("signalReason").textContent=
+"WAIT — confirmations are not sufficiently aligned. The engine will not force a trade.";
+
+}
+
+}
+
+
+/* =========================================================
    REFRESH
-========================= */
+========================================================= */
 
 async function refreshAll(){
 
-  await updatePrice();
+await updatePrice();
 
-  await loadOHLC();
+await loadOHLC();
+
 }
 
 
-/* =========================
+/* =========================================================
    TRADINGVIEW
-========================= */
+========================================================= */
 
 function getTradingViewInterval(){
 
-  const timeframe=
-    document.getElementById("timeframe").value;
+const timeframe=
+document.getElementById("timeframe").value;
 
-  const map={
-    "1M":"1",
-    "5M":"5",
-    "15M":"15",
-    "1H":"60"
-  };
+const map={
+"1M":"1",
+"5M":"5",
+"15M":"15",
+"1H":"60"
+};
 
-  return map[timeframe]||"15";
+return map[timeframe]||"15";
 }
 
 
 function loadTradingView(){
 
-  const container=
-    document.getElementById(
-      "tradingview_chart"
-    );
+const container=
+document.getElementById(
+"tradingview_chart"
+);
 
-  const timeframe=
-    document.getElementById(
-      "timeframe"
-    ).value;
+const timeframe=
+document.getElementById(
+"timeframe"
+).value;
 
-  const interval=
-    getTradingViewInterval();
-
-
-  document.getElementById(
-    "chartStatus"
-  ).textContent=
-    "TradingView • "+timeframe;
+const interval=
+getTradingViewInterval();
 
 
-  container.innerHTML="";
+document.getElementById(
+"chartStatus"
+).textContent=
+"TradingView • "+timeframe;
 
 
-  const script=
-    document.createElement("script");
+container.innerHTML="";
 
 
-  script.src=
-    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+const script=
+document.createElement("script");
 
+script.src=
+"https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
 
-  script.async=true;
+script.async=true;
 
+script.innerHTML=
+JSON.stringify({
 
-  script.innerHTML=
-    JSON.stringify({
+autosize:true,
 
-      autosize:true,
+symbol:"OANDA:XAUUSD",
 
-      symbol:"OANDA:XAUUSD",
+interval:interval,
 
-      interval:interval,
+timezone:"Africa/Nairobi",
 
-      timezone:"Africa/Nairobi",
+theme:"dark",
 
-      theme:"dark",
+style:"1",
 
-      style:"1",
+locale:"en",
 
-      locale:"en",
+enable_publishing:false,
 
-      enable_publishing:false,
+allow_symbol_change:true,
 
-      allow_symbol_change:true,
+calendar:false,
 
-      calendar:false,
+hide_top_toolbar:false,
 
-      hide_top_toolbar:false,
+hide_legend:false,
 
-      hide_legend:false,
+save_image:false,
 
-      save_image:false,
+support_host:
+"https://www.tradingview.com"
 
-      support_host:
-        "https://www.tradingview.com"
+});
 
-    });
+container.appendChild(script);
 
-
-  container.appendChild(script);
 }
 
 
-/* =========================
+/* =========================================================
    START
-========================= */
+========================================================= */
 
 loadTradingView();
 
 refreshAll();
 
-
-/* Price refresh */
-
 setInterval(
-  updatePrice,
-  15000
+updatePrice,
+15000
 );
 
-
-/* Candle refresh */
-
 setInterval(
-  loadOHLC,
-  60000
+loadOHLC,
+60000
 );
 
-
-/* Timeframe change */
 
 document
-  .getElementById("timeframe")
-  .addEventListener(
-    "change",
-    function(){
+.getElementById("timeframe")
+.addEventListener(
+"change",
+function(){
 
-      loadTradingView();
+loadTradingView();
 
-      loadOHLC();
+loadOHLC();
 
-    }
-  );
+}
+);
 
 </script>
 
