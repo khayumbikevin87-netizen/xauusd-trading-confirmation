@@ -1,5 +1,6 @@
 async function loadOHLC() {
   const timeframe = document.getElementById("timeframe").value;
+
   const intervalMap = {
     "1M": "1min",
     "5M": "5min",
@@ -9,17 +10,15 @@ async function loadOHLC() {
 
   const interval = intervalMap[timeframe] || "15min";
 
-  const today = new Date().toISOString().slice(0, 10);
-
   const url =
     "https://api.twelvedata.com/time_series" +
     "?symbol=XAU/USD" +
     "&interval=" + encodeURIComponent(interval) +
     "&outputsize=100" +
-    "&date=" + today +
-    "&timezone=UTC" +
+    "&timezone=Africa/Nairobi" +
     "&order=desc" +
-    "&apikey=" + encodeURIComponent(TWELVE_DATA_KEY);
+    "&apikey=" + encodeURIComponent(TWELVE_DATA_KEY) +
+    "&_=" + Date.now();
 
   try {
     const response = await fetch(url, {
@@ -28,7 +27,11 @@ async function loadOHLC() {
 
     const data = await response.json();
 
-    if (!response.ok || data.status === "error" || !Array.isArray(data.values)) {
+    if (
+      !response.ok ||
+      data.status === "error" ||
+      !Array.isArray(data.values)
+    ) {
       throw new Error(data.message || "No valid candle data returned");
     }
 
@@ -54,20 +57,23 @@ async function loadOHLC() {
       );
 
     if (!candles.length) {
-      throw new Error("No valid candles for today");
+      throw new Error("No valid candles returned");
     }
 
-    candles.sort((a, b) =>
-      new Date(a.datetime.replace(" ", "T") + "Z") -
-      new Date(b.datetime.replace(" ", "T") + "Z")
-    );
+    candles.sort((a, b) => {
+      const dateA = new Date(a.datetime.replace(" ", "T"));
+      const dateB = new Date(b.datetime.replace(" ", "T"));
+      return dateA - dateB;
+    });
 
     const latest = candles[candles.length - 1];
+
     const latestTime = new Date(
-      latest.datetime.replace(" ", "T") + "Z"
+      latest.datetime.replace(" ", "T")
     );
 
-    const ageMinutes = (Date.now() - latestTime.getTime()) / 60000;
+    const ageMinutes =
+      (Date.now() - latestTime.getTime()) / 60000;
 
     const allowedAge = {
       "1M": 8,
@@ -79,7 +85,8 @@ async function loadOHLC() {
     document.getElementById("ohlcStatus").textContent = "LIVE";
     document.getElementById("ohlcStatus").className = "status live";
 
-    document.getElementById("candleCount").textContent = candles.length;
+    document.getElementById("candleCount").textContent =
+      candles.length;
 
     document.getElementById("latestCandle").textContent =
       latest.datetime +
@@ -93,26 +100,38 @@ async function loadOHLC() {
         ? ageMinutes.toFixed(1) + " minutes"
         : "---";
 
-    if (ageMinutes <= allowedAge) {
-      document.getElementById("candleFreshness").textContent = "FRESH";
-      document.getElementById("candleFreshness").className = "status live";
+    marketData.candles = candles;
+    marketData.lastCandleTime = latestTime;
 
-      marketData.candles = candles;
+    if (
+      Number.isFinite(ageMinutes) &&
+      ageMinutes >= 0 &&
+      ageMinutes <= allowedAge
+    ) {
+      document.getElementById("candleFreshness").textContent =
+        "FRESH";
+
+      document.getElementById("candleFreshness").className =
+        "status live";
+
       marketData.candleFresh = true;
-      marketData.lastCandleTime = latestTime;
 
       analyzeMarket();
     } else {
-      document.getElementById("candleFreshness").textContent = "STALE";
-      document.getElementById("candleFreshness").className = "status danger";
+      document.getElementById("candleFreshness").textContent =
+        "STALE";
 
-      marketData.candles = candles;
+      document.getElementById("candleFreshness").className =
+        "status danger";
+
       marketData.candleFresh = false;
-      marketData.lastCandleTime = latestTime;
 
       showWaitingState(
         "STALE CANDLE DATA",
-        "Latest candle is " + ageMinutes.toFixed(1) +
+        "Latest candle is " +
+        (Number.isFinite(ageMinutes)
+          ? ageMinutes.toFixed(1)
+          : "an invalid") +
         " minutes old. Waiting for fresh market data."
       );
     }
@@ -120,11 +139,17 @@ async function loadOHLC() {
   } catch (error) {
     console.error("OHLC error:", error);
 
-    document.getElementById("ohlcStatus").textContent = "ERROR";
-    document.getElementById("ohlcStatus").className = "status danger";
+    document.getElementById("ohlcStatus").textContent =
+      "ERROR";
 
-    document.getElementById("candleFreshness").textContent = "ERROR";
-    document.getElementById("candleFreshness").className = "status danger";
+    document.getElementById("ohlcStatus").className =
+      "status danger";
+
+    document.getElementById("candleFreshness").textContent =
+      "ERROR";
+
+    document.getElementById("candleFreshness").className =
+      "status danger";
 
     marketData.candleFresh = false;
 
