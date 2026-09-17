@@ -1,157 +1,937 @@
-async function loadOHLC() {
-  const timeframe = document.getElementById("timeframe").value;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>XAUUSD Trading Confirmation</title>
 
-  const intervalMap = {
-    "1M": "1min",
-    "5M": "5min",
-    "15M": "15min",
-    "1H": "1h"
-  };
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#07111f;
+  color:#e8eef7;
+  font-family:Arial,sans-serif;
+}
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:16px;
+}
+h1{
+  margin:0 0 5px;
+  font-size:24px;
+}
+.subtitle{
+  color:#8ea2bd;
+  margin-bottom:18px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+.card{
+  background:#0d1b2e;
+  border:1px solid #1d334d;
+  border-radius:12px;
+  padding:15px;
+}
+.label{
+  color:#8296b1;
+  font-size:12px;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+.value{
+  font-size:20px;
+  font-weight:bold;
+}
+.live{color:#35d07f}
+.danger{color:#ff6262}
+.warn{color:#ffc857}
+.muted{color:#94a6bc}
+button,select{
+  background:#142942;
+  color:#fff;
+  border:1px solid #31506f;
+  border-radius:8px;
+  padding:10px 12px;
+}
+button{
+  cursor:pointer;
+}
+button:hover{
+  background:#1b395b;
+}
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:15px 0;
+}
+.chart{
+  margin-top:15px;
+  background:#0d1b2e;
+  border:1px solid #1d334d;
+  border-radius:12px;
+  overflow:hidden;
+}
+.chart iframe{
+  width:100%;
+  height:520px;
+  border:0;
+}
+.signal{
+  margin-top:15px;
+  padding:20px;
+  text-align:center;
+  border-radius:12px;
+  background:#0d1b2e;
+  border:1px solid #1d334d;
+}
+.signal-main{
+  font-size:28px;
+  font-weight:bold;
+  margin:8px 0;
+}
+.diagnostic{
+  margin-top:15px;
+  background:#090f19;
+  border:1px solid #39465a;
+  border-radius:12px;
+  padding:15px;
+}
+.diagnostic pre{
+  white-space:pre-wrap;
+  word-break:break-word;
+  font-family:monospace;
+  font-size:12px;
+  line-height:1.5;
+  color:#d5dfeb;
+  max-height:400px;
+  overflow:auto;
+}
+.status{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:6px;
+  background:#18283b;
+}
+.small{
+  font-size:12px;
+  color:#8193aa;
+  margin-top:8px;
+}
+hr{
+  border:0;
+  border-top:1px solid #20344b;
+  margin:14px 0;
+}
+</style>
+</head>
 
-  const interval = intervalMap[timeframe] || "15min";
+<body>
 
-  const url =
-    "https://api.twelvedata.com/time_series" +
-    "?symbol=XAU/USD" +
-    "&interval=" + encodeURIComponent(interval) +
-    "&outputsize=100" +
-    "&timezone=Africa/Nairobi" +
-    "&order=desc" +
-    "&apikey=" + encodeURIComponent(TWELVE_DATA_KEY) +
-    "&_=" + Date.now();
+<div class="container">
 
-  try {
-    const response = await fetch(url, {
-      cache: "no-store"
-    });
+  <h1>XAUUSD Trading Confirmation</h1>
+  <div class="subtitle">
+    Real market-data confirmation • Safety-first analysis • No signal when data is unreliable
+  </div>
 
-    const data = await response.json();
+  <div class="controls">
+    <select id="timeframe">
+      <option value="1M">1 Minute</option>
+      <option value="5M">5 Minutes</option>
+      <option value="15M" selected>15 Minutes</option>
+      <option value="1H">1 Hour</option>
+    </select>
 
-    if (
-      !response.ok ||
-      data.status === "error" ||
-      !Array.isArray(data.values)
-    ) {
+    <button onclick="refreshAll()">Refresh Data</button>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="label">Data connection</div>
+      <div id="dataStatus" class="value muted">CONNECTING</div>
+    </div>
+
+    <div class="card">
+      <div class="label">XAUUSD spot</div>
+      <div id="spotPrice" class="value">---</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Last update</div>
+      <div id="lastUpdate" class="value muted">---</div>
+    </div>
+
+    <div class="card">
+      <div class="label">OHLC connection</div>
+      <div id="ohlcStatus" class="value muted">CONNECTING</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Candles loaded</div>
+      <div id="candleCount" class="value">---</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Latest candle</div>
+      <div id="latestCandle" class="value muted" style="font-size:13px">---</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Candle freshness</div>
+      <div id="candleFreshness" class="value muted">---</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Candle age</div>
+      <div id="candleAge" class="value muted">---</div>
+    </div>
+
+    <div class="card">
+      <div class="label">OHLC source</div>
+      <div class="value">Twelve Data</div>
+    </div>
+
+  </div>
+
+  <div class="chart">
+    <div id="tradingview_chart"></div>
+  </div>
+
+  <div class="signal">
+    <div class="label">Market regime</div>
+    <div id="regime" class="value">WAIT</div>
+
+    <div class="label" style="margin-top:15px">Strategy</div>
+    <div id="strategy" class="value">WAITING FOR DATA</div>
+
+    <div class="label" style="margin-top:15px">Signal strength</div>
+    <div id="signalStrength" class="signal-main">---</div>
+
+    <div id="signalReason" class="muted">
+      Waiting for reliable market data.
+    </div>
+  </div>
+
+  <!-- DIRECT API DIAGNOSTIC -->
+  <div class="diagnostic">
+
+    <div class="label">Twelve Data diagnostic</div>
+
+    <div id="apiDiagnostic" class="value muted">
+      Waiting for API response...
+    </div>
+
+    <hr>
+
+    <div class="label">Raw API response</div>
+
+    <pre id="apiRaw">No response yet.</pre>
+
+    <div class="small">
+      This diagnostic is displayed directly on the page so you do not need
+      Chrome Developer Tools.
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+/* =========================
+   CONFIGURATION
+========================= */
+
+const TWELVE_DATA_KEY =
+  "394e133dfaf844d580ca4d8d1ca5d1da";
+
+const GOLD_API =
+  "https://api.gold-api.com/price/XAU";
+
+
+/* =========================
+   MARKET STATE
+========================= */
+
+const marketData = {
+  spot: null,
+  candles: [],
+  candleFresh: false,
+  lastCandleTime: null
+};
+
+
+/* =========================
+   UI HELPERS
+========================= */
+
+function setStatus(id,text,type){
+  const el=document.getElementById(id);
+
+  if(!el)return;
+
+  el.textContent=text;
+
+  el.className="value "+(
+    type==="live" ? "live" :
+    type==="danger" ? "danger" :
+    type==="warn" ? "warn" :
+    "muted"
+  );
+}
+
+
+function showWaitingState(title,reason){
+
+  document.getElementById("regime").textContent=title;
+
+  document.getElementById("strategy").textContent=title;
+
+  document.getElementById("signalStrength").textContent="---";
+
+  document.getElementById("signalReason").textContent=reason;
+}
+
+
+/* =========================
+   GOLD SPOT PRICE
+========================= */
+
+async function updatePrice(){
+
+  try{
+
+    const response=await fetch(
+      GOLD_API+"?t="+Date.now(),
+      {cache:"no-store"}
+    );
+
+    if(!response.ok){
       throw new Error(
-        data.message || "No valid candle data returned"
+        "Gold API HTTP "+response.status
       );
     }
 
-    const candles = data.values
-      .map(item => ({
-        datetime: item.datetime,
-        open: Number(item.open),
-        high: Number(item.high),
-        low: Number(item.low),
-        close: Number(item.close)
-      }))
-      .filter(item =>
-        item.datetime &&
-        Number.isFinite(item.open) &&
-        Number.isFinite(item.high) &&
-        Number.isFinite(item.low) &&
-        Number.isFinite(item.close) &&
-        item.high >= item.low &&
-        item.open >= item.low &&
-        item.open <= item.high &&
-        item.close >= item.low &&
-        item.close <= item.high
-      );
+    const data=await response.json();
 
-    if (!candles.length) {
-      throw new Error("No valid candles returned");
+    if(
+      !data ||
+      typeof data.price!=="number"
+    ){
+      throw new Error(
+        "Gold API returned an unexpected response"
+      );
     }
 
-    candles.sort((a, b) => {
-      const dateA = new Date(a.datetime.replace(" ", "T"));
-      const dateB = new Date(b.datetime.replace(" ", "T"));
-      return dateA - dateB;
-    });
+    marketData.spot=data.price;
 
-    const latest = candles[candles.length - 1];
+    document.getElementById("spotPrice").textContent=
+      "$"+data.price.toFixed(2);
 
-    const latestTime = new Date(
-      latest.datetime.replace(" ", "T")
+    document.getElementById("lastUpdate").textContent=
+      new Date().toLocaleTimeString();
+
+    setStatus(
+      "dataStatus",
+      "LIVE",
+      "live"
     );
 
-    const ageMinutes =
-      (Date.now() - latestTime.getTime()) / 60000;
+  }catch(error){
 
-    const allowedAge = {
-      "1M": 8,
-      "5M": 15,
-      "15M": 35,
-      "1H": 130
-    }[timeframe] || 35;
-
-    document.getElementById("ohlcStatus").textContent = "LIVE";
-    document.getElementById("ohlcStatus").className = "status live";
-
-    document.getElementById("candleCount").textContent =
-      candles.length;
-
-    document.getElementById("latestCandle").textContent =
-      latest.datetime +
-      " | O " + latest.open.toFixed(2) +
-      " H " + latest.high.toFixed(2) +
-      " L " + latest.low.toFixed(2) +
-      " C " + latest.close.toFixed(2);
-
-    document.getElementById("candleAge").textContent =
-      Number.isFinite(ageMinutes)
-        ? ageMinutes.toFixed(1) + " minutes"
-        : "---";
-
-    marketData.candles = candles;
-    marketData.lastCandleTime = latestTime;
-
-    if (
-      Number.isFinite(ageMinutes) &&
-      ageMinutes >= 0 &&
-      ageMinutes <= allowedAge
-    ) {
-      document.getElementById("candleFreshness").textContent =
-        "FRESH";
-
-      document.getElementById("candleFreshness").className =
-        "status live";
-
-      marketData.candleFresh = true;
-
-      analyzeMarket();
-    } else {
-      document.getElementById("candleFreshness").textContent =
-        "STALE";
-
-      document.getElementById("candleFreshness").className =
-        "status danger";
-
-      marketData.candleFresh = false;
-
-      showWaitingState(
-        "STALE CANDLE DATA",
-        "Latest candle is " +
-        (Number.isFinite(ageMinutes)
-          ? ageMinutes.toFixed(1)
-          : "an invalid") +
-        " minutes old. Waiting for fresh market data."
-      );
-    }
-
-  } catch (error) {
-    console.error("OHLC error:", error);
-
-    document.getElementById("ohlcStatus").textContent = "ERROR";
-    document.getElementById("ohlcStatus").className = "status danger";
-
-    document.getElementById("candleFreshness").textContent = "ERROR";
-    document.getElementById("candleFreshness").className = "status danger";
-
-    marketData.candleFresh = false;
-
-    showWaitingState(
-      "OHLC FEED ERROR",
-      error.message || "Unable to retrieve current candles."
+    setStatus(
+      "dataStatus",
+      "ERROR",
+      "danger"
     );
+
+    console.error(error);
   }
 }
+
+
+/* =========================
+   TWELVE DATA OHLC
+========================= */
+
+async function loadOHLC(){
+
+  const timeframe=
+    document.getElementById("timeframe").value;
+
+  const intervalMap={
+    "1M":"1min",
+    "5M":"5min",
+    "15M":"15min",
+    "1H":"1h"
+  };
+
+  const interval=
+    intervalMap[timeframe] || "15min";
+
+
+  const url=
+    "https://api.twelvedata.com/time_series"+
+    "?symbol=XAU/USD"+
+    "&interval="+
+    encodeURIComponent(interval)+
+    "&outputsize=100"+
+    "&timezone=Africa/Nairobi"+
+    "&order=desc"+
+    "&apikey="+
+    encodeURIComponent(TWELVE_DATA_KEY)+
+    "&_="+Date.now();
+
+
+  document.getElementById("apiDiagnostic").textContent=
+    "REQUESTING...";
+
+  document.getElementById("apiRaw").textContent=
+    url.replace(
+      TWELVE_DATA_KEY,
+      "[API KEY HIDDEN]"
+    );
+
+
+  try{
+
+    const response=
+      await fetch(
+        url,
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    let data;
+
+    try{
+
+      data=await response.json();
+
+    }catch(parseError){
+
+      throw new Error(
+        "Twelve Data did not return valid JSON. HTTP status: "+
+        response.status
+      );
+
+    }
+
+
+    /* SHOW EXACT RESPONSE */
+
+    document.getElementById(
+      "apiRaw"
+    ).textContent=
+      JSON.stringify(data,null,2);
+
+
+    /* SHOW HTTP STATUS */
+
+    document.getElementById(
+      "apiDiagnostic"
+    ).textContent=
+      "HTTP "+response.status+
+      " | Response received";
+
+
+    if(
+      !response.ok ||
+      data.status==="error" ||
+      !Array.isArray(data.values)
+    ){
+
+      const message=
+        data.message ||
+        data.code ||
+        "No valid candle data returned";
+
+      document.getElementById(
+        "apiDiagnostic"
+      ).textContent=
+        "Twelve Data ERROR: "+message;
+
+      setStatus(
+        "ohlcStatus",
+        "ERROR",
+        "danger"
+      );
+
+      setStatus(
+        "candleFreshness",
+        "ERROR",
+        "danger"
+      );
+
+      marketData.candleFresh=false;
+
+      showWaitingState(
+        "WAIT — API ERROR",
+        message
+      );
+
+      return;
+    }
+
+
+    /* =========================
+       VALIDATE CANDLES
+    ========================= */
+
+    const candles=
+      data.values
+      .map(item=>({
+
+        datetime:item.datetime,
+
+        open:Number(item.open),
+
+        high:Number(item.high),
+
+        low:Number(item.low),
+
+        close:Number(item.close)
+
+      }))
+      .filter(item=>
+
+        item.datetime &&
+
+        Number.isFinite(item.open) &&
+
+        Number.isFinite(item.high) &&
+
+        Number.isFinite(item.low) &&
+
+        Number.isFinite(item.close) &&
+
+        item.high>=item.low &&
+
+        item.open>=item.low &&
+
+        item.open<=item.high &&
+
+        item.close>=item.low &&
+
+        item.close<=item.high
+
+      );
+
+
+    if(!candles.length){
+
+      throw new Error(
+        "Twelve Data returned no valid candles"
+      );
+    }
+
+
+    candles.sort((a,b)=>{
+
+      const dateA=
+        new Date(
+          a.datetime.replace(" ","T")
+        );
+
+      const dateB=
+        new Date(
+          b.datetime.replace(" ","T")
+        );
+
+      return dateA-dateB;
+
+    });
+
+
+    const latest=
+      candles[candles.length-1];
+
+
+    const latestTime=
+      new Date(
+        latest.datetime.replace(" ","T")
+      );
+
+
+    const ageMinutes=
+      (
+        Date.now()-
+        latestTime.getTime()
+      )/60000;
+
+
+    const allowedAge={
+
+      "1M":8,
+
+      "5M":15,
+
+      "15M":35,
+
+      "1H":130
+
+    }[timeframe] || 35;
+
+
+    /* =========================
+       DISPLAY DATA
+    ========================= */
+
+    setStatus(
+      "ohlcStatus",
+      "LIVE",
+      "live"
+    );
+
+
+    document.getElementById(
+      "candleCount"
+    ).textContent=
+      candles.length;
+
+
+    document.getElementById(
+      "latestCandle"
+    ).textContent=
+      latest.datetime+
+      " | O "+latest.open.toFixed(2)+
+      " H "+latest.high.toFixed(2)+
+      " L "+latest.low.toFixed(2)+
+      " C "+latest.close.toFixed(2);
+
+
+    document.getElementById(
+      "candleAge"
+    ).textContent=
+      Number.isFinite(ageMinutes)
+      ? ageMinutes.toFixed(1)+" minutes"
+      : "---";
+
+
+    marketData.candles=
+      candles;
+
+    marketData.lastCandleTime=
+      latestTime;
+
+
+    /* =========================
+       FRESHNESS CHECK
+    ========================= */
+
+    if(
+
+      Number.isFinite(ageMinutes) &&
+
+      ageMinutes>=0 &&
+
+      ageMinutes<=allowedAge
+
+    ){
+
+      marketData.candleFresh=true;
+
+
+      setStatus(
+        "candleFreshness",
+        "FRESH",
+        "live"
+      );
+
+
+      document.getElementById(
+        "apiDiagnostic"
+      ).textContent=
+        "SUCCESS — "+
+        candles.length+
+        " valid candles received. Latest candle is fresh.";
+
+
+      analyzeMarket();
+
+    }else{
+
+      marketData.candleFresh=false;
+
+
+      setStatus(
+        "candleFreshness",
+        "STALE",
+        "danger"
+      );
+
+
+      document.getElementById(
+        "apiDiagnostic"
+      ).textContent=
+        "API responded successfully, but the latest candle is stale.";
+
+
+      showWaitingState(
+
+        "WAIT — STALE DATA",
+
+        "Latest candle is "+
+        (
+          Number.isFinite(ageMinutes)
+          ? ageMinutes.toFixed(1)
+          : "an invalid"
+        )+
+        " minutes old."
+
+      );
+
+    }
+
+
+  }catch(error){
+
+    console.error(
+      "OHLC ERROR:",
+      error
+    );
+
+
+    document.getElementById(
+      "apiDiagnostic"
+    ).textContent=
+      "JAVASCRIPT / NETWORK ERROR: "+
+      error.message;
+
+
+    document.getElementById(
+      "apiRaw"
+    ).textContent=
+      error.stack ||
+      error.message;
+
+
+    setStatus(
+      "ohlcStatus",
+      "ERROR",
+      "danger"
+    );
+
+
+    setStatus(
+      "candleFreshness",
+      "ERROR",
+      "danger"
+    );
+
+
+    marketData.candleFresh=false;
+
+
+    showWaitingState(
+
+      "WAIT — FEED ERROR",
+
+      error.message ||
+      "Unable to retrieve current candles."
+
+    );
+
+  }
+
+}
+
+
+/* =========================
+   BASIC MARKET ANALYSIS
+========================= */
+
+function analyzeMarket(){
+
+  if(
+    !marketData.candleFresh ||
+    marketData.candles.length<20
+  ){
+
+    showWaitingState(
+      "WAIT — DATA NOT READY",
+      "Insufficient fresh candle data."
+    );
+
+    return;
+  }
+
+
+  const candles=
+    marketData.candles;
+
+
+  const recent=
+    candles.slice(-20);
+
+
+  const closes=
+    recent.map(c=>c.close);
+
+
+  const first=
+    closes[0];
+
+  const last=
+    closes[closes.length-1];
+
+
+  const change=
+    ((last-first)/first)*100;
+
+
+  let regime="RANGE";
+
+  if(change>0.25){
+
+    regime="BULLISH TREND";
+
+  }else if(change<-0.25){
+
+    regime="BEARISH TREND";
+
+  }else{
+
+    regime="RANGE / CONSOLIDATION";
+
+  }
+
+
+  document.getElementById(
+    "regime"
+  ).textContent=regime;
+
+
+  document.getElementById(
+    "strategy"
+  ).textContent=
+    "WAITING FOR MULTI-CONFIRMATION";
+
+
+  document.getElementById(
+    "signalStrength"
+  ).textContent=
+    "DATA READY";
+
+
+  document.getElementById(
+    "signalReason"
+  ).textContent=
+    "Fresh candles available. Strategy confirmation engine can now evaluate structure, trend and candle behaviour.";
+
+}
+
+
+/* =========================
+   REFRESH
+========================= */
+
+async function refreshAll(){
+
+  await updatePrice();
+
+  await loadOHLC();
+
+}
+
+
+/* =========================
+   TRADINGVIEW
+========================= */
+
+function loadTradingView(){
+
+  const container=
+    document.getElementById(
+      "tradingview_chart"
+    );
+
+  container.innerHTML="";
+
+
+  const script=
+    document.createElement("script");
+
+
+  script.src=
+    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+
+
+  script.async=true;
+
+
+  script.innerHTML=
+    JSON.stringify({
+
+      autosize:true,
+
+      symbol:"OANDA:XAUUSD",
+
+      interval:"15",
+
+      timezone:"Africa/Nairobi",
+
+      theme:"dark",
+
+      style:"1",
+
+      locale:"en",
+
+      enable_publishing:false,
+
+      allow_symbol_change:true,
+
+      calendar:false,
+
+      support_host:
+        "https://www.tradingview.com"
+
+    });
+
+
+  container.appendChild(script);
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadTradingView();
+
+refreshAll();
+
+
+setInterval(
+  updatePrice,
+  5000
+);
+
+
+setInterval(
+  loadOHLC,
+  60000
+);
+
+
+document.getElementById(
+  "timeframe"
+).addEventListener(
+  "change",
+  loadOHLC
+);
+
+</script>
+
+</body>
+</html>
