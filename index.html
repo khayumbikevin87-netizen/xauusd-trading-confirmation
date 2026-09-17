@@ -1,150 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XAUUSD Trading Confirmation</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #0b0f14;
-      color: #e8edf3;
-      font-family: Arial, sans-serif;
-    }
-
-    header {
-      padding: 18px;
-      border-bottom: 1px solid #202833;
-      background: #10161d;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 21px;
-    }
-
-    .subtitle {
-      margin-top: 6px;
-      color: #8995a3;
-      font-size: 13px;
-    }
-
-    .status {
-      margin: 15px;
-      padding: 12px;
-      border: 1px solid #27313c;
-      border-radius: 10px;
-      background: #111820;
-    }
-
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      margin: 7px 0;
-    }
-
-    .label {
-      color: #8995a3;
-    }
-
-    .value {
-      font-weight: bold;
-    }
-
-    .waiting {
-      color: #f0b429;
-    }
-
-    .chart {
-      margin: 15px;
-      height: 420px;
-      border: 1px solid #27313c;
-      border-radius: 10px;
-      background:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 50px 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #687584;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .info {
-      margin: 15px;
-      padding: 15px;
-      border: 1px solid #27313c;
-      border-radius: 10px;
-      background: #111820;
-    }
-
-    .info h2 {
-      font-size: 16px;
-      margin-top: 0;
-    }
-
-    .info p {
-      color: #9ca8b5;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XAUUSD Live</title>
+<style>
+body{margin:0;background:#0b0f14;color:#eee;font-family:Arial}
+header{padding:18px;background:#111820;border-bottom:1px solid #29323c}
+h1{margin:0;font-size:21px}.sub{color:#8d99a6;font-size:13px;margin-top:5px}
+.card{margin:15px;padding:18px;background:#111820;border:1px solid #29323c;border-radius:12px}
+.row{display:flex;justify-content:space-between;margin:12px 0}
+.label{color:#8995a2}.price{font-size:32px;font-weight:bold}
+.live{color:#35d07f}.bad{color:#ff6464}.wait{color:#f0b429}
+#chart{height:420px}
+</style>
 </head>
 
 <body>
-
 <header>
-  <h1>Gold Trading Confirmation</h1>
-  <div class="subtitle">XAUUSD • Market Analysis Engine</div>
+<h1>XAUUSD Trading Confirmation</h1>
+<div class="sub">Live Gold Market Data</div>
 </header>
 
-<div class="status">
-  <div class="status-row">
-    <span class="label">Market</span>
-    <span class="value">XAUUSD</span>
-  </div>
-
-  <div class="status-row">
-    <span class="label">Connection</span>
-    <span class="value waiting" id="connection">TESTING...</span>
-  </div>
-
-  <div class="status-row">
-    <span class="label">Live Price</span>
-    <span class="value" id="price">Waiting for data</span>
-  </div>
-
-  <div class="status-row">
-    <span class="label">Last Update</span>
-    <span class="value" id="update">Waiting</span>
-  </div>
+<div class="card">
+<div class="row">
+<span class="label">Connection</span>
+<span id="status" class="wait">CONNECTING</span>
 </div>
 
-<div class="chart">
-  <div>
-    <strong>REAL XAUUSD CHART</strong><br><br>
-    Data connection will be added next.
-  </div>
+<div class="row">
+<span class="label">XAUUSD</span>
+<span id="price" class="price">---</span>
 </div>
 
-<div class="info">
-  <h2>System Status</h2>
-  <p>
-    The analysis engine will remain disabled until the website
-    receives valid live XAUUSD market data.
-  </p>
-  <p>
-    No fake prices. No simulated signals. The chart, analysis and
-    confirmation engine will use the same verified market feed.
-  </p>
+<div class="row">
+<span class="label">Bid</span>
+<span id="bid">---</span>
 </div>
+
+<div class="row">
+<span class="label">Ask</span>
+<span id="ask">---</span>
+</div>
+
+<div class="row">
+<span class="label">Last update</span>
+<span id="updated">---</span>
+</div>
+</div>
+
+<div class="card">
+<div id="chart">
+Loading live market data...
+</div>
+</div>
+
+<script>
+const statusEl=document.getElementById("status");
+const priceEl=document.getElementById("price");
+const bidEl=document.getElementById("bid");
+const askEl=document.getElementById("ask");
+const updatedEl=document.getElementById("updated");
+
+async function getGold(){
+  try{
+    const r=await fetch("https://api.gold-api.com/price/XAU",{
+      cache:"no-store"
+    });
+
+    if(!r.ok) throw new Error("API error");
+
+    const d=await r.json();
+
+    if(!d.price || !Number.isFinite(Number(d.price))){
+      throw new Error("Invalid price");
+    }
+
+    priceEl.textContent="$"+Number(d.price).toFixed(2);
+
+    if(d.bid) bidEl.textContent="$"+Number(d.bid).toFixed(2);
+    if(d.ask) askEl.textContent="$"+Number(d.ask).toFixed(2);
+
+    updatedEl.textContent=new Date().toLocaleTimeString();
+
+    statusEl.textContent="LIVE";
+    statusEl.className="live";
+
+    document.getElementById("chart").innerHTML=
+      "LIVE XAUUSD DATA<br><br>"+
+      "<span style='font-size:28px;font-weight:bold'>$"+
+      Number(d.price).toFixed(2)+"</span>";
+
+  }catch(e){
+    statusEl.textContent="DISCONNECTED";
+    statusEl.className="bad";
+    priceEl.textContent="---";
+    updatedEl.textContent="Data unavailable";
+  }
+}
+
+getGold();
+setInterval(getGold,5000);
+</script>
 
 </body>
 </html>
