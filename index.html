@@ -2,270 +2,178 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XAUUSD Trading Confirmation</title>
 
 <style>
 *{box-sizing:border-box}
-
 body{
-margin:0;
-background:#07111f;
-color:#e8eef7;
-font-family:Arial,sans-serif
+  margin:0;
+  background:#071018;
+  color:#e8eef5;
+  font-family:Arial,Helvetica,sans-serif;
 }
-
 .container{
-width:100%;
-max-width:1250px;
-margin:auto;
-padding:16px
+  width:min(1400px,96%);
+  margin:auto;
+  padding:18px 0 40px;
 }
-
-h1{
-margin:0 0 5px;
-font-size:24px
+h1{margin:0;font-size:28px}
+.subtitle{color:#8fa3b7;margin:6px 0 20px}
+.panel{
+  background:#0d1822;
+  border:1px solid #20303d;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:16px;
 }
-
-.subtitle{
-color:#8ea2bd;
-margin-bottom:18px
+.top{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
 }
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:12px
-}
-
 .card{
-background:#0d1b2e;
-border:1px solid #1d334d;
-border-radius:12px;
-padding:15px
+  background:#111f2b;
+  border:1px solid #233745;
+  border-radius:10px;
+  padding:13px;
 }
-
 .label{
-color:#8296b1;
-font-size:12px;
-text-transform:uppercase;
-margin-bottom:7px
+  color:#8195a7;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
 }
-
 .value{
-font-size:20px;
-font-weight:bold
+  font-size:18px;
+  font-weight:bold;
+  margin-top:7px;
 }
-
-.live{color:#35d07f}
-.danger{color:#ff6262}
+.live{color:#57e389}
 .warn{color:#ffc857}
-.muted{color:#94a6bc}
-
-button,select{
-background:#142942;
-color:#fff;
-border:1px solid #31506f;
-border-radius:8px;
-padding:10px 12px;
-font-size:14px
-}
-
-button{cursor:pointer}
+.bad{color:#ff6874}
+.neutral{color:#c5d0da}
 
 .controls{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin:15px 0
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
 }
-
-/* CHART */
+button{
+  background:#172734;
+  border:1px solid #2c4352;
+  color:#dce8f1;
+  padding:10px 15px;
+  border-radius:8px;
+  cursor:pointer;
+}
+button.active{
+  background:#24475d;
+  border-color:#4d91b8;
+}
+button:hover{background:#213746}
 
 .chart{
-width:100%;
-margin-top:18px;
-background:#0d1b2e;
-border:1px solid #1d334d;
-border-radius:12px;
-overflow:hidden
+  width:100%;
+  height:700px;
+  min-height:600px;
+  border-radius:10px;
+  overflow:hidden;
 }
 
-.chart-header{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-padding:12px 15px;
-border-bottom:1px solid #1d334d;
-background:#0b1728
+.decision{
+  text-align:center;
+  padding:20px;
 }
-
-.chart-title{
-font-size:14px;
-font-weight:bold
+.decision-main{
+  font-size:30px;
+  font-weight:bold;
 }
-
-.chart-status{
-font-size:12px;
-color:#8296b1
+.reason{
+  color:#9cafbf;
+  margin-top:8px;
+  line-height:1.5;
 }
-
-.chart-body{
-width:100%;
-height:700px;
-min-height:600px
+.trade-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  margin-top:15px;
 }
-
-#tradingview_chart{
-width:100%;
-height:100%
+.metric{
+  background:#111f2b;
+  border:1px solid #233745;
+  padding:14px;
+  border-radius:10px;
+  text-align:center;
 }
-
-#tradingview_chart iframe{
-width:100%!important;
-height:100%!important;
-border:0
+.metric .big{
+  font-size:20px;
+  font-weight:bold;
+  margin-top:6px;
 }
-
-/* SIGNAL */
-
-.signal{
-margin-top:15px;
-padding:22px;
-text-align:center;
-border-radius:12px;
-background:#0d1b2e;
-border:1px solid #1d334d
-}
-
-.signal-main{
-font-size:32px;
-font-weight:bold;
-margin:8px 0
-}
-
-.signal-details{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:10px;
-margin-top:18px;
-text-align:left
-}
-
-.detail{
-background:#091525;
-border:1px solid #1b3048;
-border-radius:9px;
-padding:12px
-}
-
-.detail-value{
-font-size:16px;
-font-weight:bold
-}
-
-/* CONFIRMATIONS */
 
 .confirmations{
-margin-top:15px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:10px
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.confirm{
+  min-height:115px;
+}
+.confirm-title{
+  font-weight:bold;
+  margin:6px 0;
+}
+.confirm-text{
+  color:#9fb0be;
+  font-size:13px;
+  line-height:1.45;
 }
 
-.confirmation{
-background:#0d1b2e;
-border:1px solid #1d334d;
-border-radius:10px;
-padding:13px
+.structure-box{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.structure-item{
+  background:#101e29;
+  border:1px solid #263c4b;
+  border-radius:10px;
+  padding:13px;
+}
+.structure-value{
+  font-size:18px;
+  font-weight:bold;
+  margin-top:6px;
 }
 
-.confirmation-name{
-font-size:12px;
-color:#8296b1;
-text-transform:uppercase
+.diagnostics{
+  font-size:13px;
+  line-height:1.7;
+  color:#a8b8c5;
+}
+pre{
+  white-space:pre-wrap;
+  word-break:break-word;
+  margin:0;
 }
 
-.confirmation-value{
-font-size:15px;
-font-weight:bold;
-margin-top:5px
+@media(max-width:900px){
+  .top,.confirmations{grid-template-columns:repeat(2,1fr)}
+  .trade-grid{grid-template-columns:repeat(2,1fr)}
+  .structure-box{grid-template-columns:repeat(2,1fr)}
+  .chart{height:620px;min-height:560px}
 }
-
-/* DIAGNOSTIC */
-
-.diagnostic{
-margin-top:15px;
-background:#090f19;
-border:1px solid #39465a;
-border-radius:12px;
-padding:15px
-}
-
-.diagnostic pre{
-white-space:pre-wrap;
-word-break:break-word;
-font-family:monospace;
-font-size:12px;
-line-height:1.5;
-color:#d5dfeb;
-max-height:400px;
-overflow:auto
-}
-
-.small{
-font-size:12px;
-color:#8193aa;
-margin-top:8px
-}
-
-hr{
-border:0;
-border-top:1px solid #20344b;
-margin:14px 0
-}
-
-@media(max-width:700px){
-
-.container{padding:10px}
-
-h1{font-size:21px}
-
-.subtitle{
-font-size:13px;
-line-height:1.4
-}
-
-.grid{
-grid-template-columns:1fr 1fr;
-gap:8px
-}
-
-.card{padding:12px}
-
-.value{font-size:17px}
-
-.chart-body{
-height:620px;
-min-height:620px
-}
-
-.signal{
-padding:17px
-}
-}
-
-@media(max-width:430px){
-
-.grid{
-grid-template-columns:1fr
-}
-
-.chart-body{
-height:560px;
-min-height:560px
-}
+@media(max-width:500px){
+  .container{width:98%;padding-top:10px}
+  h1{font-size:23px}
+  .top,.confirmations,.trade-grid,.structure-box{
+    grid-template-columns:1fr 1fr;
+  }
+  .chart{height:560px;min-height:520px}
+  .decision-main{font-size:23px}
 }
 </style>
 </head>
@@ -274,1737 +182,95 @@ min-height:560px
 
 <div class="container">
 
-<h1>XAUUSD Trading Confirmation</h1>
-
-<div class="subtitle">
-Real XAU/USD market data • Multi-confirmation engine • Selective signal system
-</div>
-
-<div class="controls">
-
-<select id="timeframe">
-<option value="1M">1 Minute</option>
-<option value="5M">5 Minutes</option>
-<option value="15M" selected>15 Minutes</option>
-<option value="1H">1 Hour</option>
-</select>
-
-<button onclick="refreshAll()">Refresh Data</button>
-
-</div>
-
-
-<!-- DATA -->
-
-<div class="grid">
-
-<div class="card">
-<div class="label">Data connection</div>
-<div id="dataStatus" class="value muted">CONNECTING</div>
-</div>
-
-<div class="card">
-<div class="label">XAUUSD spot</div>
-<div id="spotPrice" class="value">---</div>
-</div>
-
-<div class="card">
-<div class="label">Last update</div>
-<div id="lastUpdate" class="value muted">---</div>
-</div>
-
-<div class="card">
-<div class="label">OHLC connection</div>
-<div id="ohlcStatus" class="value muted">CONNECTING</div>
-</div>
-
-<div class="card">
-<div class="label">Candles loaded</div>
-<div id="candleCount" class="value">---</div>
-</div>
-
-<div class="card">
-<div class="label">Latest candle</div>
-<div id="latestCandle" class="value muted" style="font-size:13px">---</div>
-</div>
-
-<div class="card">
-<div class="label">Candle freshness</div>
-<div id="candleFreshness" class="value muted">---</div>
-</div>
-
-<div class="card">
-<div class="label">Candle age</div>
-<div id="candleAge" class="value muted">---</div>
-</div>
-
-<div class="card">
-<div class="label">Market data source</div>
-<div class="value">Twelve Data</div>
-</div>
-
-</div>
-
-
-<!-- CHART -->
-
-<div class="chart">
-
-<div class="chart-header">
-
-<div class="chart-title">
-XAUUSD LIVE CHART
-</div>
-
-<div id="chartStatus" class="chart-status">
-TradingView • 15M
-</div>
-
-</div>
-
-<div class="chart-body">
-<div id="tradingview_chart"></div>
-</div>
-
-</div>
-
-
-<!-- SIGNAL -->
-
-<div class="signal">
-
-<div class="label">Trading decision</div>
-
-<div id="regime" class="value">
-WAIT
-</div>
-
-<div id="strategy" class="signal-main">
-WAITING FOR DATA
-</div>
-
-<div class="label">Signal strength</div>
-
-<div id="signalStrength" class="signal-main">
----
-</div>
-
-<div id="signalReason" class="muted">
-Waiting for reliable market data.
-</div>
-
-
-<div class="signal-details">
-
-<div class="detail">
-<div class="label">Entry</div>
-<div id="entryPrice" class="detail-value">---</div>
-</div>
-
-<div class="detail">
-<div class="label">Stop loss</div>
-<div id="stopLoss" class="detail-value">---</div>
-</div>
-
-<div class="detail">
-<div class="label">Take profit</div>
-<div id="takeProfit" class="detail-value">---</div>
-</div>
-
-<div class="detail">
-<div class="label">Risk / reward</div>
-<div id="riskReward" class="detail-value">---</div>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- CONFIRMATIONS -->
-
-<div class="confirmations">
-
-<div class="confirmation">
-<div class="confirmation-name">Trend</div>
-<div id="trendConfirmation" class="confirmation-value muted">---</div>
-</div>
-
-<div class="confirmation">
-<div class="confirmation-name">Structure</div>
-<div id="structureConfirmation" class="confirmation-value muted">---</div>
-</div>
-
-<div class="confirmation">
-<div class="confirmation-name">Momentum</div>
-<div id="momentumConfirmation" class="confirmation-value muted">---</div>
-</div>
-
-<div class="confirmation">
-<div class="confirmation-name">Level</div>
-<div id="levelConfirmation" class="confirmation-value muted">---</div>
-</div>
-
-<div class="confirmation">
-<div class="confirmation-name">Candle</div>
-<div id="candleConfirmation" class="confirmation-value muted">---</div>
-</div>
-
-<div class="confirmation">
-<div class="confirmation-name">Volatility</div>
-<div id="volatilityConfirmation" class="confirmation-value muted">---</div>
-</div>
-
-<div class="confirmation">
-<div class="confirmation-name">Setup</div>
-<div id="setupConfirmation" class="confirmation-value muted">---</div>
-</div>
-
-</div>
-
-
-<!-- DIAGNOSTIC -->
-
-<div class="diagnostic">
-
-<div class="label">Twelve Data diagnostic</div>
-
-<div id="apiDiagnostic" class="value muted">
-Waiting for API response...
-</div>
-
-<hr>
-
-<div class="label">Latest API response</div>
-
-<pre id="apiRaw">No response yet.</pre>
-
-<div class="small">
-Live diagnostics are shown here so API problems can be identified directly from the website.
-</div>
-
-</div>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   TWELVE DATA
-========================================================= */
-
-const TWELVE_DATA_KEY =
-"394e133dfaf844d580ca4d8d1ca5d1da";
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-const marketData={
-spot:null,
-candles:[],
-candleFresh:false,
-lastCandleTime:null
-};
-
-
-/* =========================================================
-   UI
-========================================================= */
-
-function setStatus(id,text,type){
-
-const el=document.getElementById(id);
-
-el.textContent=text;
-
-el.className="value "+
-(
-type==="live"?"live":
-type==="danger"?"danger":
-type==="warn"?"warn":
-"muted"
-);
-
-}
-
-
-function setConfirmation(id,text,type="muted"){
-
-const el=document.getElementById(id);
-
-el.textContent=text;
-
-el.className="confirmation-value "+
-(
-type==="live"?"live":
-type==="danger"?"danger":
-type==="warn"?"warn":
-"muted"
-);
-
-}
-
-
-function resetSignal(){
-
-document.getElementById("entryPrice").textContent="---";
-document.getElementById("stopLoss").textContent="---";
-document.getElementById("takeProfit").textContent="---";
-document.getElementById("riskReward").textContent="---";
-
-setConfirmation("trendConfirmation","---");
-setConfirmation("structureConfirmation","---");
-setConfirmation("momentumConfirmation","---");
-setConfirmation("levelConfirmation","---");
-setConfirmation("candleConfirmation","---");
-setConfirmation("volatilityConfirmation","---");
-setConfirmation("setupConfirmation","---");
-}
-
-
-function showWaitingState(title,reason){
-
-document.getElementById("regime").textContent=title;
-
-document.getElementById("strategy").textContent=title;
-
-document.getElementById("signalStrength").textContent="---";
-
-document.getElementById("signalReason").textContent=reason;
-
-resetSignal();
-
-}
-
-
-/* =========================================================
-   PRICE
-========================================================= */
-
-async function updatePrice(){
-
-const url=
-"https://api.twelvedata.com/price"+
-"?symbol=XAU/USD"+
-"&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
-"&_="+Date.now();
-
-try{
-
-const response=
-await fetch(url,{cache:"no-store"});
-
-const data=
-await response.json();
-
-document.getElementById("apiRaw").textContent=
-JSON.stringify(data,null,2);
-
-if(
-!response.ok ||
-data.status==="error" ||
-data.price===undefined
-){
-
-throw new Error(
-data.message ||
-"Twelve Data price request failed"
-);
-
-}
-
-const price=Number(data.price);
-
-if(!Number.isFinite(price)){
-
-throw new Error(
-"Invalid XAU/USD price returned"
-);
-
-}
-
-marketData.spot=price;
-
-document.getElementById("spotPrice").textContent=
-"$"+price.toFixed(2);
-
-document.getElementById("lastUpdate").textContent=
-new Date().toLocaleTimeString();
-
-setStatus(
-"dataStatus",
-"LIVE",
-"live"
-);
-
-document.getElementById("apiDiagnostic").textContent=
-"PRICE LIVE — Twelve Data XAU/USD: $"+
-price.toFixed(2);
-
-}catch(error){
-
-console.error(error);
-
-setStatus(
-"dataStatus",
-"ERROR",
-"danger"
-);
-
-document.getElementById("spotPrice").textContent="---";
-
-document.getElementById("lastUpdate").textContent="---";
-
-document.getElementById("apiDiagnostic").textContent=
-"PRICE ERROR: "+error.message;
-}
-
-}
-
-
-/* =========================================================
-   OHLC
-========================================================= */
-
-async function loadOHLC(){
-
-const timeframe=
-document.getElementById("timeframe").value;
-
-const intervalMap={
-"1M":"1min",
-"5M":"5min",
-"15M":"15min",
-"1H":"1h"
-};
-
-const interval=
-intervalMap[timeframe]||"15min";
-
-const url=
-"https://api.twelvedata.com/time_series"+
-"?symbol=XAU/USD"+
-"&interval="+encodeURIComponent(interval)+
-"&outputsize=100"+
-"&timezone=Africa/Nairobi"+
-"&order=desc"+
-"&apikey="+encodeURIComponent(TWELVE_DATA_KEY)+
-"&_="+Date.now();
-
-try{
-
-const response=
-await fetch(url,{cache:"no-store"});
-
-const data=
-await response.json();
-
-if(
-!response.ok ||
-data.status==="error" ||
-!Array.isArray(data.values)
-){
-
-throw new Error(
-data.message ||
-"No valid candle data returned"
-);
-
-}
-
-
-const candles=
-data.values
-.map(item=>({
-
-datetime:item.datetime,
-
-open:Number(item.open),
-
-high:Number(item.high),
-
-low:Number(item.low),
-
-close:Number(item.close)
-
-}))
-.filter(item=>
-
-item.datetime &&
-
-Number.isFinite(item.open) &&
-Number.isFinite(item.high) &&
-Number.isFinite(item.low) &&
-Number.isFinite(item.close) &&
-
-item.high>=item.low &&
-
-item.open>=item.low &&
-item.open<=item.high &&
-
-item.close>=item.low &&
-item.close<=item.high
-
-);
-
-
-if(!candles.length){
-
-throw new Error(
-"No valid candles returned"
-);
-
-}
-
-
-candles.sort((a,b)=>{
-
-const dateA=
-new Date(a.datetime.replace(" ","T"));
-
-const dateB=
-new Date(b.datetime.replace(" ","T"));
-
-return dateA-dateB;
-
-});
-
-
-const latest=
-candles[candles.length-1];
-
-const latestTime=
-new Date(
-latest.datetime.replace(" ","T")
-);
-
-
-const ageMinutes=
-(
-Date.now()-
-latestTime.getTime()
-)/60000;
-
-
-const allowedAge={
-"1M":8,
-"5M":15,
-"15M":35,
-"1H":130
-}[timeframe]||35;
-
-
-setStatus(
-"ohlcStatus",
-"LIVE",
-"live"
-);
-
-
-document.getElementById("candleCount").textContent=
-candles.length;
-
-
-document.getElementById("latestCandle").textContent=
-latest.datetime+
-" | O "+latest.open.toFixed(2)+
-" H "+latest.high.toFixed(2)+
-" L "+latest.low.toFixed(2)+
-" C "+latest.close.toFixed(2);
-
-
-document.getElementById("candleAge").textContent=
-Number.isFinite(ageMinutes)
-?ageMinutes.toFixed(1)+" minutes"
-:"---";
-
-
-marketData.candles=candles;
-
-marketData.lastCandleTime=
-latestTime;
-
-
-if(
-Number.isFinite(ageMinutes)&&
-ageMinutes>=0&&
-ageMinutes<=allowedAge
-){
-
-marketData.candleFresh=true;
-
-setStatus(
-"candleFreshness",
-"FRESH",
-"live"
-);
-
-document.getElementById("apiDiagnostic").textContent=
-"SUCCESS — "+
-candles.length+
-" valid "+
-interval+
-" candles. Latest candle is fresh.";
-
-analyzeMarket();
-
-}else{
-
-marketData.candleFresh=false;
-
-setStatus(
-"candleFreshness",
-"STALE",
-"danger"
-);
-
-showWaitingState(
-"WAIT — STALE DATA",
-"Latest candle is "+
-(
-Number.isFinite(ageMinutes)
-?ageMinutes.toFixed(1)
-:"an invalid"
-)+
-" minutes old."
-);
-
-}
-
-}catch(error){
-
-console.error(error);
-
-setStatus(
-"ohlcStatus",
-"ERROR",
-"danger"
-);
-
-setStatus(
-"candleFreshness",
-"ERROR",
-"danger"
-);
-
-marketData.candleFresh=false;
-
-document.getElementById("apiDiagnostic").textContent=
-"OHLC ERROR: "+error.message;
-
-showWaitingState(
-"WAIT — FEED ERROR",
-error.message
-);
-
-}
-
-}
-
-
-/* =========================================================
-   TECHNICAL FUNCTIONS
-========================================================= */
-
-function ema(values,period){
-
-if(values.length<period) return null;
-
-const multiplier=
-2/(period+1);
-
-let value=0;
-
-for(let i=0;i<period;i++){
-value+=values[i];
-}
-
-value/=period;
-
-for(let i=period;i<values.length;i++){
-
-value=
-(values[i]-value)*multiplier+value;
-
-}
-
-return value;
-}
-
-
-function atr(candles,period=14){
-
-if(candles.length<period+1) return null;
-
-const trs=[];
-
-for(let i=1;i<candles.length;i++){
-
-const current=candles[i];
-const previous=candles[i-1];
-
-const tr=Math.max(
-current.high-current.low,
-Math.abs(current.high-previous.close),
-Math.abs(current.low-previous.close)
-);
-
-trs.push(tr);
-}
-
-const recent=trs.slice(-period);
-
-return recent.reduce((a,b)=>a+b,0)/recent.length;
-}
-
-
-function averageRange(candles,period=20){
-
-const recent=
-candles.slice(-period);
-
-if(!recent.length)return null;
-
-return recent.reduce(
-(sum,c)=>sum+(c.high-c.low),
-0
-)/recent.length;
-}
-
-
-function highest(candles,count){
-
-const recent=
-candles.slice(-count);
-
-return Math.max(
-...recent.map(c=>c.high)
-);
-}
-
-
-function lowest(candles,count){
-
-const recent=
-candles.slice(-count);
-
-return Math.min(
-...recent.map(c=>c.low)
-);
-}
-
-
-function candleType(c){
-
-const range=
-c.high-c.low;
-
-if(range<=0){
-
-return {
-name:"NEUTRAL",
-bull:false,
-bear:false,
-strength:0
-};
-
-}
-
-const body=
-Math.abs(c.close-c.open);
-
-const upper=
-c.high-Math.max(c.open,c.close);
-
-const lower=
-Math.min(c.open,c.close)-c.low;
-
-const bodyRatio=
-body/range;
-
-const closePosition=
-(c.close-c.low)/range;
-
-
-if(
-c.close>c.open &&
-bodyRatio>=0.60 &&
-closePosition>=0.70
-){
-
-return {
-name:"BULLISH STRONG",
-bull:true,
-bear:false,
-strength:bodyRatio
-};
-
-}
-
-
-if(
-c.close<c.open &&
-bodyRatio>=0.60 &&
-closePosition<=0.30
-){
-
-return {
-name:"BEARISH STRONG",
-bull:false,
-bear:true,
-strength:bodyRatio
-};
-
-}
-
-
-if(
-lower>=body*1.8 &&
-closePosition>=0.60
-){
-
-return {
-name:"BULLISH REJECTION",
-bull:true,
-bear:false,
-strength:0.6
-};
-
-}
-
-
-if(
-upper>=body*1.8 &&
-closePosition<=0.40
-){
-
-return {
-name:"BEARISH REJECTION",
-bull:false,
-bear:true,
-strength:0.6
-};
-
-}
-
-
-return {
-name:"NEUTRAL",
-bull:false,
-bear:false,
-strength:bodyRatio
-};
-
-}
-
-
-/* =========================================================
-   STRUCTURE
-========================================================= */
-
-function structureAnalysis(candles){
-
-if(candles.length<30){
-
-return {
-direction:"NEUTRAL",
-score:0,
-text:"INSUFFICIENT"
-};
-
-}
-
-const recent=
-candles.slice(-30);
-
-const firstHalf=
-recent.slice(0,15);
-
-const secondHalf=
-recent.slice(15);
-
-const firstHigh=
-Math.max(...firstHalf.map(c=>c.high));
-
-const secondHigh=
-Math.max(...secondHalf.map(c=>c.high));
-
-const firstLow=
-Math.min(...firstHalf.map(c=>c.low));
-
-const secondLow=
-Math.min(...secondHalf.map(c=>c.low));
-
-
-if(
-secondHigh>firstHigh &&
-secondLow>firstLow
-){
-
-return {
-direction:"BULLISH",
-score:18,
-text:"HH + HL"
-};
-
-}
-
-
-if(
-secondHigh<firstHigh &&
-secondLow<firstLow
-){
-
-return {
-direction:"BEARISH",
-score:18,
-text:"LH + LL"
-};
-
-}
-
-
-if(secondLow>firstLow){
-
-return {
-direction:"BULLISH",
-score:9,
-text:"HIGHER LOW"
-};
-
-}
-
-
-if(secondHigh<firstHigh){
-
-return {
-direction:"BEARISH",
-score:9,
-text:"LOWER HIGH"
-};
-
-}
-
-
-return {
-direction:"NEUTRAL",
-score:0,
-text:"MIXED"
-};
-
-}
-
-
-/* =========================================================
-   SETUP DETECTION
-========================================================= */
-
-function detectSetup(candles,direction,atrValue){
-
-const last=
-candles[candles.length-1];
-
-const previous=
-candles[candles.length-2];
-
-const recentHigh=
-highest(candles,20);
-
-const recentLow=
-lowest(candles,20);
-
-const tolerance=
-atrValue ? atrValue*0.35 : 2;
-
-let setup="NONE";
-let score=0;
-
-
-/* Breakout */
-
-if(
-direction==="BULLISH" &&
-last.close>recentHigh &&
-previous.close<=recentHigh+tolerance
-){
-
-setup="BULLISH BREAKOUT";
-score=16;
-
-}
-
-
-if(
-direction==="BEARISH" &&
-last.close<recentLow &&
-previous.close>=recentLow-tolerance
-){
-
-setup="BEARISH BREAKOUT";
-score=16;
-
-}
-
-
-/* Pullback */
-
-if(
-direction==="BULLISH" &&
-last.low<=recentHigh &&
-last.close>last.open &&
-last.close>previous.close
-){
-
-setup="BULLISH PULLBACK";
-score=12;
-
-}
-
-
-if(
-direction==="BEARISH" &&
-last.high>=recentLow &&
-last.close<last.open &&
-last.close<previous.close
-){
-
-setup="BEARISH PULLBACK";
-score=12;
-
-}
-
-
-return {
-name:setup,
-score:score
-};
-
-}
-
-
-/* =========================================================
-   MAIN ANALYSIS ENGINE
-========================================================= */
-
-function analyzeMarket(){
-
-if(
-!marketData.candleFresh ||
-marketData.candles.length<50
-){
-
-showWaitingState(
-"WAIT — DATA NOT READY",
-"At least 50 fresh candles are required for reliable multi-confirmation analysis."
-);
-
-return;
-}
-
-
-const candles=
-marketData.candles;
-
-const closes=
-candles.map(c=>c.close);
-
-const current=
-candles[candles.length-1];
-
-const previous=
-candles[candles.length-2];
-
-const price=
-marketData.spot || current.close;
-
-
-/* EMA */
-
-const ema20=
-ema(closes,20);
-
-const ema50=
-ema(closes,50);
-
-
-/* ATR */
-
-const atrValue=
-atr(candles,14);
-
-const avgRange=
-averageRange(candles,20);
-
-
-/* STRUCTURE */
-
-const structure=
-structureAnalysis(candles);
-
-
-/* TREND */
-
-let trendDirection="NEUTRAL";
-let trendScore=0;
-
-if(
-ema20 &&
-ema50 &&
-price>ema20 &&
-ema20>ema50
-){
-
-trendDirection="BULLISH";
-trendScore=18;
-
-}else if(
-ema20 &&
-ema50 &&
-price<ema20 &&
-ema20<ema50
-){
-
-trendDirection="BEARISH";
-trendScore=18;
-
-}else if(
-ema20 &&
-price>ema20
-){
-
-trendDirection="BULLISH";
-trendScore=8;
-
-}else if(
-ema20 &&
-price<ema20
-){
-
-trendDirection="BEARISH";
-trendScore=8;
-
-}
-
-
-/* MOMENTUM */
-
-const momentumLookback=
-candles.slice(-10);
-
-const momentumStart=
-momentumLookback[0].close;
-
-const momentumEnd=
-momentumLookback[momentumLookback.length-1].close;
-
-const momentumChange=
-((momentumEnd-momentumStart)/momentumStart)*100;
-
-let momentumDirection="NEUTRAL";
-let momentumScore=0;
-
-if(momentumChange>0.10){
-
-momentumDirection="BULLISH";
-momentumScore=12;
-
-}else if(momentumChange<-0.10){
-
-momentumDirection="BEARISH";
-momentumScore=12;
-
-}
-
-
-/* CANDLE */
-
-const candle=
-candleType(current);
-
-let candleScore=0;
-
-if(
-trendDirection==="BULLISH" &&
-candle.bull
-){
-
-candleScore=14;
-
-}else if(
-trendDirection==="BEARISH" &&
-candle.bear
-){
-
-candleScore=14;
-
-}else if(
-candle.bull || candle.bear
-){
-
-candleScore=5;
-
-}
-
-
-/* LEVEL */
-
-const resistance=
-highest(candles.slice(0,-1),20);
-
-const support=
-lowest(candles.slice(0,-1),20);
-
-let levelDirection="NEUTRAL";
-let levelScore=0;
-
-if(
-price>resistance
-){
-
-levelDirection="BULLISH BREAK";
-levelScore=12;
-
-}else if(
-price<support
-){
-
-levelDirection="BEARISH BREAK";
-levelScore=12;
-
-}else if(
-Math.abs(price-support) <=
-(atrValue||1)*0.5
-){
-
-levelDirection="SUPPORT";
-levelScore=8;
-
-}else if(
-Math.abs(price-resistance) <=
-(atrValue||1)*0.5
-){
-
-levelDirection="RESISTANCE";
-levelScore=8;
-
-}
-
-
-/* VOLATILITY */
-
-let volatility="NORMAL";
-let volatilityScore=6;
-
-if(atrValue && avgRange){
-
-const ratio=
-atrValue/avgRange;
-
-if(ratio<0.55){
-
-volatility="LOW";
-volatilityScore=0;
-
-}else if(ratio>2.2){
-
-volatility="EXTREME";
-volatilityScore=0;
-
-}
-
-}
-
-
-/* SETUP */
-
-const setup=
-detectSetup(
-candles,
-trendDirection,
-atrValue
-);
-
-
-/* TOTAL SCORES */
-
-let bullish=0;
-let bearish=0;
-
-if(trendDirection==="BULLISH")
-bullish+=trendScore;
-
-if(trendDirection==="BEARISH")
-bearish+=trendScore;
-
-if(structure.direction==="BULLISH")
-bullish+=structure.score;
-
-if(structure.direction==="BEARISH")
-bearish+=structure.score;
-
-if(momentumDirection==="BULLISH")
-bullish+=momentumScore;
-
-if(momentumDirection==="BEARISH")
-bearish+=momentumScore;
-
-if(candle.bull)
-bullish+=candleScore;
-
-if(candle.bear)
-bearish+=candleScore;
-
-if(
-levelDirection.includes("BULLISH") ||
-levelDirection==="SUPPORT"
-)
-bullish+=levelScore;
-
-if(
-levelDirection.includes("BEARISH") ||
-levelDirection==="RESISTANCE"
-)
-bearish+=levelScore;
-
-if(setup.name.includes("BULLISH"))
-bullish+=setup.score;
-
-if(setup.name.includes("BEARISH"))
-bearish+=setup.score;
-
-
-/* Alignment */
-
-const maxScore=
-Math.max(bullish,bearish);
-
-const direction=
-bullish>bearish
-?"BUY":
-bearish>bullish
-?"SELL":
-"WAIT";
-
-const confirmations=
-[
-trendDirection,
-structure.direction,
-momentumDirection,
-candle.bull?"BULLISH":candle.bear?"BEARISH":"NEUTRAL",
-levelDirection.includes("BULLISH")?"BULLISH":
-levelDirection.includes("BEARISH")?"BEARISH":"NEUTRAL"
-];
-
-const matching=
-direction==="BUY"
-?confirmations.filter(x=>x==="BULLISH").length
-:direction==="SELL"
-?confirmations.filter(x=>x==="BEARISH").length
-:0;
-
-
-/* SIGNAL STRENGTH */
-
-let strength=
-Math.min(
-99,
-Math.round(
-(maxScore/100)*100
-)
-);
-
-
-/* Require independent confirmations */
-
-const confirmed=
-direction!=="WAIT" &&
-matching>=4 &&
-maxScore>=70 &&
-volatility!=="LOW" &&
-volatility!=="EXTREME";
-
-
-const developing=
-direction!=="WAIT" &&
-matching>=3 &&
-maxScore>=55;
-
-
-let strategy="WAITING";
-
-if(confirmed){
-
-strategy=
-direction==="BUY"
-?"CONFIRMED BUY"
-:"CONFIRMED SELL";
-
-}else if(developing){
-
-strategy=
-direction==="BUY"
-?"DEVELOPING BUY"
-:"DEVELOPING SELL";
-
-}else{
-
-strategy=
-"WAITING FOR CONFIRMATION";
-
-}
-
-
-/* REGIME */
-
-let regime=
-"RANGE / MIXED";
-
-if(
-trendDirection==="BULLISH" &&
-structure.direction==="BULLISH"
-){
-
-regime="BULLISH TREND";
-
-}else if(
-trendDirection==="BEARISH" &&
-structure.direction==="BEARISH"
-){
-
-regime="BEARISH TREND";
-
-}else if(
-trendDirection!=="NEUTRAL"
-){
-
-regime=
-trendDirection==="BULLISH"
-?"BULLISH — WEAK STRUCTURE"
-:"BEARISH — WEAK STRUCTURE";
-
-}
-
-
-/* UI */
-
-document.getElementById("regime").textContent=
-regime;
-
-document.getElementById("strategy").textContent=
-strategy;
-
-document.getElementById("signalStrength").textContent=
-strength+"%";
-
-
-setConfirmation(
-"trendConfirmation",
-trendDirection+
-" | EMA20 "+(ema20?ema20.toFixed(2):"---"),
-trendDirection==="BULLISH"
-?"live":
-trendDirection==="BEARISH"
-?"danger":
-"muted"
-);
-
-
-setConfirmation(
-"structureConfirmation",
-structure.text,
-structure.direction==="BULLISH"
-?"live":
-structure.direction==="BEARISH"
-?"danger":
-"muted"
-);
-
-
-setConfirmation(
-"momentumConfirmation",
-momentumDirection+
-" "+momentumChange.toFixed(2)+"%",
-momentumDirection==="BULLISH"
-?"live":
-momentumDirection==="BEARISH"
-?"danger":
-"muted"
-);
-
-
-setConfirmation(
-"levelConfirmation",
-levelDirection,
-levelDirection.includes("BULLISH")||
-levelDirection==="SUPPORT"
-?"live":
-levelDirection.includes("BEARISH")||
-levelDirection==="RESISTANCE"
-?"danger":
-"muted"
-);
-
-
-setConfirmation(
-"candleConfirmation",
-candle.name,
-candle.bull
-?"live":
-candle.bear
-?"danger":
-"muted"
-);
-
-
-setConfirmation(
-"volatilityConfirmation",
-volatility+
-" | ATR "+(
-atrValue
-?atrValue.toFixed(2)
-:"---"
-),
-volatility==="NORMAL"
-?"live":
-"warn"
-);
-
-
-setConfirmation(
-"setupConfirmation",
-setup.name,
-setup.name.includes("BULLISH")
-?"live":
-setup.name.includes("BEARISH")
-?"danger":
-"muted"
-);
-
-
-/* ENTRY / SL / TP */
-
-if(confirmed){
-
-const entry=price;
-
-let stop;
-let target;
-
-if(direction==="BUY"){
-
-stop=
-Math.min(
-support,
-entry-(atrValue||2)*1.2
-);
-
-const risk=
-entry-stop;
-
-target=
-entry+risk*2;
-
-}else{
-
-stop=
-Math.max(
-resistance,
-entry+(atrValue||2)*1.2
-);
-
-const risk=
-stop-entry;
-
-target=
-entry-risk*2;
-
-}
-
-const riskAmount=
-Math.abs(entry-stop);
-
-const rewardAmount=
-Math.abs(target-entry);
-
-document.getElementById("entryPrice").textContent=
-entry.toFixed(2);
-
-document.getElementById("stopLoss").textContent=
-stop.toFixed(2);
-
-document.getElementById("takeProfit").textContent=
-target.toFixed(2);
-
-document.getElementById("riskReward").textContent=
-"1 : "+
-(rewardAmount/riskAmount).toFixed(2);
-
-
-document.getElementById("signalReason").textContent=
-direction+
-" confirmed by "+
-matching+
-" aligned confirmations. Trend, structure, momentum, level and candle evidence are aligned.";
-
-}else if(developing){
-
-document.getElementById("signalReason").textContent=
-direction+
-" setup is developing with "+
-matching+
-" aligned confirmations. Waiting for stronger structure/candle/level confirmation before treating it as a confirmed signal.";
-
-}else{
-
-document.getElementById("signalReason").textContent=
-"WAIT — confirmations are not sufficiently aligned. The engine will not force a trade.";
-
-}
-
-}
-
-
-/* =========================================================
-   REFRESH
-========================================================= */
-
-async function refreshAll(){
-
-await updatePrice();
-
-await loadOHLC();
-
-}
-
-
-/* =========================================================
-   TRADINGVIEW
-========================================================= */
-
-function getTradingViewInterval(){
-
-const timeframe=
-document.getElementById("timeframe").value;
-
-const map={
-"1M":"1",
-"5M":"5",
-"15M":"15",
-"1H":"60"
-};
-
-return map[timeframe]||"15";
-}
-
-
-function loadTradingView(){
-
-const container=
-document.getElementById(
-"tradingview_chart"
-);
-
-const timeframe=
-document.getElementById(
-"timeframe"
-).value;
-
-const interval=
-getTradingViewInterval();
-
-
-document.getElementById(
-"chartStatus"
-).textContent=
-"TradingView • "+timeframe;
-
-
-container.innerHTML="";
-
-
-const script=
-document.createElement("script");
-
-script.src=
-"https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-
-script.async=true;
-
-script.innerHTML=
-JSON.stringify({
-
-autosize:true,
-
-symbol:"OANDA:XAUUSD",
-
-interval:interval,
-
-timezone:"Africa/Nairobi",
-
-theme:"dark",
-
-style:"1",
-
-locale:"en",
-
-enable_publishing:false,
-
-allow_symbol_change:true,
-
-calendar:false,
-
-hide_top_toolbar:false,
-
-hide_legend:false,
-
-save_image:false,
-
-support_host:
-"https://www.tradingview.com"
-
-});
-
-container.appendChild(script);
-
-}
-
-
-/* =========================================================
-   START
-========================================================= */
-
-loadTradingView();
-
-refreshAll();
-
-setInterval(
-updatePrice,
-15000
-);
-
-setInterval(
-loadOHLC,
-60000
-);
-
-
-document
-.getElementById("timeframe")
-.addEventListener(
-"change",
-function(){
-
-loadTradingView();
-
-loadOHLC();
-
-}
-);
-
-</script>
-
-</body>
-</html>
+  <div class="panel">
+    <h1>XAUUSD Trading Confirmation</h1>
+    <div class="subtitle">
+      Live market data • Multi-timeframe confirmation • Structure-aware analysis
+    </div>
+
+    <div class="top">
+      <div class="card">
+        <div class="label">Data connection</div>
+        <div id="dataStatus" class="value warn">CONNECTING...</div>
+      </div>
+
+      <div class="card">
+        <div class="label">XAUUSD spot</div>
+        <div id="spot" class="value">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Last update</div>
+        <div id="updateTime" class="value">---</div>
+      </div>
+
+      <div class="card">
+        <div class="label">OHLC connection</div>
+        <div id="ohlcStatus" class="value warn">WAITING</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="controls">
+      <button data-tf="1" class="tf">1M</button>
+      <button data-tf="5" class="tf active">5M</button>
+      <button data-tf="15" class="tf">15M</button>
+      <button data-tf="60" class="tf">1H</button>
+    </div>
+
+    <div class="chart">
+      <div id="tradingview_chart" style="height:100%;width:100%;"></div>
+    </div>
+  </div>
+
+  <div class="panel decision">
+    <div class="label">Trading decision</div>
+    <div id="decision" class="decision-main neutral">WAIT</div>
+    <div id="strategy" style="margin-top:8px;font-weight:bold">
+      COLLECTING MARKET DATA
+    </div>
+    <div id="reason" class="reason">
+      Waiting for valid live candles and sufficient confirmation.
+    </div>
+
+    <div class="trade-grid">
+      <div class="metric">
+        <div class="label">Signal strength</div>
+        <div id="strength" class="big">0%</div>
+      </div>
+
+      <div class="metric">
+        <div class="label">Entry</div>
+        <div id="entry" class="big">---</div>
+      </div>
+
+      <div class="metric">
+        <div class="label">Stop loss</div>
+        <div id="sl" class="big">---</div>
+      </div>
+
+      <div class="metric">
+        <div class="label">Take profit</div>
+        <div id="tp" class="big">---</div>
+      </div>
+
+      <div class="metric">
+        <div class="label">Risk / reward</div>
+        <div id="rr" class="big">---</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="label">Market structure</div>
+
+    <div class="structure-box" style="margin-top:12px">
+
+      <div class="structure-item">
+        <div class="label">Structure</div>
+        <div id="structure" class="structure-value">---</div>
+      </div>
+
+      <div class="structure-item">
+        <div class="label">Structure event
