@@ -32,7 +32,9 @@ async function loadOHLC() {
       data.status === "error" ||
       !Array.isArray(data.values)
     ) {
-      throw new Error(data.message || "No valid candle data returned");
+      throw new Error(
+        data.message || "No valid candle data returned"
+      );
     }
 
     const candles = data.values
@@ -139,17 +141,11 @@ async function loadOHLC() {
   } catch (error) {
     console.error("OHLC error:", error);
 
-    document.getElementById("ohlcStatus").textContent =
-      "ERROR";
+    document.getElementById("ohlcStatus").textContent = "ERROR";
+    document.getElementById("ohlcStatus").className = "status danger";
 
-    document.getElementById("ohlcStatus").className =
-      "status danger";
-
-    document.getElementById("candleFreshness").textContent =
-      "ERROR";
-
-    document.getElementById("candleFreshness").className =
-      "status danger";
+    document.getElementById("candleFreshness").textContent = "ERROR";
+    document.getElementById("candleFreshness").className = "status danger";
 
     marketData.candleFresh = false;
 
