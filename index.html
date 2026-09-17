@@ -4,18 +4,71 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>XAUUSD Trading Confirmation</title>
+
 <style>
-body{margin:0;background:#0b0f14;color:#eee;font-family:Arial}
-header{padding:18px;background:#111820;border-bottom:1px solid #29323c}
-h1{margin:0;font-size:21px}
-.sub{color:#8d99a6;font-size:13px;margin-top:5px}
-.card{margin:15px;padding:16px;background:#111820;border:1px solid #29323c;border-radius:12px}
-.row{display:flex;justify-content:space-between;margin:10px 0}
-.label{color:#8995a2}
-.price{font-size:30px;font-weight:bold}
-.live{color:#35d07f}
-.bad{color:#ff6464}
-#tv{height:500px;width:100%}
+body{
+  margin:0;
+  background:#0b0f14;
+  color:#eee;
+  font-family:Arial
+}
+
+header{
+  padding:18px;
+  background:#111820;
+  border-bottom:1px solid #29323c
+}
+
+h1{
+  margin:0;
+  font-size:21px
+}
+
+.sub{
+  color:#8d99a6;
+  font-size:13px;
+  margin-top:5px
+}
+
+.card{
+  margin:15px;
+  padding:16px;
+  background:#111820;
+  border:1px solid #29323c;
+  border-radius:12px
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0
+}
+
+.label{
+  color:#8995a2
+}
+
+.price{
+  font-size:30px;
+  font-weight:bold
+}
+
+.live{
+  color:#35d07f
+}
+
+.bad{
+  color:#ff6464
+}
+
+.wait{
+  color:#f0c75e
+}
+
+#tv{
+  height:500px;
+  width:100%
+}
 </style>
 </head>
 
@@ -26,7 +79,9 @@ h1{margin:0;font-size:21px}
 <div class="sub">Live Gold • Adaptive Analysis Engine</div>
 </header>
 
+<!-- LIVE DATA -->
 <div class="card">
+
 <div class="row">
 <span class="label">Data connection</span>
 <span id="status">CONNECTING</span>
@@ -41,72 +96,205 @@ h1{margin:0;font-size:21px}
 <span class="label">Last update</span>
 <span id="updated">---</span>
 </div>
+
 </div>
 
+<!-- ANALYSIS -->
+<div class="card">
+
+<div class="row">
+<span class="label">Market analysis</span>
+<span id="analysisStatus" class="wait">WAITING</span>
+</div>
+
+<div class="row">
+<span class="label">Market regime</span>
+<span id="regime">Waiting for candle data</span>
+</div>
+
+<div class="row">
+<span class="label">Strategy</span>
+<span id="strategy">No strategy selected</span>
+</div>
+
+<div class="row">
+<span class="label">Signal</span>
+<span id="signal" class="wait">WAIT</span>
+</div>
+
+</div>
+
+<!-- TRADINGVIEW -->
 <div class="card" style="padding:0;overflow:hidden">
 <div id="tv"></div>
 </div>
 
 <script>
+
+/* =========================
+   LIVE XAUUSD PRICE
+========================= */
+
 async function updatePrice(){
+
   try{
-    const r=await fetch(
+
+    const r = await fetch(
       "https://api.gold-api.com/price/XAU",
       {cache:"no-store"}
     );
 
     if(!r.ok) throw new Error();
 
-    const d=await r.json();
+    const d = await r.json();
 
-    document.getElementById("price").textContent=
-      "$"+Number(d.price).toFixed(2);
+    document.getElementById("price").textContent =
+      "$" + Number(d.price).toFixed(2);
 
-    document.getElementById("updated").textContent=
+    document.getElementById("updated").textContent =
       new Date().toLocaleTimeString();
 
-    const s=document.getElementById("status");
-    s.textContent="LIVE";
-    s.className="live";
+    const s = document.getElementById("status");
+
+    s.textContent = "LIVE";
+    s.className = "live";
+
+    analysisEngine();
 
   }catch(e){
-    const s=document.getElementById("status");
-    s.textContent="DISCONNECTED";
-    s.className="bad";
+
+    const s = document.getElementById("status");
+
+    s.textContent = "DISCONNECTED";
+    s.className = "bad";
+
+    document.getElementById("analysisStatus").textContent =
+      "WAITING";
+
+    document.getElementById("analysisStatus").className =
+      "wait";
+
+    document.getElementById("regime").textContent =
+      "Live data unavailable";
+
+    document.getElementById("strategy").textContent =
+      "No strategy selected";
+
+    document.getElementById("signal").textContent =
+      "WAIT";
   }
 }
 
 updatePrice();
 setInterval(updatePrice,5000);
-</script>
 
-<script>
+
+/* =========================
+   INITIAL ANALYSIS ENGINE
+========================= */
+
+function analysisEngine(){
+
+  const price =
+    document.getElementById("price").textContent;
+
+  if(price === "---"){
+
+    document.getElementById("analysisStatus").textContent =
+      "WAITING";
+
+    document.getElementById("regime").textContent =
+      "Waiting for live data";
+
+    document.getElementById("strategy").textContent =
+      "No strategy selected";
+
+    document.getElementById("signal").textContent =
+      "WAIT";
+
+    return;
+  }
+
+  /*
+    The current Gold API connection supplies
+    live XAUUSD spot price.
+
+    It does NOT yet supply the OHLC candle history
+    required for genuine trend, reversal, breakout,
+    liquidity and candle-structure analysis.
+
+    Therefore the engine intentionally stays on WAIT
+    instead of creating fake signals.
+  */
+
+  document.getElementById("analysisStatus").textContent =
+    "READY";
+
+  document.getElementById("analysisStatus").className =
+    "live";
+
+  document.getElementById("regime").textContent =
+    "Waiting for OHLC data";
+
+  document.getElementById("strategy").textContent =
+    "Awaiting candle structure";
+
+  document.getElementById("signal").textContent =
+    "WAIT";
+
+  document.getElementById("signal").className =
+    "wait";
+}
+
+
+/* =========================
+   TRADINGVIEW CHART
+========================= */
+
 window.addEventListener("load",function(){
 
-  const script=document.createElement("script");
+  const script =
+    document.createElement("script");
 
-  script.src=
+  script.src =
     "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
 
-  script.async=true;
+  script.async = true;
 
-  script.innerHTML=JSON.stringify({
+  script.innerHTML = JSON.stringify({
+
     autosize:true,
+
     symbol:"OANDA:XAUUSD",
+
     interval:"15",
+
     timezone:"Africa/Nairobi",
+
     theme:"dark",
+
     style:"1",
+
     locale:"en",
+
     allow_symbol_change:false,
+
     hide_side_toolbar:false,
+
     withdateranges:true,
+
     save_image:false,
+
     calendar:false
+
   });
 
-  document.getElementById("tv").appendChild(script);
+  document
+    .getElementById("tv")
+    .appendChild(script);
+
 });
+
 </script>
 
 </body>
