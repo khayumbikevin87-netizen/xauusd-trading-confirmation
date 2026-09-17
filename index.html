@@ -7,19 +7,30 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#071018;
   color:#e8eef5;
   font-family:Arial,Helvetica,sans-serif;
 }
+
 .container{
   width:min(1400px,96%);
   margin:auto;
   padding:18px 0 40px;
 }
-h1{margin:0;font-size:28px}
-.subtitle{color:#8fa3b7;margin:6px 0 20px}
+
+h1{
+  margin:0;
+  font-size:28px;
+}
+
+.subtitle{
+  color:#8fa3b7;
+  margin:6px 0 20px;
+}
+
 .panel{
   background:#0d1822;
   border:1px solid #20303d;
@@ -27,28 +38,33 @@ h1{margin:0;font-size:28px}
   padding:16px;
   margin-bottom:16px;
 }
+
 .top{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:10px;
 }
+
 .card{
   background:#111f2b;
   border:1px solid #233745;
   border-radius:10px;
   padding:13px;
 }
+
 .label{
   color:#8195a7;
   font-size:12px;
   text-transform:uppercase;
   letter-spacing:.5px;
 }
+
 .value{
   font-size:18px;
   font-weight:bold;
   margin-top:7px;
 }
+
 .live{color:#57e389}
 .warn{color:#ffc857}
 .bad{color:#ff6874}
@@ -60,6 +76,7 @@ h1{margin:0;font-size:28px}
   flex-wrap:wrap;
   margin-bottom:12px;
 }
+
 button{
   background:#172734;
   border:1px solid #2c4352;
@@ -68,11 +85,11 @@ button{
   border-radius:8px;
   cursor:pointer;
 }
+
 button.active{
   background:#24475d;
   border-color:#4d91b8;
 }
-button:hover{background:#213746}
 
 .chart{
   width:100%;
@@ -86,21 +103,25 @@ button:hover{background:#213746}
   text-align:center;
   padding:20px;
 }
+
 .decision-main{
   font-size:30px;
   font-weight:bold;
 }
+
 .reason{
   color:#9cafbf;
   margin-top:8px;
   line-height:1.5;
 }
+
 .trade-grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
   gap:10px;
   margin-top:15px;
 }
+
 .metric{
   background:#111f2b;
   border:1px solid #233745;
@@ -108,6 +129,7 @@ button:hover{background:#213746}
   border-radius:10px;
   text-align:center;
 }
+
 .metric .big{
   font-size:20px;
   font-weight:bold;
@@ -119,13 +141,16 @@ button:hover{background:#213746}
   grid-template-columns:repeat(4,1fr);
   gap:10px;
 }
+
 .confirm{
   min-height:115px;
 }
+
 .confirm-title{
   font-weight:bold;
   margin:6px 0;
 }
+
 .confirm-text{
   color:#9fb0be;
   font-size:13px;
@@ -137,12 +162,14 @@ button:hover{background:#213746}
   grid-template-columns:repeat(4,1fr);
   gap:10px;
 }
+
 .structure-item{
   background:#101e29;
   border:1px solid #263c4b;
   border-radius:10px;
   padding:13px;
 }
+
 .structure-value{
   font-size:18px;
   font-weight:bold;
@@ -154,26 +181,44 @@ button:hover{background:#213746}
   line-height:1.7;
   color:#a8b8c5;
 }
-pre{
-  white-space:pre-wrap;
-  word-break:break-word;
-  margin:0;
-}
 
 @media(max-width:900px){
-  .top,.confirmations{grid-template-columns:repeat(2,1fr)}
-  .trade-grid{grid-template-columns:repeat(2,1fr)}
-  .structure-box{grid-template-columns:repeat(2,1fr)}
-  .chart{height:620px;min-height:560px}
-}
-@media(max-width:500px){
-  .container{width:98%;padding-top:10px}
-  h1{font-size:23px}
-  .top,.confirmations,.trade-grid,.structure-box{
-    grid-template-columns:1fr 1fr;
+  .top,.confirmations{
+    grid-template-columns:repeat(2,1fr);
   }
-  .chart{height:560px;min-height:520px}
-  .decision-main{font-size:23px}
+
+  .trade-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .structure-box{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .chart{
+    height:620px;
+    min-height:560px;
+  }
+}
+
+@media(max-width:500px){
+  .container{
+    width:98%;
+    padding-top:10px;
+  }
+
+  h1{
+    font-size:23px;
+  }
+
+  .chart{
+    height:560px;
+    min-height:520px;
+  }
+
+  .decision-main{
+    font-size:23px;
+  }
 }
 </style>
 </head>
@@ -182,95 +227,803 @@ pre{
 
 <div class="container">
 
-  <div class="panel">
-    <h1>XAUUSD Trading Confirmation</h1>
-    <div class="subtitle">
-      Live market data • Multi-timeframe confirmation • Structure-aware analysis
-    </div>
+<div class="panel">
+<h1>XAUUSD Trading Confirmation</h1>
 
-    <div class="top">
-      <div class="card">
-        <div class="label">Data connection</div>
-        <div id="dataStatus" class="value warn">CONNECTING...</div>
-      </div>
+<div class="subtitle">
+Live market data • Multi-timeframe confirmation • Structure-aware analysis
+</div>
 
-      <div class="card">
-        <div class="label">XAUUSD spot</div>
-        <div id="spot" class="value">---</div>
-      </div>
+<div class="top">
 
-      <div class="card">
-        <div class="label">Last update</div>
-        <div id="updateTime" class="value">---</div>
-      </div>
+<div class="card">
+<div class="label">Data connection</div>
+<div id="dataStatus" class="value warn">CONNECTING...</div>
+</div>
 
-      <div class="card">
-        <div class="label">OHLC connection</div>
-        <div id="ohlcStatus" class="value warn">WAITING</div>
-      </div>
-    </div>
-  </div>
+<div class="card">
+<div class="label">XAUUSD spot</div>
+<div id="spot" class="value">---</div>
+</div>
 
-  <div class="panel">
-    <div class="controls">
-      <button data-tf="1" class="tf">1M</button>
-      <button data-tf="5" class="tf active">5M</button>
-      <button data-tf="15" class="tf">15M</button>
-      <button data-tf="60" class="tf">1H</button>
-    </div>
+<div class="card">
+<div class="label">Last update</div>
+<div id="updateTime" class="value">---</div>
+</div>
 
-    <div class="chart">
-      <div id="tradingview_chart" style="height:100%;width:100%;"></div>
-    </div>
-  </div>
+<div class="card">
+<div class="label">OHLC connection</div>
+<div id="ohlcStatus" class="value warn">WAITING</div>
+</div>
 
-  <div class="panel decision">
-    <div class="label">Trading decision</div>
-    <div id="decision" class="decision-main neutral">WAIT</div>
-    <div id="strategy" style="margin-top:8px;font-weight:bold">
-      COLLECTING MARKET DATA
-    </div>
-    <div id="reason" class="reason">
-      Waiting for valid live candles and sufficient confirmation.
-    </div>
+</div>
+</div>
 
-    <div class="trade-grid">
-      <div class="metric">
-        <div class="label">Signal strength</div>
-        <div id="strength" class="big">0%</div>
-      </div>
 
-      <div class="metric">
-        <div class="label">Entry</div>
-        <div id="entry" class="big">---</div>
-      </div>
+<div class="panel">
 
-      <div class="metric">
-        <div class="label">Stop loss</div>
-        <div id="sl" class="big">---</div>
-      </div>
+<div class="controls">
 
-      <div class="metric">
-        <div class="label">Take profit</div>
-        <div id="tp" class="big">---</div>
-      </div>
+<button class="tf" data-tf="1">1M</button>
+<button class="tf active" data-tf="5">5M</button>
+<button class="tf" data-tf="15">15M</button>
+<button class="tf" data-tf="60">1H</button>
 
-      <div class="metric">
-        <div class="label">Risk / reward</div>
-        <div id="rr" class="big">---</div>
-      </div>
-    </div>
-  </div>
+</div>
 
-  <div class="panel">
-    <div class="label">Market structure</div>
+<div class="chart">
+<div id="tradingview_chart" style="height:100%;width:100%;"></div>
+</div>
 
-    <div class="structure-box" style="margin-top:12px">
+</div>
 
-      <div class="structure-item">
-        <div class="label">Structure</div>
-        <div id="structure" class="structure-value">---</div>
-      </div>
 
-      <div class="structure-item">
-        <div class="label">Structure event
+<div class="panel decision">
+
+<div class="label">Trading decision</div>
+
+<div id="decision" class="decision-main neutral">
+WAIT
+</div>
+
+<div id="strategy" style="margin-top:8px;font-weight:bold">
+COLLECTING MARKET DATA
+</div>
+
+<div id="reason" class="reason">
+Waiting for valid live candles and sufficient confirmation.
+</div>
+
+
+<div class="trade-grid">
+
+<div class="metric">
+<div class="label">Signal strength</div>
+<div id="strength" class="big">0%</div>
+</div>
+
+<div class="metric">
+<div class="label">Entry</div>
+<div id="entry" class="big">---</div>
+</div>
+
+<div class="metric">
+<div class="label">Stop loss</div>
+<div id="sl" class="big">---</div>
+</div>
+
+<div class="metric">
+<div class="label">Take profit</div>
+<div id="tp" class="big">---</div>
+</div>
+
+<div class="metric">
+<div class="label">Risk / reward</div>
+<div id="rr" class="big">---</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="panel">
+
+<div class="label">Market structure</div>
+
+<div class="structure-box" style="margin-top:12px">
+
+<div class="structure-item">
+<div class="label">Structure</div>
+<div id="structure" class="structure-value">---</div>
+</div>
+
+<div class="structure-item">
+<div class="label">Structure event</div>
+<div id="structureEvent" class="structure-value">---</div>
+</div>
+
+<div class="structure-item">
+<div class="label">Swing high</div>
+<div id="swingHigh" class="structure-value">---</div>
+</div>
+
+<div class="structure-item">
+<div class="label">Swing low</div>
+<div id="swingLow" class="structure-value">---</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="panel">
+
+<div class="label">Confirmation engine</div>
+
+<div class="confirmations" style="margin-top:12px">
+
+<div class="card confirm">
+<div class="label">Trend</div>
+<div id="trend" class="confirm-title">---</div>
+<div id="trendText" class="confirm-text">---</div>
+</div>
+
+<div class="card confirm">
+<div class="label">Structure</div>
+<div id="structureConfirm" class="confirm-title">---</div>
+<div id="structureText" class="confirm-text">---</div>
+</div>
+
+<div class="card confirm">
+<div class="label">Momentum</div>
+<div id="momentum" class="confirm-title">---</div>
+<div id="momentumText" class="confirm-text">---</div>
+</div>
+
+<div class="card confirm">
+<div class="label">Key level</div>
+<div id="level" class="confirm-title">---</div>
+<div id="levelText" class="confirm-text">---</div>
+</div>
+
+<div class="card confirm">
+<div class="label">Candle</div>
+<div id="candle" class="confirm-title">---</div>
+<div id="candleText" class="confirm-text">---</div>
+</div>
+
+<div class="card confirm">
+<div class="label">Volatility</div>
+<div id="volatility" class="confirm-title">---</div>
+<div id="volatilityText" class="confirm-text">---</div>
+</div>
+
+<div class="card confirm">
+<div class="label">Setup</div>
+<div id="setup" class="confirm-title">---</div>
+<div id="setupText" class="confirm-text">---</div>
+</div>
+
+<div class="card confirm">
+<div class="label">Data quality</div>
+<div id="quality" class="confirm-title">---</div>
+<div id="qualityText" class="confirm-text">---</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="panel">
+
+<div class="label">Data diagnostics</div>
+
+<div class="diagnostics" style="margin-top:10px">
+
+<div>
+Candles loaded:
+<span id="candleCount">0</span>
+</div>
+
+<div>
+Latest candle:
+<span id="latestCandle">---</span>
+</div>
+
+<div>
+Candle freshness:
+<span id="freshness">---</span>
+</div>
+
+<div>
+Candle age:
+<span id="candleAge">---</span>
+</div>
+
+<div>
+Market data source:
+<span>Twelve Data</span>
+</div>
+
+<div>
+Spot data source:
+<span>Gold API</span>
+</div>
+
+<div>
+Diagnostic price:
+<span id="diagnosticPrice">---</span>
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+
+<script>
+
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
+const TWELVE_KEY =
+"394e133dfaf844d580ca4d8d1ca5d1da";
+
+const SYMBOL="XAU/USD";
+
+const GOLD_API_URL=
+"https://api.gold-api.com/price/XAU";
+
+let timeframe="5";
+
+let candles=[];
+
+let spotPrice=null;
+
+let lastSpotUpdate=null;
+
+
+/* =========================================================
+   FRESHNESS LIMITS
+========================================================= */
+
+const freshnessLimits={
+  "1":8,
+  "5":15,
+  "15":35,
+  "60":130
+};
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function setText(id,value){
+  const el=$(id);
+  if(el) el.textContent=value;
+}
+
+function setClass(id,cls){
+
+  const el=$(id);
+
+  if(!el)return;
+
+  el.className=
+    el.className
+      .split(" ")
+      .filter(x=>x!=="live"&&x!=="warn"&&x!=="bad"&&x!=="neutral")
+      .join(" ")+" "+cls;
+}
+
+function number(v){
+
+  const n=Number(v);
+
+  return Number.isFinite(n)?n:null;
+}
+
+function average(arr){
+
+  if(!arr.length)return null;
+
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
+}
+
+function formatPrice(v){
+
+  return Number.isFinite(v)
+    ?v.toFixed(2)
+    :"---";
+}
+
+function formatPercent(v){
+
+  return Number.isFinite(v)
+    ?(v>=0?"+":"")+v.toFixed(2)+"%"
+    :"---";
+}
+
+
+/* =========================================================
+   TRADINGVIEW
+========================================================= */
+
+function loadTradingView(interval){
+
+  $("tradingview_chart").innerHTML="";
+
+  new TradingView.widget({
+
+    autosize:true,
+
+    symbol:"OANDA:XAUUSD",
+
+    interval:interval,
+
+    timezone:"Africa/Nairobi",
+
+    theme:"dark",
+
+    style:"1",
+
+    locale:"en",
+
+    enable_publishing:false,
+
+    allow_symbol_change:false,
+
+    hide_top_toolbar:false,
+
+    hide_legend:false,
+
+    save_image:false,
+
+    container_id:"tradingview_chart"
+
+  });
+}
+
+
+document.querySelectorAll(".tf").forEach(button=>{
+
+  button.addEventListener("click",()=>{
+
+    document
+      .querySelectorAll(".tf")
+      .forEach(x=>x.classList.remove("active"));
+
+    button.classList.add("active");
+
+    timeframe=button.dataset.tf;
+
+    loadTradingView(timeframe);
+
+    loadOHLC();
+
+  });
+
+});
+
+
+loadTradingView(timeframe);
+
+
+/* =========================================================
+   SPOT PRICE
+   RESTORED GOLD API FEED
+========================================================= */
+
+async function loadSpot(){
+
+  try{
+
+    const response=
+      await fetch(
+        GOLD_API_URL+
+        "?_="+Date.now(),
+        {
+          cache:"no-store"
+        }
+      );
+
+    if(!response.ok){
+      throw new Error("Gold API HTTP "+response.status);
+    }
+
+    const data=await response.json();
+
+    /*
+      Gold API normally returns:
+      { price: ... }
+    */
+
+    const price=number(data.price);
+
+    if(price===null){
+      throw new Error("Invalid Gold API price");
+    }
+
+    spotPrice=price;
+
+    lastSpotUpdate=new Date();
+
+    setText(
+      "spot",
+      "$"+formatPrice(price)
+    );
+
+    setText(
+      "updateTime",
+      lastSpotUpdate.toLocaleTimeString()
+    );
+
+    setText(
+      "diagnosticPrice",
+      "LIVE • $"+formatPrice(price)
+    );
+
+    setText("dataStatus","LIVE");
+
+    setClass("dataStatus","live");
+
+  }
+
+  catch(error){
+
+    console.error("Spot feed error:",error);
+
+    setText("dataStatus","ERROR");
+
+    setClass("dataStatus","bad");
+
+  }
+
+}
+
+
+/* =========================================================
+   TWELVE DATA OHLC
+   RESTORED WORKING FORMAT
+========================================================= */
+
+async function loadOHLC(){
+
+  setText("ohlcStatus","LOADING...");
+
+  setClass("ohlcStatus","warn");
+
+  try{
+
+    const intervalMap={
+
+      "1":"1min",
+
+      "5":"5min",
+
+      "15":"15min",
+
+      "60":"1h"
+
+    };
+
+    const interval=
+      intervalMap[timeframe];
+
+
+    const url=
+      "https://api.twelvedata.com/time_series"+
+      "?symbol="+encodeURIComponent(SYMBOL)+
+      "&interval="+interval+
+      "&outputsize=100"+
+      "&timezone=Africa/Nairobi"+
+      "&order=desc"+
+      "&apikey="+TWELVE_KEY+
+      "&_="+Date.now();
+
+
+    const response=
+      await fetch(
+        url,
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Twelve Data HTTP "+response.status
+      );
+
+    }
+
+
+    const data=
+      await response.json();
+
+
+    if(
+      !data.values||
+      !Array.isArray(data.values)
+    ){
+
+      throw new Error(
+        data.message||
+        "Twelve Data returned no candle values"
+      );
+
+    }
+
+
+    /*
+      Validate every candle.
+      Bad/malformed candles are ignored.
+    */
+
+    candles=
+      data.values
+      .map(c=>({
+
+        datetime:c.datetime,
+
+        open:number(c.open),
+
+        high:number(c.high),
+
+        low:number(c.low),
+
+        close:number(c.close)
+
+      }))
+      .filter(c=>
+
+        c.datetime&&
+
+        c.open!==null&&
+
+        c.high!==null&&
+
+        c.low!==null&&
+
+        c.close!==null&&
+
+        c.high>=c.low
+
+      )
+      .sort(
+        (a,b)=>
+          new Date(
+            a.datetime.replace(" ","T")
+          )-
+          new Date(
+            b.datetime.replace(" ","T")
+          )
+      );
+
+
+    if(candles.length<50){
+
+      throw new Error(
+        "Only "+candles.length+
+        " valid candles received"
+      );
+
+    }
+
+
+    const latest=
+      candles[candles.length-1];
+
+
+    const latestTime=
+      new Date(
+        latest.datetime.replace(" ","T")
+      );
+
+
+    const ageMin=
+      (
+        Date.now()-
+        latestTime.getTime()
+      )/60000;
+
+
+    const freshnessLimit=
+      freshnessLimits[timeframe];
+
+
+    const fresh=
+      ageMin<=freshnessLimit;
+
+
+    setText(
+      "candleCount",
+      candles.length
+    );
+
+
+    setText(
+      "latestCandle",
+
+      latest.datetime+
+      " | O "+formatPrice(latest.open)+
+      " H "+formatPrice(latest.high)+
+      " L "+formatPrice(latest.low)+
+      " C "+formatPrice(latest.close)
+
+    );
+
+
+    setText(
+      "candleAge",
+      ageMin.toFixed(1)+" min"
+    );
+
+
+    if(fresh){
+
+      setText(
+        "freshness",
+        "FRESH"
+      );
+
+      setClass(
+        "freshness",
+        "live"
+      );
+
+
+      setText(
+        "ohlcStatus",
+        "LIVE"
+      );
+
+      setClass(
+        "ohlcStatus",
+        "live"
+      );
+
+    }
+
+    else{
+
+      setText(
+        "freshness",
+        "STALE"
+      );
+
+      setClass(
+        "freshness",
+        "bad"
+      );
+
+
+      setText(
+        "ohlcStatus",
+        "STALE"
+      );
+
+      setClass(
+        "ohlcStatus",
+        "bad"
+      );
+
+    }
+
+
+    updateAnalysis(
+      fresh,
+      ageMin
+    );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "OHLC feed error:",
+      error
+    );
+
+
+    candles=[];
+
+
+    setText(
+      "ohlcStatus",
+      "ERROR"
+    );
+
+    setClass(
+      "ohlcStatus",
+      "bad"
+    );
+
+
+    setText(
+      "quality",
+      "BAD"
+    );
+
+    setClass(
+      "quality",
+      "bad"
+    );
+
+
+    setText(
+      "qualityText",
+      error.message||
+      "Unable to load OHLC data"
+    );
+
+
+    updateDecisionWait(
+      "WAIT — live candle data is unavailable. The engine will not force a signal."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   EMA
+========================================================= */
+
+function EMA(values,period){
+
+  if(values.length<period){
+    return null;
+  }
+
+  let ema=
+    average(
+      values.slice(0,period)
+    );
+
+  const multiplier=
+    2/(period+1);
+
+
+  for(
+    let i=period;
+    i<values.length;
+    i++
+  ){
+
+    ema=
+      values[i]*
+      multiplier+
+      ema*
+      (1-multiplier);
+
+  }
+
+  return ema;
+}
+
+
+/* =========================================================
+   ATR
+========================================================= */
+
+function ATR(data,period=14){
+
+  if(data.length<period+1){
+    return null;
+  }
+
+  const ranges=[];
+
+  for(let i=1;i<data.length;i
