@@ -10,26 +10,15 @@ body{
   margin:0;
   background:#0b0f14;
   color:#eee;
-  font-family:Arial
+  font-family:Arial,sans-serif
 }
-
 header{
   padding:18px;
   background:#111820;
   border-bottom:1px solid #29323c
 }
-
-h1{
-  margin:0;
-  font-size:21px
-}
-
-.sub{
-  color:#8d99a6;
-  font-size:13px;
-  margin-top:5px
-}
-
+h1{margin:0;font-size:21px}
+.sub{color:#8d99a6;font-size:13px;margin-top:5px}
 .card{
   margin:15px;
   padding:16px;
@@ -37,53 +26,43 @@ h1{
   border:1px solid #29323c;
   border-radius:12px
 }
-
 .row{
   display:flex;
   justify-content:space-between;
-  margin:10px 0;
-  gap:15px
+  gap:15px;
+  margin:10px 0
 }
-
-.label{
-  color:#8995a2
-}
-
-.price{
-  font-size:30px;
-  font-weight:bold
-}
-
-.live{
-  color:#35d07f
-}
-
-.bad{
-  color:#ff6464
-}
-
-.wait{
-  color:#f0c75e
-}
-
+.label{color:#8995a2}
+.price{font-size:30px;font-weight:bold}
+.live{color:#35d07f}
+.bad{color:#ff6464}
+.warn{color:#ffd166}
 #tv{
   height:500px;
   width:100%
 }
-
-.small{
-  font-size:12px;
-  color:#8995a2;
-  margin-top:10px
-}
-
 select{
   background:#0b0f14;
-  color:#eee;
-  border:1px solid #29323c;
-  border-radius:6px;
-  padding:6px
+  color:#fff;
+  border:1px solid #394552;
+  padding:8px;
+  border-radius:7px
 }
+.statusbox{
+  padding:12px;
+  border-radius:8px;
+  background:#0b0f14;
+  margin-top:12px
+}
+.signal{
+  font-size:25px;
+  font-weight:bold;
+  text-align:center;
+  padding:14px;
+  margin-top:12px;
+  border-radius:10px
+}
+.wait{color:#ffd166}
 </style>
 </head>
 
@@ -93,9 +72,6 @@ select{
 <h1>XAUUSD Trading Confirmation</h1>
 <div class="sub">Live Gold • Adaptive Analysis Engine</div>
 </header>
-
-
-<!-- LIVE PRICE -->
 
 <div class="card">
 
@@ -117,14 +93,12 @@ select{
 </div>
 
 
-<!-- OHLC DATA -->
-
 <div class="card">
 
 <div class="row">
 <span class="label">Candle timeframe</span>
 
-<select id="timeframe" onchange="loadOHLC()">
+<select id="timeframe">
 <option value="1min">1 Minute</option>
 <option value="5min">5 Minutes</option>
 <option value="15min" selected>15 Minutes</option>
@@ -133,9 +107,11 @@ select{
 
 </div>
 
+<div class="statusbox">
+
 <div class="row">
 <span class="label">OHLC connection</span>
-<span id="ohlcStatus" class="wait">CONNECTING</span>
+<span id="ohlcStatus">CONNECTING</span>
 </div>
 
 <div class="row">
@@ -148,41 +124,39 @@ select{
 <span id="latestCandle">---</span>
 </div>
 
-<div class="small">
-OHLC source: Twelve Data
+<div class="row">
+<span class="label">OHLC source</span>
+<span>Twelve Data</span>
 </div>
 
 </div>
 
+</div>
 
-<!-- ANALYSIS -->
 
 <div class="card">
 
-<div class="row">
-<span class="label">Market analysis</span>
-<span id="analysisStatus" class="wait">WAITING</span>
-</div>
+<h3>Market Analysis</h3>
 
 <div class="row">
 <span class="label">Market regime</span>
-<span id="regime">Waiting for OHLC data</span>
+<span id="regime">WAITING FOR OHLC</span>
 </div>
 
 <div class="row">
 <span class="label">Strategy</span>
-<span id="strategy">Awaiting candle structure</span>
+<span id="strategy">AWAITING CANDLE STRUCTURE</span>
 </div>
 
 <div class="row">
-<span class="label">Signal</span>
-<span id="signal" class="wait">WAIT</span>
+<span class="label">Signal strength</span>
+<span id="strength">---</span>
 </div>
 
+<div id="signal" class="signal wait">WAIT</div>
+
 </div>
 
-
-<!-- TRADINGVIEW -->
 
 <div class="card" style="padding:0;overflow:hidden">
 <div id="tv"></div>
@@ -191,23 +165,22 @@ OHLC source: Twelve Data
 
 <script>
 
-/* =====================================================
+/* ==============================
    CONFIGURATION
-===================================================== */
+============================== */
 
-/*
- IMPORTANT:
- Put your Twelve Data API key here for testing.
+const TWELVE_DATA_KEY =
+"394e133dfaf844d580ca4d8d1ca5d1da";
 
- Do NOT publish a real production key inside GitHub Pages.
-*/
+const SYMBOL = "XAU/USD";
 
-const TWELVE_DATA_KEY = "PASTE_YOUR_NEW_TWELVE_DATA_KEY_HERE";
+let candles = [];
+let currentTimeframe = "15min";
 
 
-/* =====================================================
+/* ==============================
    LIVE GOLD PRICE
-===================================================== */
+============================== */
 
 async function updatePrice(){
 
@@ -222,434 +195,92 @@ async function updatePrice(){
 
     const d = await r.json();
 
-    const price = Number(d.price);
+    const value = Number(d.price);
 
-    if(!Number.isFinite(price)) throw new Error();
+    if(!Number.isFinite(value))
+      throw new Error();
 
     document.getElementById("price").textContent =
-      "$" + price.toFixed(2);
+      "$" + value.toFixed(2);
 
     document.getElementById("updated").textContent =
       new Date().toLocaleTimeString();
 
-    const s = document.getElementById("status");
+    const s =
+      document.getElementById("status");
 
     s.textContent = "LIVE";
     s.className = "live";
 
   }catch(e){
 
-    const s = document.getElementById("status");
+    const s =
+      document.getElementById("status");
 
     s.textContent = "DISCONNECTED";
     s.className = "bad";
-
   }
-
 }
 
 updatePrice();
+
 setInterval(updatePrice,5000);
 
 
-/* =====================================================
-   OHLC DATA
-===================================================== */
-
-let ohlcData = [];
-
+/* ==============================
+   TWELVE DATA OHLC
+============================== */
 
 async function loadOHLC(){
 
   const status =
     document.getElementById("ohlcStatus");
 
-  const timeframe =
-    document.getElementById("timeframe").value;
-
-
-  if(
-    !TWELVE_DATA_KEY ||
-    TWELVE_DATA_KEY.includes("PASTE_YOUR")
-  ){
-
-    status.textContent = "API KEY REQUIRED";
-    status.className = "bad";
-
-    document.getElementById("candleCount").textContent =
-      "0";
-
-    document.getElementById("latestCandle").textContent =
-      "---";
-
-    setAnalysisWaiting("Twelve Data API key required");
-
-    return;
-  }
-
-
-  status.textContent = "LOADING";
-  status.className = "wait";
-
+  status.textContent = "LOADING...";
+  status.className = "warn";
 
   try{
 
     const url =
       "https://api.twelvedata.com/time_series" +
-      "?symbol=XAU/USD" +
-      "&interval=" + encodeURIComponent(timeframe) +
+      "?symbol=" + encodeURIComponent(SYMBOL) +
+      "&interval=" + encodeURIComponent(currentTimeframe) +
       "&outputsize=100" +
-      "&include_ohlc=true" +
       "&order=asc" +
-      "&timezone=Africa/Nairobi" +
+      "&timezone=Africa%2FNairobi" +
       "&apikey=" + encodeURIComponent(TWELVE_DATA_KEY);
 
-
-    const response =
-      await fetch(url);
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "HTTP " + response.status
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    if(data.status === "error"){
-
-      throw new Error(
-        data.message || "Twelve Data error"
-      );
-
-    }
-
-
-    if(!Array.isArray(data.values) ||
-       data.values.length === 0){
-
-      throw new Error(
-        "No OHLC data returned"
-      );
-
-    }
-
-
-    ohlcData =
-      data.values
-        .map(c => ({
-
-          datetime:c.datetime,
-
-          open:Number(c.open),
-
-          high:Number(c.high),
-
-          low:Number(c.low),
-
-          close:Number(c.close)
-
-        }))
-        .filter(c =>
-
-          Number.isFinite(c.open) &&
-          Number.isFinite(c.high) &&
-          Number.isFinite(c.low) &&
-          Number.isFinite(c.close)
-
-        );
-
-
-    if(ohlcData.length === 0){
-
-      throw new Error(
-        "Invalid candle data"
-      );
-
-    }
-
-
-    status.textContent =
-      "LIVE";
-
-    status.className =
-      "live";
-
-
-    document.getElementById("candleCount").textContent =
-      ohlcData.length;
-
-
-    const latest =
-      ohlcData[ohlcData.length - 1];
-
-
-    document.getElementById("latestCandle").textContent =
-
-      "O " + latest.open.toFixed(2) +
-
-      " H " + latest.high.toFixed(2) +
-
-      " L " + latest.low.toFixed(2) +
-
-      " C " + latest.close.toFixed(2);
-
-
-    analyzeOHLC();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    status.textContent =
-      "ERROR";
-
-    status.className =
-      "bad";
-
-
-    document.getElementById("candleCount").textContent =
-      "0";
-
-
-    document.getElementById("latestCandle").textContent =
-      error.message;
-
-
-    setAnalysisWaiting(
-      "OHLC data unavailable"
+    const response = await fetch(
+      url,
+      {cache:"no-store"}
     );
 
-  }
+    if(!response.ok)
+      throw new Error("HTTP " + response.status);
 
-}
+    const data = await response.json();
 
+    if(data.status === "error")
+      throw new Error(data.message || "API error");
 
-/* =====================================================
-   MARKET ANALYSIS
-===================================================== */
+    if(!data.values || !Array.isArray(data.values))
+      throw new Error("No OHLC data");
 
-function analyzeOHLC(){
+    candles = data.values.map(c => ({
 
-  if(ohlcData.length < 20){
+      datetime:c.datetime,
 
-    setAnalysisWaiting(
-      "Collecting candle history"
+      open:Number(c.open),
+      high:Number(c.high),
+      low:Number(c.low),
+      close:Number(c.close)
+
+    })).filter(c =>
+      Number.isFinite(c.open) &&
+      Number.isFinite(c.high) &&
+      Number.isFinite(c.low) &&
+      Number.isFinite(c.close)
     );
 
-    return;
-
-  }
-
-
-  const recent =
-    ohlcData.slice(-20);
-
-
-  const first =
-    recent[0].close;
-
-  const last =
-    recent[recent.length - 1].close;
-
-
-  const highest =
-    Math.max(
-      ...recent.map(c => c.high)
-    );
-
-
-  const lowest =
-    Math.min(
-      ...recent.map(c => c.low)
-    );
-
-
-  const range =
-    highest - lowest;
-
-
-  if(range <= 0){
-
-    setAnalysisWaiting(
-      "Insufficient price movement"
-    );
-
-    return;
-
-  }
-
-
-  const movement =
-    last - first;
-
-
-  const normalized =
-    Math.abs(movement) / range;
-
-
-  let regime =
-    "Range / consolidation";
-
-
-  let strategy =
-    "Range / breakout watch";
-
-
-  if(
-    normalized >= 0.60 &&
-    movement > 0
-  ){
-
-    regime =
-      "Potential bullish trend";
-
-    strategy =
-      "Trend continuation — monitoring";
-
-  }
-
-
-  else if(
-    normalized >= 0.60 &&
-    movement < 0
-  ){
-
-    regime =
-      "Potential bearish trend";
-
-    strategy =
-      "Trend continuation — monitoring";
-
-  }
-
-
-  document.getElementById("analysisStatus").textContent =
-    "ANALYZING";
-
-  document.getElementById("analysisStatus").className =
-    "live";
-
-
-  document.getElementById("regime").textContent =
-    regime;
-
-
-  document.getElementById("strategy").textContent =
-    strategy;
-
-
-  /*
-    We are NOT issuing BUY/SELL yet.
-
-    Structure + candle confirmation +
-    liquidity + risk + news are still needed.
-  */
-
-  document.getElementById("signal").textContent =
-    "WAIT";
-
-  document.getElementById("signal").className =
-    "wait";
-
-}
-
-
-function setAnalysisWaiting(reason){
-
-  document.getElementById("analysisStatus").textContent =
-    "WAITING";
-
-  document.getElementById("analysisStatus").className =
-    "wait";
-
-  document.getElementById("regime").textContent =
-    reason;
-
-  document.getElementById("strategy").textContent =
-    "Awaiting candle structure";
-
-  document.getElementById("signal").textContent =
-    "WAIT";
-
-}
-
-
-/* =====================================================
-   INITIAL OHLC LOAD
-===================================================== */
-
-loadOHLC();
-
-
-/*
- Refresh OHLC every 60 seconds.
- This avoids hammering the API.
-*/
-
-setInterval(
-  loadOHLC,
-  60000
-);
-
-
-/* =====================================================
-   TRADINGVIEW
-===================================================== */
-
-window.addEventListener("load",function(){
-
-  const script =
-    document.createElement("script");
-
-  script.src =
-    "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-
-  script.async = true;
-
-  script.innerHTML =
-    JSON.stringify({
-
-      autosize:true,
-
-      symbol:"OANDA:XAUUSD",
-
-      interval:"15",
-
-      timezone:"Africa/Nairobi",
-
-      theme:"dark",
-
-      style:"1",
-
-      locale:"en",
-
-      allow_symbol_change:false,
-
-      hide_side_toolbar:false,
-
-      withdateranges:true,
-
-      save_image:false,
-
-      calendar:false
-
-    });
-
-  document
-    .getElementById("tv")
-    .appendChild(script);
-
-});
-
-</script>
-
-</body>
-</html>
+    if(candles.length === 0)
+      throw new Error("No valid candles");
