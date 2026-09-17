@@ -1,371 +1,615 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XAUUSD Feed Diagnostic</title>
+<title>XAUUSD Trading Confirmation</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
   margin:0;
-  padding:15px;
   background:#071018;
-  color:#eee;
-  font-family:Arial,sans-serif;
+  color:#e8eef3;
+  font-family:Arial,Helvetica,sans-serif;
 }
-.box{
-  background:#101d28;
-  border:1px solid #29404f;
-  border-radius:12px;
-  padding:15px;
+
+.container{
+  width:min(1200px,100%);
+  margin:auto;
+  padding:14px;
+}
+
+h1{
+  margin:5px 0;
+  font-size:25px;
+}
+
+.subtitle{
+  color:#8ea4b4;
   margin-bottom:15px;
 }
-h1{font-size:23px}
-.status{
-  font-size:20px;
-  font-weight:bold;
-  margin:8px 0;
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
-.live{color:#50e388}
-.bad{color:#ff6570}
-.warn{color:#ffc857}
-pre{
-  white-space:pre-wrap;
-  word-break:break-word;
-  background:#071018;
-  padding:12px;
-  border-radius:8px;
-  overflow:auto;
+
+.card{
+  background:#101d28;
+  border:1px solid #243b4a;
+  border-radius:13px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.label{
+  color:#8197a6;
   font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
 }
-button{
-  padding:12px 18px;
-  background:#1c394b;
-  border:1px solid #47718a;
+
+.value{
+  font-size:22px;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.live{color:#45df88}
+.bad{color:#ff626c}
+.warn{color:#ffc857}
+.neutral{color:#d7e0e7}
+
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:7px;
+  font-weight:bold;
+  margin-top:6px;
+}
+
+.status.live{
+  background:#103d29;
+  color:#55e994;
+}
+
+.status.bad{
+  background:#421a20;
+  color:#ff727c;
+}
+
+.status.warn{
+  background:#443714;
+  color:#ffd45f;
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+
+.tabs button{
+  border:1px solid #355366;
+  background:#102331;
+  color:#dce7ee;
+  padding:10px 15px;
   border-radius:8px;
-  color:white;
-  margin-right:7px;
+}
+
+.tabs button.active{
+  background:#1c4055;
+  border-color:#5b9abd;
+}
+
+.chart{
+  height:700px;
+  width:100%;
+  border-radius:12px;
+  overflow:hidden;
+  background:#071018;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid #1c2e39;
+}
+
+.row:last-child{
+  border-bottom:0;
+}
+
+.reason{
+  line-height:1.55;
+  color:#c9d5dc;
+}
+
+.bigSignal{
+  font-size:30px;
+  font-weight:800;
+}
+
+.progress{
+  width:100%;
+  height:9px;
+  background:#1b2a34;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.progress div{
+  height:100%;
+  width:0%;
+  background:#56b7e8;
+  transition:.4s;
+}
+
+.diagnostic{
+  font-size:12px;
+  color:#8fa5b4;
+  line-height:1.5;
+  word-break:break-word;
+}
+
+@media(max-width:700px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .chart{
+    height:620px;
+  }
+
+  h1{
+    font-size:22px;
+  }
+
+}
+
+@media(max-width:430px){
+
+  .chart{
+    height:560px;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>XAUUSD Trading Confirmation</h1>
 
-<div class="box">
-
-<h3>Gold API</h3>
-
-<div id="goldStatus" class="status warn">
-TESTING...
-</div>
-
-<div>
-Price:
-<strong id="goldPrice">---</strong>
-</div>
-
-<pre id="goldResponse">Waiting...</pre>
-
+<div class="subtitle">
+Live market data • Multi-timeframe confirmation • Structure-aware analysis
 </div>
 
 
-<div class="box">
+<!-- DATA STATUS -->
 
-<h3>Twelve Data</h3>
+<div class="grid">
 
-<div id="tdStatus" class="status warn">
-TESTING...
+<div class="card">
+<div class="label">Data connection</div>
+<div id="dataConnection" class="status warn">
+CONNECTING...
+</div>
 </div>
 
-<div>
-Candles:
-<strong id="tdCount">---</strong>
+<div class="card">
+<div class="label">XAUUSD spot</div>
+<div id="spot" class="value">---</div>
 </div>
 
-<pre id="tdResponse">Waiting...</pre>
-
+<div class="card">
+<div class="label">Last update</div>
+<div id="lastUpdate" class="value">---</div>
 </div>
 
-
-<div class="box">
-
-<h3>Browser test</h3>
-
-<div id="browserStatus">
-Running JavaScript...
+<div class="card">
+<div class="label">OHLC connection</div>
+<div id="ohlcStatus" class="status warn">
+WAITING
+</div>
 </div>
 
 </div>
 
 
-<div class="box">
+<!-- TIMEFRAME -->
 
-<button onclick="testGold()">Test Gold API</button>
+<div class="card">
 
-<button onclick="testTwelve()">Test Twelve Data</button>
+<div class="label">Analysis timeframe</div>
 
-<button onclick="runTests()">Test Both</button>
+<div class="tabs">
+
+<button data-tf="1min">1M</button>
+<button data-tf="5min" class="active">5M</button>
+<button data-tf="15min">15M</button>
+<button data-tf="1h">1H</button>
+
+</div>
+
+</div>
+
+
+<!-- CHART -->
+
+<div class="card">
+
+<div class="label">TradingView XAUUSD</div>
+
+<div class="chart">
+
+<div id="tradingview_chart" style="height:100%;width:100%"></div>
+
+</div>
+
+</div>
+
+
+<!-- DECISION -->
+
+<div class="card">
+
+<div class="label">Trading decision</div>
+
+<div id="decision" class="bigSignal neutral">
+WAIT
+</div>
+
+<div id="strategy" class="status warn">
+COLLECTING MARKET DATA
+</div>
+
+<p id="reason" class="reason">
+Waiting for valid live candles and sufficient confirmation.
+</p>
+
+</div>
+
+
+<!-- SCORE -->
+
+<div class="card">
+
+<div class="label">Signal strength</div>
+
+<div id="score" class="value">0%</div>
+
+<div class="progress">
+<div id="scoreBar"></div>
+</div>
+
+</div>
+
+
+<!-- TRADE LEVELS -->
+
+<div class="grid">
+
+<div class="card">
+<div class="label">Entry</div>
+<div id="entry" class="value">---</div>
+</div>
+
+<div class="card">
+<div class="label">Stop loss</div>
+<div id="sl" class="value">---</div>
+</div>
+
+<div class="card">
+<div class="label">Take profit</div>
+<div id="tp" class="value">---</div>
+</div>
+
+<div class="card">
+<div class="label">Risk / reward</div>
+<div id="rr" class="value">---</div>
+</div>
+
+</div>
+
+
+<!-- STRUCTURE -->
+
+<div class="card">
+
+<div class="label">Market structure</div>
+
+<div class="row">
+<span>Structure</span>
+<strong id="structure">---</strong>
+</div>
+
+<div class="row">
+<span>Structure event</span>
+<strong id="structureEvent">---</strong>
+</div>
+
+<div class="row">
+<span>Trend</span>
+<strong id="trend">---</strong>
+</div>
+
+<div class="row">
+<span>Momentum</span>
+<strong id="momentum">---</strong>
+</div>
+
+<div class="row">
+<span>Key level</span>
+<strong id="level">---</strong>
+</div>
+
+<div class="row">
+<span>Candle</span>
+<strong id="candle">---</strong>
+</div>
+
+<div class="row">
+<span>Volatility</span>
+<strong id="volatility">---</strong>
+</div>
+
+<div class="row">
+<span>Setup</span>
+<strong id="setup">---</strong>
+</div>
+
+</div>
+
+
+<!-- DIAGNOSTICS -->
+
+<div class="card">
+
+<div class="label">Data diagnostics</div>
+
+<div id="diagnostic" class="diagnostic">
+Starting...
+</div>
+
+</div>
 
 </div>
 
 
 <script>
 
+/* =========================================================
+   CONFIG
+========================================================= */
+
 const API_KEY =
 "394e133dfaf844d580ca4d8d1ca5d1da";
 
+const TD_BASE =
+"https://api.twelvedata.com/time_series";
 
-const GOLD_URL =
-"https://api.gold-api.com/price/XAU";
+let selectedTF = "5min";
+
+let candles = [];
+
+let spotPrice = null;
+
+let lastSuccessfulUpdate = null;
 
 
-function show(id,text){
+/* =========================================================
+   HELPERS
+========================================================= */
 
-  document.getElementById(id).textContent=text;
+const $ = id =>
+document.getElementById(id);
+
+
+function fmt(n){
+
+  if(!Number.isFinite(n)) return "---";
+
+  return Number(n).toFixed(2);
 
 }
 
 
-function status(id,text,cls){
+function clamp(v,min,max){
 
-  const el=document.getElementById(id);
-
-  el.textContent=text;
-
-  el.className="status "+cls;
+  return Math.max(min,Math.min(max,v));
 
 }
 
 
-/* =====================================================
-   GOLD API TEST
-===================================================== */
+function average(arr){
 
-async function testGold(){
+  if(!arr.length) return 0;
 
-  status(
-    "goldStatus",
-    "CONNECTING...",
-    "warn"
-  );
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
 
-  show(
-    "goldResponse",
-    "Sending request..."
-  );
+}
+
+
+function setText(id,text){
+
+  const el=$(id);
+
+  if(el) el.textContent=text;
+
+}
+
+
+/* =========================================================
+   TWELVE DATA
+========================================================= */
+
+async function fetchCandles(){
+
+  const url =
+    TD_BASE +
+    "?symbol=XAU%2FUSD" +
+    "&interval="+encodeURIComponent(selectedTF) +
+    "&outputsize=100" +
+    "&timezone=Africa%2FNairobi" +
+    "&order=desc" +
+    "&apikey="+encodeURIComponent(API_KEY) +
+    "&_= "+Date.now();
 
   try{
 
-    const url=
-      GOLD_URL+
-      "?_="+Date.now();
-
-
-    const response=
+    const response =
       await fetch(
-        url,
+        url.replace("&_= ","&_="),
         {
-          method:"GET",
           cache:"no-store"
         }
       );
 
-
-    const text=
+    const text =
       await response.text();
-
-
-    show(
-      "goldResponse",
-      "HTTP STATUS: "+
-      response.status+
-      "\n\n"+
-      text
-    );
-
 
     if(!response.ok){
 
       throw new Error(
-        "HTTP "+response.status
+        "HTTP "+response.status+
+        " — "+text.slice(0,250)
       );
 
     }
 
-
-    const data=
+    const data =
       JSON.parse(text);
 
-
     if(
-      data.price===undefined
-    ){
-
-      throw new Error(
-        "Response has no price field"
-      );
-
-    }
-
-
-    show(
-      "goldPrice",
-      "$"+Number(data.price).toFixed(2)
-    );
-
-
-    status(
-      "goldStatus",
-      "LIVE",
-      "live"
-    );
-
-  }
-
-  catch(error){
-
-    status(
-      "goldStatus",
-      "FAILED",
-      "bad"
-    );
-
-
-    show(
-      "goldResponse",
-
-      "ERROR:\n"+
-      error.name+
-      "\n\n"+
-      error.message+
-      "\n\n"+
-      "This means the browser could not successfully retrieve the Gold API response."
-
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   TWELVE DATA TEST
-===================================================== */
-
-async function testTwelve(){
-
-  status(
-    "tdStatus",
-    "CONNECTING...",
-    "warn"
-  );
-
-  show(
-    "tdResponse",
-    "Sending request..."
-  );
-
-
-  try{
-
-    const url=
-      "https://api.twelvedata.com/time_series"+
-      "?symbol=XAU%2FUSD"+
-      "&interval=5min"+
-      "&outputsize=10"+
-      "&timezone=Africa%2FNairobi"+
-      "&order=desc"+
-      "&apikey="+
-      encodeURIComponent(API_KEY)+
-      "&_="+Date.now();
-
-
-    const response=
-      await fetch(
-        url,
-        {
-          method:"GET",
-          cache:"no-store"
-        }
-      );
-
-
-    const text=
-      await response.text();
-
-
-    show(
-      "tdResponse",
-
-      "HTTP STATUS: "+
-      response.status+
-      "\n\n"+
-      text
-
-    );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "HTTP "+response.status
-      );
-
-    }
-
-
-    const data=
-      JSON.parse(text);
-
-
-    if(
-      !data.values||
+      data.status === "error" ||
       !Array.isArray(data.values)
     ){
 
       throw new Error(
-        data.message||
-        "No values array returned"
+        data.message ||
+        "Twelve Data returned no candle data"
+      );
+
+    }
+
+    const parsed =
+      data.values
+      .map(x=>({
+
+        time:x.datetime,
+
+        open:Number(x.open),
+
+        high:Number(x.high),
+
+        low:Number(x.low),
+
+        close:Number(x.close)
+
+      }))
+      .filter(x=>
+        Number.isFinite(x.open) &&
+        Number.isFinite(x.high) &&
+        Number.isFinite(x.low) &&
+        Number.isFinite(x.close)
+      );
+
+
+    if(parsed.length < 30){
+
+      throw new Error(
+        "Only "+parsed.length+
+        " valid candles received. Need at least 30."
       );
 
     }
 
 
-    show(
-      "tdCount",
-      data.values.length
+    candles = parsed;
+
+    spotPrice =
+      candles[0].close;
+
+    lastSuccessfulUpdate =
+      new Date();
+
+
+    setText(
+      "spot",
+      "$"+fmt(spotPrice)
     );
 
 
-    status(
-      "tdStatus",
-      "LIVE",
-      "live"
+    setText(
+      "lastUpdate",
+      lastSuccessfulUpdate.toLocaleTimeString()
     );
+
+
+    $("ohlcStatus").textContent =
+      "LIVE";
+
+    $("ohlcStatus").className =
+      "status live";
+
+
+    $("dataConnection").textContent =
+      "LIVE";
+
+    $("dataConnection").className =
+      "status live";
+
+
+    updateDiagnostics(
+      "Twelve Data LIVE • "+
+      candles.length+
+      " valid candles • "+
+      selectedTF+
+      " • Latest: "+
+      candles[0].time
+    );
+
+
+    analyze();
 
   }
 
   catch(error){
 
-    status(
-      "tdStatus",
-      "FAILED",
-      "bad"
+    $("ohlcStatus").textContent =
+      "FAILED";
+
+    $("ohlcStatus").className =
+      "status bad";
+
+
+    $("dataConnection").textContent =
+      "DATA ERROR";
+
+    $("dataConnection").className =
+      "status bad";
+
+
+    updateDiagnostics(
+      "Twelve Data error: "+
+      error.message
     );
 
 
-    show(
-      "tdResponse",
-
-      "ERROR:\n"+
-      error.name+
-      "\n\n"+
-      error.message+
-      "\n\n"+
-      "The full API response above will tell us whether this is an API-key, quota, CORS, network, or provider problem."
-
+    showWaiting(
+      "DATA CONNECTION ERROR",
+      "Waiting for a valid Twelve Data response. No trade will be generated."
     );
 
   }
@@ -373,37 +617,502 @@ async function testTwelve(){
 }
 
 
-/* =====================================================
-   RUN BOTH
-===================================================== */
+/* =========================================================
+   EMA
+========================================================= */
 
-async function runTests(){
+function ema(values,period){
 
-  show(
-    "browserStatus",
-    "JavaScript is running. Testing both external APIs..."
-  );
+  if(values.length < period)
+    return null;
 
-  await testGold();
+  const k =
+    2/(period+1);
 
-  await testTwelve();
+  let result =
+    average(values.slice(0,period));
+
+  for(
+    let i=period;
+    i<values.length;
+    i++
+  ){
+
+    result =
+      values[i]*k+
+      result*(1-k);
+
+  }
+
+  return result;
+
+}
 
 
-  show(
-    "browserStatus",
-    "Tests completed. Read the two response boxes above."
+/* =========================================================
+   ATR
+========================================================= */
+
+function atr(data,period=14){
+
+  if(data.length < period+1)
+    return null;
+
+  const trs=[];
+
+  for(
+    let i=1;
+    i<data.length;
+    i++
+  ){
+
+    const current=data[i];
+    const prev=data[i-1];
+
+    const tr=Math.max(
+
+      current.high-current.low,
+
+      Math.abs(
+        current.high-prev.close
+      ),
+
+      Math.abs(
+        current.low-prev.close
+      )
+
+    );
+
+    trs.push(tr);
+
+  }
+
+  return average(
+    trs.slice(-period)
   );
 
 }
 
 
-/* =====================================================
-   START
-===================================================== */
+/* =========================================================
+   SWING DETECTION
+========================================================= */
 
-runTests();
+function findSwings(data){
 
-</script>
+  const highs=[];
+  const lows=[];
 
-</body>
-</html>
+  const left=2;
+  const right=2;
+
+  for(
+    let i=left;
+    i<data.length-right;
+    i++
+  ){
+
+    let high=true;
+    let low=true;
+
+    for(
+      let j=i-left;
+      j<=i+right;
+      j++
+    ){
+
+      if(j===i) continue;
+
+      if(data[j].high>=data[i].high)
+        high=false;
+
+      if(data[j].low<=data[i].low)
+        low=false;
+
+    }
+
+    if(high){
+
+      highs.push({
+        index:i,
+        price:data[i].high
+      });
+
+    }
+
+    if(low){
+
+      lows.push({
+        index:i,
+        price:data[i].low
+      });
+
+    }
+
+  }
+
+  return {highs,lows};
+
+}
+
+
+/* =========================================================
+   STRUCTURE
+========================================================= */
+
+function structureAnalysis(data){
+
+  const swings =
+    findSwings(data);
+
+  const highs =
+    swings.highs;
+
+  const lows =
+    swings.lows;
+
+
+  if(
+    highs.length<2 ||
+    lows.length<2
+  ){
+
+    return {
+      structure:"INSUFFICIENT",
+      event:"NONE",
+      support:null,
+      resistance:null,
+      bullish:false,
+      bearish:false
+    };
+
+  }
+
+
+  const h1=highs[highs.length-2];
+  const h2=highs[highs.length-1];
+
+  const l1=lows[lows.length-2];
+  const l2=lows[lows.length-1];
+
+
+  let structure="MIXED";
+
+
+  const higherHigh =
+    h2.price > h1.price;
+
+  const higherLow =
+    l2.price > l1.price;
+
+  const lowerHigh =
+    h2.price < h1.price;
+
+  const lowerLow =
+    l2.price < l1.price;
+
+
+  if(higherHigh && higherLow)
+    structure="HH + HL";
+
+  else if(lowerHigh && lowerLow)
+    structure="LH + LL";
+
+  else if(higherHigh)
+    structure="HIGHER HIGH";
+
+  else if(lowerLow)
+    structure="LOWER LOW";
+
+
+  const current =
+    data[data.length-1].close;
+
+
+  const previousResistance =
+    h1.price;
+
+  const previousSupport =
+    l1.price;
+
+
+  let event="NONE";
+
+
+  if(
+    current > previousResistance
+  ){
+
+    event="BOS ↑";
+
+  }
+
+  else if(
+    current < previousSupport
+  ){
+
+    event="BOS ↓";
+
+  }
+
+
+  const recentWindow =
+    data.slice(-8);
+
+  const recentHigh =
+    Math.max(
+      ...recentWindow.map(x=>x.high)
+    );
+
+  const recentLow =
+    Math.min(
+      ...recentWindow.map(x=>x.low)
+    );
+
+
+  if(
+    structure==="LH + LL" &&
+    current > recentHigh
+  ){
+
+    event="CHoCH ↑";
+
+  }
+
+  if(
+    structure==="HH + HL" &&
+    current < recentLow
+  ){
+
+    event="CHoCH ↓";
+
+  }
+
+
+  return {
+
+    structure,
+
+    event,
+
+    support:
+      Math.min(
+        l1.price,
+        l2.price
+      ),
+
+    resistance:
+      Math.max(
+        h1.price,
+        h2.price
+      ),
+
+    bullish:
+      structure==="HH + HL",
+
+    bearish:
+      structure==="LH + LL"
+
+  };
+
+}
+
+
+/* =========================================================
+   CANDLE ANALYSIS
+========================================================= */
+
+function candleAnalysis(c){
+
+  const range =
+    c.high-c.low;
+
+  if(range<=0)
+    return "NEUTRAL";
+
+
+  const body =
+    Math.abs(c.close-c.open);
+
+  const upper =
+    c.high-Math.max(
+      c.open,c.close
+    );
+
+  const lower =
+    Math.min(
+      c.open,c.close
+    )-c.low;
+
+
+  if(
+    c.close>c.open &&
+    body/range>=.65
+  )
+    return "STRONG BULLISH";
+
+
+  if(
+    c.close<c.open &&
+    body/range>=.65
+  )
+    return "STRONG BEARISH";
+
+
+  if(
+    lower/range>=.45 &&
+    c.close>c.open
+  )
+    return "BULLISH REJECTION";
+
+
+  if(
+    upper/range>=.45 &&
+    c.close<c.open
+  )
+    return "BEARISH REJECTION";
+
+
+  return "NEUTRAL";
+
+}
+
+
+/* =========================================================
+   MAIN ANALYSIS
+========================================================= */
+
+function analyze(){
+
+  if(candles.length<30){
+
+    showWaiting(
+      "COLLECTING DATA",
+      "Need at least 30 valid candles before analysis."
+    );
+
+    return;
+
+  }
+
+
+  const data =
+    [...candles]
+    .reverse();
+
+
+  const closes =
+    data.map(x=>x.close);
+
+
+  const current =
+    data[data.length-1].close;
+
+
+  const ema20 =
+    ema(closes,20);
+
+  const ema50 =
+    ema(closes,50);
+
+
+  const atr14 =
+    atr(data,14);
+
+
+  const structure =
+    structureAnalysis(data);
+
+
+  const candle =
+    candleAnalysis(
+      data[data.length-1]
+    );
+
+
+  /* TREND */
+
+  let trend="NEUTRAL";
+
+  if(
+    ema20 &&
+    ema50
+  ){
+
+    if(
+      current>ema20 &&
+      ema20>ema50
+    )
+      trend="BULLISH";
+
+    else if(
+      current<ema20 &&
+      ema20<ema50
+    )
+      trend="BEARISH";
+
+  }
+
+
+  /* MOMENTUM */
+
+  const oldClose =
+    data[Math.max(0,data.length-10)].close;
+
+  const momentumPct =
+    ((current-oldClose)/
+    oldClose)*100;
+
+
+  let momentum="NEUTRAL";
+
+  if(momentumPct>.12)
+    momentum="BULLISH";
+
+  else if(momentumPct<-.12)
+    momentum="BEARISH";
+
+
+  /* LEVEL */
+
+  let level="NEUTRAL";
+
+  if(structure.support && structure.resistance){
+
+    const distanceSupport =
+      Math.abs(
+        current-structure.support
+      );
+
+    const distanceResistance =
+      Math.abs(
+        current-structure.resistance
+      );
+
+    const threshold =
+      atr14 ?
+      atr14*.5 :
+      2;
+
+
+    if(distanceSupport<=threshold)
+      level="SUPPORT";
+
+    else if(distanceResistance<=threshold)
+      level="RESISTANCE";
+
+  }
+
+
+  /* VOLATILITY */
+
+  let volatility="NORMAL";
+
+  if(atr14){
+
+    const ranges =
+      data.slice(-30)
+      .map(x=>x.high-x.low);
+
+    const avgRange =
+      average(ranges);
