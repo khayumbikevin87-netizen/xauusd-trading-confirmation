@@ -14,272 +14,146 @@ body{
   color:#e8edf7;
   font-family:Arial,Helvetica,sans-serif;
 }
-.container{max-width:1450px;margin:auto;padding:14px}
-header{
-  background:linear-gradient(135deg,#101827,#0b1220);
-  border:1px solid #26344b;
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:14px;
+.container{max-width:1450px;margin:auto;padding:12px}
+header,.card{
+  background:#0c1320;
+  border:1px solid #223049;
+  border-radius:15px;
 }
-h1{margin:0 0 5px;font-size:25px}
-.subtitle{color:#91a0b8;font-size:13px}
+header{
+  padding:17px;
+  margin-bottom:12px;
+}
+h1{margin:0 0 5px;font-size:24px}
+.subtitle{color:#91a0b8;font-size:12px}
 .status{
   display:inline-flex;
   align-items:center;
   gap:7px;
-  margin-top:12px;
+  margin-top:11px;
   padding:7px 11px;
   border-radius:20px;
-  background:#101a2b;
+  background:#111b2b;
   font-size:12px;
 }
 .dot{
   width:9px;height:9px;border-radius:50%;
-  background:#64748b;
+  background:#f59e0b;
 }
-.live .dot{background:#22c55e}
-.error .dot{background:#ef4444}
-.wait .dot{background:#f59e0b}
+.status.live .dot{background:#22c55e}
+.status.error .dot{background:#ef4444}
 
 .grid{
   display:grid;
   grid-template-columns:1.15fr .85fr;
-  gap:14px;
+  gap:12px;
 }
 .card{
-  background:#0c1320;
-  border:1px solid #223049;
-  border-radius:15px;
-  padding:15px;
+  padding:14px;
+  margin-bottom:12px;
 }
 .card h2{
   font-size:15px;
-  margin:0 0 13px;
+  margin:0 0 12px;
 }
 .price{
   font-size:30px;
   font-weight:bold;
 }
-.small{font-size:12px;color:#8d9ab0}
+.small{
+  color:#8d9ab0;
+  font-size:11px;
+}
 .controls{
   display:flex;
-  gap:7px;
   flex-wrap:wrap;
+  gap:6px;
   margin:12px 0;
 }
 button{
   border:1px solid #30415c;
   background:#111c2e;
   color:#dbe5f5;
-  border-radius:9px;
-  padding:9px 13px;
+  border-radius:8px;
+  padding:9px 12px;
   cursor:pointer;
 }
-button:hover{background:#18263c}
 button.active{
   background:#1d4ed8;
   border-color:#3b82f6;
 }
-button:disabled{opacity:.5;cursor:not-allowed}
-
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
 .chart{
   width:100%;
-  height:680px;
+  height:650px;
   overflow:hidden;
-  border-radius:12px;
+  border-radius:10px;
   background:#080d17;
 }
-.chart iframe{width:100%;height:100%;border:0}
-
+.chart iframe{
+  width:100%;
+  height:100%;
+  border:0;
+}
 .decision{
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:14px;
+  padding:17px;
+  border-radius:13px;
   background:#111a29;
   border:1px solid #293952;
+  margin-bottom:12px;
 }
+.decision.buy{border-color:#16734b}
+.decision.sell{border-color:#8b2934}
 .decision.wait{border-color:#8a6415}
-.decision.buy{border-color:#176b45}
-.decision.sell{border-color:#7d2930}
-
 .decisionTitle{
-  font-size:25px;
+  font-size:24px;
   font-weight:bold;
+  margin-top:4px;
 }
 .reason{
   margin-top:7px;
   color:#aab7ca;
   line-height:1.45;
+  font-size:13px;
 }
-
 .metrics{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:9px;
+  gap:8px;
 }
 .metric{
   background:#101927;
   border:1px solid #24334a;
-  padding:12px;
-  border-radius:11px;
+  padding:11px;
+  border-radius:9px;
 }
 .metric .label{
   color:#8190a7;
-  font-size:11px;
+  font-size:10px;
 }
 .metric .value{
   margin-top:5px;
   font-weight:bold;
-  font-size:15px;
+  font-size:14px;
 }
-
 .signalBox{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:12px;
+  gap:8px;
+  margin-top:11px;
 }
 .signalItem{
   background:#0a111d;
   border:1px solid #27364d;
-  padding:13px;
-  border-radius:11px;
+  padding:11px;
+  border-radius:9px;
 }
 .signalItem b{
   display:block;
   margin-top:5px;
-  font-size:17px;
+  font-size:16px;
 }
-
-.confirmations{
-  display:grid;
-  gap:7px;
-}
-.confirm{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:10px;
-  background:#0a111d;
-  border-radius:9px;
-  border:1px solid #202e43;
-  font-size:13px;
-}
-.ok{color:#4ade80}
-.no{color:#fb7185}
-.pending{color:#fbbf24}
-
-.levels{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-.level{
-  background:#0a111d;
-  padding:11px;
-  border-radius:9px;
-  border:1px solid #24334a;
-}
-
-.history{
-  max-height:360px;
-  overflow:auto;
-}
-.historyRow{
-  padding:10px;
-  border-bottom:1px solid #202d40;
-  font-size:12px;
-}
-.historyRow:last-child{border-bottom:0}
-
 .progress{
-  height:8px;
-  background:#172236;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:8px;
-}
-.progressBar{
-  height:100%;
-  width:0%;
-  background:#3b82f6;
-}
-
-.diagnostic{
-  white-space:pre-wrap;
-  font-family:monospace;
-  font-size:11px;
-  line-height:1.5;
-  color:#9fb0c8;
-  background:#080e18;
-  padding:12px;
-  border-radius:9px;
-  overflow:auto;
-}
-
-.notice{
-  padding:10px;
-  border-radius:9px;
-  background:#101b2d;
-  border:1px solid #263851;
-  font-size:12px;
-  color:#aab8cc;
-}
-
-@media(max-width:900px){
-  .grid{grid-template-columns:1fr}
-  .chart{height:620px}
-}
-@media(max-width:600px){
-  .container{padding:8px}
-  h1{font-size:21px}
-  .chart{height:560px}
-  .metrics{grid-template-columns:1fr 1fr}
-  .signalBox{grid-template-columns:1fr}
-  .price{font-size:25px}
-}
-</style>
-</head>
-
-<body>
-<div class="container">
-
-<header>
-  <h1>🟡 XAUUSD Trading Confirmation Engine</h1>
-  <div class="subtitle">
-    Multi-timeframe structure • BOS/CHoCH • Retest • Momentum • Volatility • R:R
-  </div>
-
-  <div id="connectionStatus" class="status wait">
-    <span class="dot"></span>
-    <span id="connectionText">INITIALISING</span>
-  </div>
-</header>
-
-<div class="grid">
-
-<section>
-
-<div class="card">
-  <h2>Live XAUUSD</h2>
-
-  <div class="price">$<span id="price">---</span></div>
-  <div class="small">
-    Last candle: <span id="lastCandle">---</span>
-  </div>
-
-  <div class="controls">
-    <button class="tf active" data-tf="15">15M</button>
-    <button class="tf" data-tf="1">1M</button>
-    <button class="tf" data-tf="5">5M</button>
-    <button class="tf" data-tf="60">1H</button>
-    <button id="testBtn">TEST DATA NOW</button>
-    <button id="notifyBtn">ENABLE NOTIFICATIONS</button>
-  </div>
-
-  <div id="tvChart" class="chart"></div>
-</div>
-
-<div id="decision" class="decision wait">
-  <div class="small">TRADING DECISION</div
