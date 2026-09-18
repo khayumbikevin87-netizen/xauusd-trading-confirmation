@@ -7,56 +7,367 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#070b12;color:#e8edf5;font:14px Arial}
-.app{max-width:1200px;margin:auto;padding:12px}
-.card{background:#0d1420;border:1px solid #203047;border-radius:12px;padding:15px;margin-bottom:12px}
-h1{margin:0 0 5px;font-size:21px}
-.sub,.muted{color:#8290a3;font-size:12px}
-.status{margin-top:12px;padding:10px;border-radius:8px;background:#111c29}
-.ok{color:#55df9b}.err{color:#ff7180}.wait{color:#ffd166}
-.price{font-size:30px;font-weight:bold;margin:8px 0}
-.buttons{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-button{background:#111d2c;color:#ddd;border:1px solid #30435a;border-radius:7px;padding:9px 12px}
-button.active{background:#25496c}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.full{grid-column:1/-1}
-.rows{margin-top:8px}
-.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #192537}
-.row:last-child{border:0}
-.value{font-weight:bold}
-.decision{text-align:center;background:#101a27;border-radius:10px;padding:18px}
-.decision b{display:block;font-size:28px;margin:7px}
-.score{font-size:34px;font-weight:bold}
-.buy{color:#50e19a}.sell{color:#ff6878}
-.trade{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
-.box{background:#101a27;border:1px solid #22344b;border-radius:8px;padding:12px}
-.box span{display:block;color:#8290a3;font-size:11px;margin-bottom:5px}
-iframe{width:100%;height:580px;border:0;border-radius:8px;background:#080d15}
-pre{white-space:pre-wrap;word-break:break-word;color:#aebbd0;font-size:11px}
-@media(max-width:750px){
- .grid{grid-template-columns:1fr}.full{grid-column:auto}
- .trade{grid-template-columns:1fr 1fr}
- iframe{height:520px}
+body{
+  margin:0;background:#0b0f14;color:#e8edf3;
+  font-family:Arial,sans-serif;padding:15px
 }
+.app{max-width:700px;margin:auto}
+h1{font-size:21px;margin:5px 0}
+.sub{color:#8d99a8;font-size:13px;margin-bottom:15px}
+.card{
+  background:#121820;border:1px solid #26303b;
+  border-radius:12px;padding:15px;margin-bottom:12px
+}
+.status{font-weight:bold}
+.grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px
+}
+.tf{
+  background:#0d131a;padding:10px;border-radius:8px;
+  text-align:center;font-size:12px
+}
+.tf b{display:block;font-size:15px;margin-bottom:5px}
+.green{color:#39d98a}
+.yellow{color:#f4c95d}
+.red{color:#ff6673}
+.signal{
+  text-align:center;font-size:30px;font-weight:bold;
+  padding:20px;border-radius:10px;background:#0d131a
+}
+.row{
+  display:flex;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid #202832;
+  font-size:14px
+}
+button{
+  width:100%;padding:13px;border:0;border-radius:8px;
+  background:#e7b84b;color:#111;font-weight:bold;
+  margin-top:10px
+}
+input{
+  width:100%;padding:11px;background:#0b0f14;
+  color:white;border:1px solid #303b47;border-radius:7px
+}
+.small{font-size:11px;color:#84909e;margin-top:8px}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-<div class="card">
 <h1>🟡 XAUUSD Trading Confirmation Engine</h1>
-<div class="sub">Live data • Multi-timeframe structure • BOS/CHoCH • Retest • R:R</div>
-<div id="status" class="status">STARTING ENGINE...</div>
+<div class="sub">
+Multi-timeframe structure • BOS/CHoCH • Retest • Momentum • R:R
 </div>
 
-<div class="grid">
+<div class="card">
+  <div class="status" id="status">🟡 INITIALISING ENGINE...</div>
+  <div class="small" id="source">Market: XAU/USD</div>
+</div>
 
 <div class="card">
-<div class="muted">LIVE XAU/USD</div>
-<div id="price" class="price">---</div>
-<div id="candle" class="muted">Waiting for live data...</div>
+  <div class="grid">
+    <div class="tf"><b>1H</b><span id="h1">WAIT</span></div>
+    <div class="tf"><b>15M</b><span id="m15">WAIT</span></div>
+    <div class="tf"><b>5M</b><span id="m5">WAIT</span></div>
+    <div class="tf"><b>1M</b><span id="m1">WAIT</span></div>
+  </div>
+</div>
 
-<div class="buttons">
-<button id="b15" class="active" onclick="chart('15')">15M</button>
-<button id="b
+<div class="card">
+  <div class="signal" id="signal">WAIT</div>
+</div>
+
+<div class="card">
+  <div class="row"><span>Market Bias</span><b id="bias">—</b></div>
+  <div class="row"><span>Structure</span><b id="structure">—</b></div>
+  <div class="row"><span>BOS / CHoCH</span><b id="bos">—</b></div>
+  <div class="row"><span>Retest</span><b id="retest">—</b></div>
+  <div class="row"><span>Momentum</span><b id="momentum">—</b></div>
+  <div class="row"><span>Entry</span><b id="entry">—</b></div>
+  <div class="row"><span>Stop Loss</span><b id="sl">—</b></div>
+  <div class="row"><span>Take Profit</span><b id="tp">—</b></div>
+  <div class="row"><span>Risk / Reward</span><b id="rr">—</b></div>
+</div>
+
+<div class="card">
+  <b>Twelve Data API Key</b>
+  <input id="apiKey" type="password" placeholder="Paste API key here">
+  <button onclick="startEngine()">START LIVE ENGINE</button>
+  <div class="small">
+    The engine will remain WAIT until enough valid candles are collected.
+  </div>
+</div>
+
+</div>
+
+<script>
+const SYMBOL="XAU/USD";
+const API="https://api.twelvedata.com/time_series";
+
+let data={};
+
+async function getCandles(interval){
+  const key=document.getElementById("apiKey").value.trim();
+
+  if(!key) throw new Error("API key missing");
+
+  const url=
+    `${API}?symbol=${encodeURIComponent(SYMBOL)}`+
+    `&interval=${interval}&outputsize=100&apikey=${key}`;
+
+  const r=await fetch(url);
+  const j=await r.json();
+
+  if(j.status==="error" || !j.values)
+    throw new Error(j.message || "No candle data");
+
+  return j.values.reverse().map(x=>({
+    time:x.datetime,
+    open:+x.open,
+    high:+x.high,
+    low:+x.low,
+    close:+x.close
+  }));
+}
+
+async function loadData(){
+  setStatus("🟡 COLLECTING MARKET DATA...","yellow");
+
+  const [h1,m15,m5,m1]=await Promise.all([
+    getCandles("1h"),
+    getCandles("15min"),
+    getCandles("5min"),
+    getCandles("1min")
+  ]);
+
+  data={h1,m15,m5,m1};
+
+  document.getElementById("h1").innerHTML="<span class='green'>READY</span>";
+  document.getElementById("m15").innerHTML="<span class='green'>READY</span>";
+  document.getElementById("m5").innerHTML="<span class='green'>READY</span>";
+  document.getElementById("m1").innerHTML="<span class='green'>READY</span>";
+
+  setStatus("🟢 LIVE DATA READY","green");
+
+  analyse();
+}
+
+function setStatus(text,color){
+  const e=document.getElementById("status");
+  e.textContent=text;
+  e.className="status "+color;
+}
+
+function highs(c){
+  return c.map(x=>x.high);
+}
+
+function lows(c){
+  return c.map(x=>x.low);
+}
+
+/* Simple swing detection */
+function structure(c){
+  if(c.length<20)return "INSUFFICIENT DATA";
+
+  const last=c[c.length-1];
+  const prev=c.slice(-11,-1);
+
+  const high=Math.max(...highs(prev));
+  const low=Math.min(...lows(prev));
+
+  if(last.close>high)return "BULLISH BOS";
+  if(last.close<low)return "BEARISH BOS";
+
+  const recent=c.slice(-5);
+  const rising=recent[4].close>recent[0].close;
+
+  return rising?"BULLISH":"BEARISH";
+}
+
+/* Higher timeframe directional bias */
+function getBias(){
+  const s=structure(data.h1);
+
+  if(s.includes("BULLISH"))return "BULLISH";
+  if(s.includes("BEARISH"))return "BEARISH";
+
+  return "NEUTRAL";
+}
+
+/* Detect recent break */
+function getBOS(c){
+  if(c.length<20)return "WAIT";
+
+  const last=c[c.length-1];
+  const previous=c.slice(-11,-1);
+
+  const hi=Math.max(...highs(previous));
+  const lo=Math.min(...lows(previous));
+
+  if(last.close>hi)return "BULLISH BOS";
+  if(last.close<lo)return "BEARISH BOS";
+
+  return "NO CONFIRMED BOS";
+}
+
+/* Retest approximation:
+   price must return close to the broken level */
+function getRetest(c,direction){
+  if(c.length<20)return false;
+
+  const last=c[c.length-1];
+  const prev=c.slice(-12,-1);
+
+  const hi=Math.max(...highs(prev));
+  const lo=Math.min(...lows(prev));
+
+  const range=last.high-last.low || 0.01;
+
+  if(direction==="BULLISH")
+    return Math.abs(last.low-hi)<range*1.5 ||
+           Math.abs(last.close-hi)<range*1.5;
+
+  if(direction==="BEARISH")
+    return Math.abs(last.high-lo)<range*1.5 ||
+           Math.abs(last.close-lo)<range*1.5;
+
+  return false;
+}
+
+/* Short-term momentum */
+function getMomentum(c){
+  if(c.length<10)return "WAIT";
+
+  const a=c[c.length-6].close;
+  const b=c[c.length-1].close;
+
+  const change=((b-a)/a)*100;
+
+  if(change>0.03)return "BULLISH";
+  if(change<-0.03)return "BEARISH";
+
+  return "WEAK";
+}
+
+function atr(c,n=14){
+  if(c.length<n+1)return 0;
+
+  let sum=0;
+
+  for(let i=c.length-n;i<c.length;i++){
+    const x=c[i];
+    const p=c[i-1];
+
+    sum+=Math.max(
+      x.high-x.low,
+      Math.abs(x.high-p.close),
+      Math.abs(x.low-p.close)
+    );
+  }
+
+  return sum/n;
+}
+
+function analyse(){
+
+  const bias=getBias();
+  const bos=getBOS(data.m5);
+  const momentum=getMomentum(data.m1);
+
+  let direction=null;
+
+  if(bias==="BULLISH" && bos==="BULLISH BOS")
+    direction="BULLISH";
+
+  if(bias==="BEARISH" && bos==="BEARISH BOS")
+    direction="BEARISH";
+
+  const retest=direction
+    ? getRetest(data.m1,direction)
+    : false;
+
+  document.getElementById("bias").textContent=bias;
+  document.getElementById("structure").textContent=structure(data.m15);
+  document.getElementById("bos").textContent=bos;
+  document.getElementById("momentum").textContent=momentum;
+  document.getElementById("retest").textContent=
+    retest?"CONFIRMED":"WAITING";
+
+  /* Confirmation rules */
+  const bullish=
+    direction==="BULLISH" &&
+    retest &&
+    momentum==="BULLISH";
+
+  const bearish=
+    direction==="BEARISH" &&
+    retest &&
+    momentum==="BEARISH";
+
+  if(!bullish && !bearish){
+    document.getElementById("signal").textContent="WAIT";
+    document.getElementById("entry").textContent="NO ENTRY";
+    document.getElementById("sl").textContent="—";
+    document.getElementById("tp").textContent="—";
+    document.getElementById("rr").textContent="—";
+    return;
+  }
+
+  const c=data.m1;
+  const last=c[c.length-1];
+  const volatility=atr(c);
+
+  const entry=last.close;
+
+  let sl,tp;
+
+  if(bullish){
+    sl=entry-volatility*1.2;
+    tp=entry+volatility*2.4;
+  }else{
+    sl=entry+volatility*1.2;
+    tp=entry-volatility*2.4;
+  }
+
+  const risk=Math.abs(entry-sl);
+  const reward=Math.abs(tp-entry);
+  const rr=reward/risk;
+
+  document.getElementById("signal").textContent=
+    bullish?"BUY":"SELL";
+
+  document.getElementById("entry").textContent=
+    entry.toFixed(2);
+
+  document.getElementById("sl").textContent=
+    sl.toFixed(2);
+
+  document.getElementById("tp").textContent=
+    tp.toFixed(2);
+
+  document.getElementById("rr").textContent=
+    "1:"+rr.toFixed(1);
+}
+
+async function startEngine(){
+  try{
+    document.getElementById("signal").textContent="WAIT";
+    setStatus("🟡 CONNECTING...","yellow");
+
+    await loadData();
+
+  }catch(e){
+    setStatus("🔴 DATA ERROR","red");
+
+    document.getElementById("source").textContent=
+      e.message+" — check API key/data access.";
+
+    console.error(e);
+  }
+}
+</script>
+
+</body>
+</html>
